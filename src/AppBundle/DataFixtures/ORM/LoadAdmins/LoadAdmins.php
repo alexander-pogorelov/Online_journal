@@ -10,6 +10,7 @@ namespace AppBundle\DataFixtures\ORM\LoadAdmins;
 
 
 use Application\Sonata\UserBundle\Entity\User;
+use Application\Sonata\UserBundle\Entity\UserAdmin;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -24,7 +25,7 @@ class LoadAdmins implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         // TODO: Implement load() method.
-        $admin = new User();
+        $admin = new UserAdmin();
         $admin->setFirstname('John');
         $admin->setLastname('Silver');
         $admin->setUsername('admin');
