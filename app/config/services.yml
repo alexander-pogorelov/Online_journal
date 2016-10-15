@@ -17,3 +17,8 @@ services:
 #        - ~
 #    calls:
 #        - [ setTranslationDomain, [AppBundle]]
+    app.admin.pupil:
+        class: AppBundle\Admin\PupilAdmin
+        arguments: [~, Application\Sonata\UserBundle\Entity\UserPupil, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Temp, label: 'Учащиеся' }
