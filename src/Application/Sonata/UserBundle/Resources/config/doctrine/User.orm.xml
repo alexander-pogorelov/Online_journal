@@ -10,11 +10,14 @@
             <discriminator-mapping value="0" class="UserAdmin" />
             <discriminator-mapping value="1" class="UserPupil" />
             <discriminator-mapping value="2" class="UserTeacher" />
+            <discriminator-mapping value="2" class="UserParent" />
         </discriminator-map>
 
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
+        <field name="patronymic" column="patronymic" type="string" length="255" nullable="true" unique="false" />
+        <field name="comment" column="comment" type="string" length="255" nullable="true" unique="false" />
 
     </entity>
 

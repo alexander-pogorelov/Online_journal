@@ -24,7 +24,7 @@ class LoadAdmins implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        // TODO: Implement load() method.
+
         $admin = new UserAdmin();
         $admin->setFirstname('John');
         $admin->setLastname('Silver');

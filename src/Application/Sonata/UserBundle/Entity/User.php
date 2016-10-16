@@ -25,10 +25,54 @@ use Sonata\UserBundle\Entity\BaseUser as BaseUser;
  */
 abstract class User extends BaseUser
 {
+    // TODO: Константы класса
+    // TODO: добавить свойства: отчество, адрес, комментарий
+
     /**
      * @var int $id
      */
     protected $id;
+
+    /**
+     * @var
+     */
+    protected $patronymic;
+
+    /**
+     * @var
+     */
+    protected $comment;
+
+    /**
+     * @return mixed
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param mixed $comment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    }
+    /**
+     * @return mixed
+     */
+    public function getPatronymic()
+    {
+        return $this->patronymic;
+    }
+
+    /**
+     * @param mixed $patronymic
+     */
+    public function setPatronymic($patronymic)
+    {
+        $this->patronymic = $patronymic;
+    }
 
     /**
      * Get id

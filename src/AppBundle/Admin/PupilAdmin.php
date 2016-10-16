@@ -8,12 +8,15 @@
 
 namespace AppBundle\Admin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+//use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
 class PupilAdmin extends AbstractAdmin
+
 {
+    // TODO: наследование от AbstractAdmin или от UserAdmin????
     protected $baseRouteName = 'pupil-route-admin'; //admin_vendor_bundlename_adminclassname
     protected $baseRoutePattern = 'pupil'; //unique-route-pattern
 
@@ -24,7 +27,7 @@ class PupilAdmin extends AbstractAdmin
         $object->setUsername($name);
         $object->setPlainPassword($pass);
         $object->setEmail($name.'@example.com');
-        $object->setEnabled(true);
+        $object->setEnabled(false);
         $object->setRealRoles(['ROLE_PUPIL']);
     }
 
@@ -40,7 +43,7 @@ class PupilAdmin extends AbstractAdmin
             ])
             ->add('phone', 'text', ['label'=>'Телефон'])
             ->add('email', 'text', ['label'=>'E-Mail'])
-            ->add('_comment_', 'text', ['label'=>'Комментарий'])
+            ->add('comment', 'text', ['label'=>'Комментарий'])
             //->add('enabled', 'boolean')
             //->add('locked', 'boolean')
         ;
@@ -51,7 +54,10 @@ class PupilAdmin extends AbstractAdmin
         $formMapper
             ->add('lastname', 'text', ['label'=>'Фамилия'])
             ->add('firstname', 'text', ['label'=>'Имя'])
-            //->add('patronymic', 'text', ['label'=>'Отчество'])
+            ->add('patronymic', 'text', [
+                'label'=>'Отчество',
+                'required' => false
+            ])
             ->add('dateOfBirth', 'date', [
                 'label'=>'Дата, месяц, год рождения',
                 'format' => 'dd MM yyyy'
@@ -62,6 +68,10 @@ class PupilAdmin extends AbstractAdmin
             ])
             ->add('phone', 'text', [
                 'label'=>'Телефон',
+                'required' => false
+            ])
+            ->add('comment', 'text', [
+                'label'=>'Комментарий',
                 'required' => false
             ])
             //->add('_comment_', 'text', ['label'=>'Комментарий'])
@@ -81,6 +91,9 @@ class PupilAdmin extends AbstractAdmin
             ])
             ->add('email', null, [
                 'label'=>'e-mail'
+            ])
+            ->add('comment', null, [
+                'label'=>'Комментарий'
             ])
         ;
     }
