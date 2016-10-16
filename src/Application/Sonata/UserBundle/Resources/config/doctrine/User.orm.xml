@@ -10,7 +10,7 @@
             <discriminator-mapping value="0" class="UserAdmin" />
             <discriminator-mapping value="1" class="UserPupil" />
             <discriminator-mapping value="2" class="UserTeacher" />
-            <discriminator-mapping value="2" class="UserParent" />
+            <discriminator-mapping value="3" class="UserParent" />
         </discriminator-map>
 
         <id name="id" column="id" type="integer">
