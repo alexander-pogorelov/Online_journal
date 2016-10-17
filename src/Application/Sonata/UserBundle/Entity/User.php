@@ -31,7 +31,7 @@ abstract class User extends BaseUser
     /**
      * @var int $id
      */
-    protected $id;
+    //protected $id;
 
     /**
      * @var
