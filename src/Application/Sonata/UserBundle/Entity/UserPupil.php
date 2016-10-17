@@ -11,5 +11,17 @@ namespace Application\Sonata\UserBundle\Entity;
 
 class UserPupil extends User
 {
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $parents;
+    //protected $id;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 
 }

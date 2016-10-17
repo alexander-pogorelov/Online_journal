@@ -79,10 +79,12 @@ abstract class User extends BaseUser
      *
      * @return int $id
      */
+
     public function getId()
     {
         return $this->id;
     }
+
     public function __toString()
     {
         $string = $this->getFirstname().' '.$this->getLastname();
