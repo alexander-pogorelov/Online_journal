@@ -31,6 +31,21 @@ class UserPupil extends User
     {
         return $this->parents;
     }
+    public function getParentsPhones()
+    {
+        $parentsPhones = array_map(function (UserParent $parent) {
+            return $parent->getPhone();
+        }, $this->getParents()->toArray());
 
+        return implode(', ', $parentsPhones);
+    }
+    public function getParentsEmailes()
+    {
+        $parentsEmailes = array_map(function (UserParent $parent) {
+            return $parent->getEmailCanonical();
+        }, $this->getParents()->toArray());
+
+        return implode(', ', $parentsEmailes);
+    }
 
 }

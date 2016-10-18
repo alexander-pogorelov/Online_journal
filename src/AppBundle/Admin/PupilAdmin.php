@@ -7,11 +7,16 @@
  */
 
 namespace AppBundle\Admin;
+use Application\Sonata\UserBundle\Entity\UserPupil;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 //use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Tests\Extension\Core\Type\CollectionTypeTest;
 
 class PupilAdmin extends AbstractAdmin
 
@@ -31,18 +36,36 @@ class PupilAdmin extends AbstractAdmin
         $object->setRealRoles(['ROLE_PUPIL']);
     }
 
+
     protected function configureListFields(ListMapper $listMapper) {
+
         $listMapper
-            ->addIdentifier('lastname', 'text', ['label'=>'Фамилия'])
-            ->add('firstname', 'text', ['label'=>'Имя'])
-            ->add('patronymic', 'text', ['label'=>'Отчество'])
+            ->addIdentifier('fullName', 'text', [
+                'label'=>'Ф.И.О. ученика',
+                'class' => 'col-md-1'
+            ])
+            //->add('firstname', 'text', ['label'=>'Имя'])
+            //->add('patronymic', 'text', ['label'=>'Отчество'])
             ->add('_group_', 'text', ['label'=>'Группа'])
             ->add('dateOfBirth', 'date', [
                 'label'=>'Дата рождения',
                 'format' => 'd M Y'
             ])
             ->add('phone', 'text', ['label'=>'Телефон'])
-            ->add('email', 'text', ['label'=>'E-Mail'])
+            //->add('email', 'text', ['label'=>'E-Mail'])
+            ->addIdentifier('parents', CollectionType::class, [
+                'label'=>'Ф.И.О. родителя'
+            ])
+            ->add('parentsPhones', null, [
+                'label'=>'Тел. родителя'
+            ])
+            ->add('parentsEmailes', null, [
+                'label'=>'E-mail родителя'
+            ])
+            //->add('Application/Sonata/UserBundle/Entity/UserParent.Firstname')
+            /*->add('parents', null, [
+                'associated_property' => 'Firstname'
+            ])*/
             ->add('comment', 'text', ['label'=>'Комментарий'])
             //->add('enabled', 'boolean')
             //->add('locked', 'boolean')
@@ -51,30 +74,53 @@ class PupilAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper) {
         //$now = new \DateTime();
+
         $formMapper
-            ->add('lastname', 'text', ['label'=>'Фамилия'])
-            ->add('firstname', 'text', ['label'=>'Имя'])
-            ->add('patronymic', 'text', [
-                'label'=>'Отчество',
-                'required' => false
-            ])
-            ->add('dateOfBirth', 'date', [
-                'label'=>'Дата, месяц, год рождения',
-                'format' => 'dd MM yyyy'
-            ])
-            ->add('email', 'text', [
-                'label'=>'E-Mail',
-                'required' => false
-            ])
-            ->add('phone', 'text', [
-                'label'=>'Телефон',
-                'required' => false
-            ])
-            ->add('comment', 'text', [
-                'label'=>'Комментарий',
-                'required' => false
-            ])
-            //->add('_comment_', 'text', ['label'=>'Комментарий'])
+            ->with('Учащийся', array('class' => 'col-md-5'))->end()
+            ->with('Родители', array('class' => 'col-md-5'))->end()
+        ;
+
+        $formMapper
+            ->with('Учащийся')
+                ->add('lastname', 'text', ['label'=>'Фамилия'])
+                ->add('firstname', 'text', ['label'=>'Имя'])
+                ->add('patronymic', 'text', [
+                    'label'=>'Отчество',
+                    'required' => false
+                ])
+                ->add('dateOfBirth', 'date', [
+                    'label'=>'Дата, месяц, год рождения',
+                    'format' => 'dd MM yyyy'
+                ])
+                ->add('email', 'text', [
+                    'label'=>'E-Mail',
+                    'required' => false
+                ])
+                ->add('phone', 'text', [
+                    'label'=>'Телефон',
+                    'required' => false
+                ])
+                ->add('comment', TextareaType::class, [
+                    'label'=>'Комментарий',
+                    'required' => false,
+                    //'readonly' => 'readonly'
+                ])
+            ->end()
+
+            ->with('Родители')
+            ->add('parents')
+            /*
+                ->add('parents', null, [
+                    'label'=>'Родственники ученика:',
+                    'required' => false
+                ])*/
+            /*->add('parents', 'sonata_type_model_list', array(
+            ), array(
+                'placeholder' => 'No parents selected'
+            ))*/
+            ->end()
+
+
         ;
     }
 

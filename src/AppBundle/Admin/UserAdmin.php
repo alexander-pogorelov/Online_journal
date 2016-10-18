@@ -19,7 +19,7 @@ class UserAdmin extends BaseUserAdmin
     // List
     protected function configureListFields(ListMapper $listMapper) {
         parent::configureListFields($listMapper);
-        $listMapper->remove('groups');
+        //$listMapper->remove('groups');
         $listMapper->remove('impersonating');
     }
 
