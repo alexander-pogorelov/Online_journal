@@ -7,11 +7,10 @@
  */
 
 namespace AppBundle\Admin;
-
-use Sonata\AdminBundle\Datagrid\ListMapper;
-
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\UserBundle\Admin\Model\UserAdmin as BaseUserAdmin;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
+
 
 
 class UserAdmin extends BaseUserAdmin
@@ -19,7 +18,7 @@ class UserAdmin extends BaseUserAdmin
     // List
     protected function configureListFields(ListMapper $listMapper) {
         parent::configureListFields($listMapper);
-        $listMapper->remove('groups');
+        //$listMapper->remove('groups');
         $listMapper->remove('impersonating');
     }
 

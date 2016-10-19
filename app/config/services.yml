@@ -17,3 +17,13 @@ services:
 #        - ~
 #    calls:
 #        - [ setTranslationDomain, [AppBundle]]
+    app.admin.pupil:
+        class: AppBundle\Admin\PupilAdmin
+        arguments: [~, Application\Sonata\UserBundle\Entity\UserPupil, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'iTeen', label: 'Учащиеся' }
+    app.admin.parent:
+            class: AppBundle\Admin\ParentAdmin
+            arguments: [~, Application\Sonata\UserBundle\Entity\UserParent, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: 'iTeen', label: 'Родители' }
