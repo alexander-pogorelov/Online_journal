@@ -24,6 +24,23 @@ class UserPupil extends User
         parent::__construct();
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+
+    public function addParent($parent)
+    {
+        $this->parents->add($parent);
+    }
+
+    public function removeParent($parent)
+    {
+        $this->parents->removeElement($parent);
+    }
+
+    public function setParents($parents)
+    {
+        $this->parents = $parents;
+    }
+
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
