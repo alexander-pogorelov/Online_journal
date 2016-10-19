@@ -11,20 +11,21 @@
 			<a class="logo" href="{{ path('sonata_admin_dashboard') }}">
 				<img src="{{ asset('bundles/app/images/logo_title.png') }}" alt="{{ sonata_admin.adminPool.title }}">
 			</a>
-			<img id="u5_img" class="img" src="{{ asset('bundles/app/images/u23.png') }}">
+			
+			<div id="u29" class="ax_default heading_1">
+        		<div id="u30" class="text">
+					<p><span>Образовательный центр Парка высоких технологий</span></p>
+				</div>
+			</div>
+			<img id="u5_img" class="img" src="{{ asset('bundles/app/images/u23-3.png') }}" style="float: right;">
 		</div>
-                        <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
-                            {% if 'single_text' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
-                                <span>{{ sonata_admin.adminPool.title }}</span>
-                            {% endif %}
-                        </a>
-                    {% endspaceless %}
-                {% endblock %}
+    {% endspaceless %}
+{% endblock %}
 
 {% block sonata_breadcrumb %}
 	
 	<div style="position: absolute; line-height: 50px; width: 100%; text-align: center;">
-  					<span>Администратор</span>
+		<span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">Электронный дневник</span>
 	</div>
 {{ parent() }}
 					
