@@ -9,7 +9,8 @@
 namespace AppBundle\DataFixtures\ORM\LoadUsers;
 
 
-use Application\Sonata\UserBundle\Entity\User;
+use Application\Sonata\UserBundle\Entity\UserTeacher;
+use Application\Sonata\UserBundle\Entity\UserStudent;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -24,24 +25,24 @@ class LoadUsers implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         // TODO: Implement load() method.
-        $user1 = new User();
-        $user1->setFirstname('Вася');
-        $user1->setLastname('Васильев');
-        $user1->setUsername('Vasya');
-        $user1->setPlainPassword('vasya');
-        $user1->setEmail('vasya@gmail.com');
-        $user1->setRealRoles(['ROLE_USER']);
+        $user1 = new UserStudent();
+        $user1->setFirstname('Ivan');
+        $user1->setLastname('Ivanov');
+        $user1->setUsername('Ivan');
+        $user1->setPlainPassword('ivan');
+        $user1->setEmail('ivan@gmail.com');
+        $user1->setRealRoles(['ROLE_STUDENT']);
         $user1->setEnabled(true);
 
         $manager->persist($user1);
 
-        $user2 = new User();
-        $user2->setFirstname('Петя');
-        $user2->setLastname('Петров');
-        $user2->setUsername('Petya');
-        $user2->setPlainPassword('petya');
-        $user2->setEmail('petya@gmail.com');
-        $user2->setRoles(['ROLE_USER']); // Не работает эта роль!!!!
+        $user2 = new UserTeacher();
+        $user2->setFirstname('Steven');
+        $user2->setLastname('Howking');
+        $user2->setUsername('Stev');
+        $user2->setPlainPassword('stev');
+        $user2->setEmail('stev@gmail.com');
+        $user2->setRoles(['ROLE_TEACHER']); // Не работает эта роль!!!!
         $user2->setEnabled(true);
 
         $manager->persist($user2);

@@ -1,0 +1,8 @@
+services:
+     admin.employee:
+          class: AppBundle\Admin\EmployeeAdmin
+          arguments: [~, Application\Sonata\UserBundle\Entity\UserTeacher, ~]
+          tags:
+             - { name: sonata.admin, manager_type: orm, group: Employee, label: Employee }
+          calls:
+             - [ setTranslationDomain, [AppBundle]]

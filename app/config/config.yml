@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@AppBundle/Resources/config/admin.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -49,7 +50,7 @@ doctrine:
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
-        #   2. Uncomment database_path in parameters.yml.dist
+        #   2. Uncomment database_path in parameters.yml
         #   3. Uncomment next line:
         #     path:     "%database_path%"
         types:
@@ -73,6 +74,7 @@ swiftmailer:
 sonata_admin:
     security:
         handler: sonata.admin.security.handler.role
+    title: 'ITeen Academy'
 sonata_user:
     security_acl: true
     manager_type: orm # can be orm or mongodb

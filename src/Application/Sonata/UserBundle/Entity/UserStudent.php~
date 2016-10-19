@@ -1,0 +1,15 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Ксения
+ * Date: 17.10.2016
+ * Time: 17:25
+ */
+
+namespace Application\Sonata\UserBundle\Entity;
+
+
+class UserStudent extends User
+{
+
+}
