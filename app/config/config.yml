@@ -71,6 +71,7 @@ swiftmailer:
 #
 sonata_admin:
     title: Администратор
+    title_logo: bundles/app/images/logo_title.png
     security:
         handler: sonata.admin.security.handler.role
 
