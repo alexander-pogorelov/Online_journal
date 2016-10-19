@@ -1,0 +1,35 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/admiNow.css') }}" type="text/css" media="all" />
+{% endblock %}
+
+{% block logo %}
+    {% spaceless %}
+		<div id="u5" class="ax_image">
+			<a class="logo" href="{{ path('sonata_admin_dashboard') }}">
+				<img src="{{ asset('bundles/app/images/logo_title.png') }}" alt="{{ sonata_admin.adminPool.title }}">
+			</a>
+			<img id="u5_img" class="img" src="{{ asset('bundles/app/images/u23.png') }}">
+		</div>
+                        <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
+                            {% if 'single_text' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
+                                <span>{{ sonata_admin.adminPool.title }}</span>
+                            {% endif %}
+                        </a>
+                    {% endspaceless %}
+                {% endblock %}
+
+{% block sonata_breadcrumb %}
+	
+	<div style="position: absolute; line-height: 50px; width: 100%; text-align: center;">
+  					<span>Администратор</span>
+	</div>
+{{ parent() }}
+					
+{% endblock sonata_breadcrumb %}
+				
+{% block side_bar_after_nav %}
+YOUR CUSTOM MENU
+{% endblock %}
