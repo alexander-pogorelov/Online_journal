@@ -1,0 +1,36 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/admiNow.css') }}" type="text/css" media="all" />
+{% endblock %}
+
+{% block logo %}
+    {% spaceless %}
+		<div id="u5" class="ax_image">
+			<a class="logo" href="{{ path('sonata_admin_dashboard') }}">
+				<img src="{{ asset('bundles/app/images/logo_title.png') }}" alt="{{ sonata_admin.adminPool.title }}">
+			</a>
+			
+			<div id="u29" class="ax_default heading_1">
+        		<div id="u30" class="text">
+					<p><span>Образовательный центр Парка высоких технологий</span></p>
+				</div>
+			</div>
+			<img id="u5_img" class="img" src="{{ asset('bundles/app/images/u23-3.png') }}" style="float: right;">
+		</div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block sonata_breadcrumb %}
+	
+	<div style="position: absolute; line-height: 50px; width: 100%; text-align: center;">
+		<span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">Электронный дневник</span>
+	</div>
+{{ parent() }}
+					
+{% endblock sonata_breadcrumb %}
+				
+{% block side_bar_after_nav %}
+YOUR CUSTOM MENU
+{% endblock %}
