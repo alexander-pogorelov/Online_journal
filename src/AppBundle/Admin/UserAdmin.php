@@ -7,11 +7,10 @@
  */
 
 namespace AppBundle\Admin;
-
-use Sonata\AdminBundle\Datagrid\ListMapper;
-
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\UserBundle\Admin\Model\UserAdmin as BaseUserAdmin;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
+
 
 
 class UserAdmin extends BaseUserAdmin

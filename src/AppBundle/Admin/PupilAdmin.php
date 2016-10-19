@@ -77,7 +77,7 @@ class PupilAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Учащийся', array('class' => 'col-md-5'))->end()
-            ->with('Родители', array('class' => 'col-md-5'))->end()
+            ->with('Родители', array('class' => 'col-md-7'))->end()
         ;
 
         $formMapper
@@ -108,19 +108,26 @@ class PupilAdmin extends AbstractAdmin
             ->end()
 
             ->with('Родители')
-            ->add('parents')
-            /*
-                ->add('parents', null, [
-                    'label'=>'Родственники ученика:',
-                    'required' => false
-                ])*/
-            /*->add('parents', 'sonata_type_model_list', array(
-            ), array(
-                'placeholder' => 'No parents selected'
-            ))*/
+                ->add('parents', 'sonata_type_collection', array(
+                    'type_options' => array(
+                        // Prevents the "Delete" option from being displayed
+                        'delete' => false,
+                        'delete_options' => array(
+                            // You may otherwise choose to put the field but hide it
+                            'type'         => 'hidden',
+                            // In that case, you need to fill in the options as well
+                            'type_options' => array(
+                                'mapped'   => true,
+                                'required' => true,
+                            )
+                        )
+                    )
+                ), array(
+                    //'edit' => 'inline',
+                    'inline' => 'table',
+                    'sortable' => 'position',
+                ))
             ->end()
-
-
         ;
     }
 
