@@ -15,9 +15,9 @@
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
-        <field name="patronymic" type="string" length="100" />
-        <field name="address" type="string" length="200" />
-        <field name="comment" type="text" />
+        <field name="patronymic" type="string" length="100" nullable="true" unique="false" />
+        <field name="address" type="string" length="200" nullable="true" unique="false" />
+        <field name="comment" type="text" nullable="true" unique="false" />
 
     </entity>
 

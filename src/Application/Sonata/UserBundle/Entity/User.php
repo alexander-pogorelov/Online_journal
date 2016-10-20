@@ -47,7 +47,7 @@ abstract class User extends BaseUser
     }
     public function __toString()
     {
-        $string = $this->getFirstname().' '.$this->getLastname();
+        $string = $this->getFirstname().' '.$this->getLastname().' '.$this->getPatronymic();
         if (!$string) {
             $string = $this->getUsername();
         }
@@ -126,5 +126,10 @@ abstract class User extends BaseUser
     public function getComment()
     {
         return $this->comment;
+    }
+
+    public function getFullName()
+    {
+        return $this->getLastname().' '.$this->getFirstname().' '.$this->getPatronymic() ;
     }
 }

@@ -10,7 +10,7 @@ namespace AppBundle\DataFixtures\ORM\LoadUsers;
 
 
 use Application\Sonata\UserBundle\Entity\UserTeacher;
-use Application\Sonata\UserBundle\Entity\UserStudent;
+use Application\Sonata\UserBundle\Entity\UserMetodist;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -25,7 +25,7 @@ class LoadUsers implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         // TODO: Implement load() method.
-        $user1 = new UserStudent();
+        $user1 = new UserMetodist();
         $user1->setFirstname('Ivan');
         $user1->setLastname('Ivanov');
         $user1->setUsername('Ivan');
