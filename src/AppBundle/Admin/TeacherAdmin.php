@@ -13,6 +13,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 
 class TeacherAdmin extends AbstractAdmin
@@ -91,10 +93,10 @@ class TeacherAdmin extends AbstractAdmin
                 ->add('firstname', 'text', ['label'=>'Имя'])
                 ->add('patronymic', 'text', ['label'=>'Отчество'])
                 ->add('speciality', 'text', ['label'=>'Специальность'])
-                ->add('dateOfBirth', 'data',[
+                ->add('dateOfBirth', DateType::class, array(
+                    'widget' => 'choice',
                     'label'=>'Дата рождения',
-                    'format' => 'd M Y'
-                ])
+                ))
                 ->add('phone', 'text', ['label'=>'Телефон'])
                 ->add('address', 'text', ['label'=>'Адрес'])
             ->end()
@@ -104,9 +106,18 @@ class TeacherAdmin extends AbstractAdmin
             'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
         ))
                 ->add('email')
-                ->add('workDays', 'text', ['label'=>'Дни работы'])
-                ->add('workHours', 'text', ['label'=>'Часы работы'])
-                ->add('comment', 'text', ['label'=>'Комментарий'])
+                ->add('workDays', 'text', [
+                    'label'=>'Дни работы',
+                    'required' => false
+                ])
+                ->add('workHours', 'text', [
+                    'label'=>'Часы работы',
+                    'required' => false
+                ])
+                ->add('comment', TextareaType::class, [
+                    'label'=>'Примечание',
+                    'required' => false
+                ])
             ->end()
         ;
     }
