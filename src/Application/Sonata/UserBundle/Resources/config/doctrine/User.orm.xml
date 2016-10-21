@@ -9,7 +9,7 @@
         <discriminator-map>
             <discriminator-mapping value="-1" class="UserEmployee" />
             <discriminator-mapping value="0" class="UserAdmin" />
-            <discriminator-mapping value="1" class="UserMetodist" />
+            <discriminator-mapping value="4" class="UserMetodist" />
             <discriminator-mapping value="2" class="UserTeacher" />
         </discriminator-map>
 
