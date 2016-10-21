@@ -11,20 +11,37 @@ namespace Application\Sonata\UserBundle\Entity;
 
 class UserPupil extends User
 {
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $parents;
-
-
-    //protected $id;
-
     public function __construct()
     {
         parent::__construct();
         $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $parents;
+    /**
+     * @var
+     */
+    private $classNumber;
+    /**
+     * @return mixed
+     */
+    public function getClassNumber()
+    {
+        return $this->classNumber;
+    }
+    public function getClassNumberString()
+    {
+        return $this->classNumber ? $this->classNumber.'-й класс' : '';
+    }
+    /**
+     * @param mixed $classNumber
+     */
+    public function setClassNumber($classNumber)
+    {
+        $this->classNumber = $classNumber;
+    }
 
     public function addParent($parent)
     {

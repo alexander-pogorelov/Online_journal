@@ -14,6 +14,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\CollectionTypeTest;
@@ -52,7 +53,10 @@ class PupilAdmin extends AbstractAdmin
                 'format' => 'd M Y'
             ])
             ->add('phone', 'text', ['label'=>'Телефон'])
-            //->add('email', 'text', ['label'=>'E-Mail'])
+            ->add('email', 'text', ['label'=>'E-Mail'])
+            ->add('classNumberString', null, [
+                'label'=>'Класс'
+            ])
             ->addIdentifier('parents', CollectionType::class, [
                 'label'=>'Ф.И.О. родителя'
             ])
@@ -73,7 +77,11 @@ class PupilAdmin extends AbstractAdmin
     }
 
     protected function configureFormFields(FormMapper $formMapper) {
-        //$now = new \DateTime();
+        $now = new \DateTime();
+        $classNumberArray = [];
+        for ($i=1; $i<=11; $i++) {
+            $classNumberArray[$i.'-й класс'] = $i;
+        }
 
         $formMapper
             ->with('Учащийся', array('class' => 'col-md-5'))->end()
@@ -89,13 +97,25 @@ class PupilAdmin extends AbstractAdmin
                     'required' => false
                 ])
                 ->add('dateOfBirth', 'date', [
+                    //'years' => range(1900, $now->format('Y')),
+                    'widget' => 'choice',
                     'label'=>'Дата, месяц, год рождения',
-                    'format' => 'dd MM yyyy'
+                    'format' => 'dd MMMM yyyy',
+                    //'choice_translation_domain' => false,
+                    'years' => range(1900, $now->format('Y')),
+                    //'locale' => 'ru',
+                    //'choice_translation_domain' => 'messages',
                 ])
                 ->add('email', 'text', [
                     'label'=>'E-Mail',
                     'required' => false
                 ])
+            ->add('classNumber', 'choice', [
+                'choices' => $classNumberArray,
+                'choices_as_values' => true,
+                'label'=>'Класс',
+                'required' => false
+            ])
                 ->add('phone', 'text', [
                     'label'=>'Телефон',
                     'required' => false

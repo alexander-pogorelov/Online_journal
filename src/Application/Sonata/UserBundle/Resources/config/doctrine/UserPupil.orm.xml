@@ -5,7 +5,7 @@
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity name="Application\Sonata\UserBundle\Entity\UserPupil">
-
+        <field name="classNumber" column="class_mumber" type="integer" nullable="true" unique="false" />
         <many-to-many field="parents" target-entity="Application\Sonata\UserBundle\Entity\UserParent">
             <cascade>
                 <cascade-all/>
@@ -19,6 +19,7 @@
                 </inverse-join-columns>
             </join-table>
         </many-to-many>
+
     </entity>
 
 </doctrine-mapping>
