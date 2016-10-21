@@ -71,7 +71,8 @@ class UserPupil extends User
             return $parent->getPhone();
         }, $this->getParents()->toArray());
 
-        return implode(', ', $parentsPhones);
+        //return implode(', ', $parentsPhones);
+        return $this->arrayToString($parentsPhones);
     }
     public function getParentsEmailes()
     {
@@ -80,6 +81,27 @@ class UserPupil extends User
         }, $this->getParents()->toArray());
 
         return implode(', ', $parentsEmailes);
+    }
+    public function getParentsRelationships()
+    {
+        $parentsRelationships = array_map(function (UserParent $parent) {
+            return $parent->getRelationshipString();
+        }, $this->getParents()->toArray());
+
+        //return implode(', ', $parentsRelationships);
+        return $this->arrayToString($parentsRelationships);
+    }
+    private function arrayToString($inputArray)
+    {   $arrayToString = '';
+        foreach ($inputArray as $item)
+        {
+            if($item) {
+                $arrayToString = $arrayToString.', '.$item;
+            }else {
+                $arrayToString = $arrayToString.', нет данных';
+            }
+        }
+        return ltrim($arrayToString, ', ');
     }
 
 }

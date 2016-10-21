@@ -60,6 +60,9 @@ class PupilAdmin extends AbstractAdmin
             ->addIdentifier('parents', CollectionType::class, [
                 'label'=>'Ф.И.О. родителя'
             ])
+            ->add('parentsRelationships', null, [
+                'label'=>'Родство'
+            ])
             ->add('parentsPhones', null, [
                 'label'=>'Тел. родителя'
             ])

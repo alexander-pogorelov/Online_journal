@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Admin;
+use Application\Sonata\UserBundle\Entity\UserParent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 //use Sonata\UserBundle\Admin\Model\UserAdmin as BaseUserAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -63,10 +64,16 @@ class ParentAdmin extends AbstractAdmin
                     'label'=>'Отчество',
                     'required' => false
                 ])
-            ->add('phone', 'text', [
-                'label'=>'Телефон',
-                'required' => false
-            ])
+                ->add('relationship', 'choice', [
+                    'choices' => UserParent::$relationshipArray,
+                    'choices_as_values' => true,
+                    'label'=>'Родство',
+                    'required' => false
+                ])
+                ->add('phone', 'text', [
+                    'label'=>'Телефон',
+                    'required' => false
+                ])
             ->end()
             ->with('General')
                 ->add('username')
