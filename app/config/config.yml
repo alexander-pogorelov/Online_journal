@@ -10,7 +10,7 @@ parameters:
 
 framework:
     #esi:             ~
-    translator: { fallbacks: [ru] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -70,8 +70,14 @@ swiftmailer:
     spool:     { type: memory }
 #
 sonata_admin:
+    title: Администратор
+    title_logo: bundles/app/images/logo_title.png
     security:
         handler: sonata.admin.security.handler.role
+
+    templates:
+        layout: AppBundle::standard_layout.html.twig
+
 sonata_user:
     security_acl: true
     manager_type: orm # can be orm or mongodb
