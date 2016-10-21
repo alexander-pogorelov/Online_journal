@@ -25,29 +25,67 @@ use Sonata\UserBundle\Entity\BaseUser as BaseUser;
  */
 abstract class User extends BaseUser
 {
+    // TODO: Константы класса
+    // TODO: добавить свойства: отчество, адрес, комментарий
+
     /**
      * @var int $id
      */
-    protected $id;
+    //protected $id;
 
+    /**
+     * @var
+     */
     protected $patronymic;
+
+    /**
+     * @var
+     */
+    protected $comment;
+
 
     protected $address;
 
-    protected $comment;
+    /**
+     * @return mixed
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
 
     /**
-     * Get id
-     *
-     * @return int $id
+     * @param mixed $comment
      */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    }
+    /**
+     * @return mixed
+     */
+    public function getPatronymic()
+    {
+        return $this->patronymic;
+    }
+
+    /**
+     * @param mixed $patronymic
+     */
+    public function setPatronymic($patronymic)
+    {
+        $this->patronymic = $patronymic;
+    }
+
     public function getId()
     {
         return $this->id;
     }
+
     public function __toString()
     {
-        $string = $this->getFirstname().' '.$this->getLastname().' '.$this->getPatronymic();
+        $string = $this->getLastname().' '.$this->getFirstname().' '.$this->getPatronymic();
+        //$string = $this->getLastname();
         if (!$string) {
             $string = $this->getUsername();
         }
@@ -55,31 +93,6 @@ abstract class User extends BaseUser
         //return $string ?: '';
         return $string;
     }
-
-    /**
-     * Set patronymic
-     *
-     * @param string $patronymic
-     *
-     * @return User
-     */
-    public function setPatronymic($patronymic)
-    {
-        $this->patronymic = $patronymic;
-
-        return $this;
-    }
-
-    /**
-     * Get patronymic
-     *
-     * @return string
-     */
-    public function getPatronymic()
-    {
-        return $this->patronymic;
-    }
-
     /**
      * Set address
      *
@@ -104,29 +117,6 @@ abstract class User extends BaseUser
         return $this->address;
     }
 
-    /**
-     * Set comment
-     *
-     * @param string $comment
-     *
-     * @return User
-     */
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Get comment
-     *
-     * @return string
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
 
     public function getFullName()
     {
