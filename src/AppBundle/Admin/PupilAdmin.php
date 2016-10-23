@@ -39,47 +39,50 @@ class PupilAdmin extends AbstractAdmin
 
 
     protected function configureListFields(ListMapper $listMapper) {
-
+        $headerAttr = ['header_style' => 'text-align: center'];
         $listMapper
             ->addIdentifier('fullName', 'text', [
                 'label'=>'Ф.И.О. ученика',
-                'class' => 'col-md-1'
-            ])
+            ]+ $headerAttr)
             //->add('firstname', 'text', ['label'=>'Имя'])
             //->add('patronymic', 'text', ['label'=>'Отчество'])
-            ->add('_group_', 'text', ['label'=>'Группа'])
+            ->add('_group_', 'text', ['label'=>'Группа']+ $headerAttr)
             ->add('dateOfBirth', 'date', [
                 'label'=>'Дата рождения',
                 'format' => 'd M Y'
-            ])
-            ->add('phone', 'text', ['label'=>'Телефон'])
-            ->add('email', 'text', ['label'=>'E-Mail'])
+            ]+ $headerAttr)
+            ->add('phone', 'text', ['label'=>'Телефон']+ $headerAttr)
+            //->add('email', 'text', ['label'=>'E-Mail']+ $headerAttr)
             ->add('classNumberString', null, [
-                'label'=>'Класс'
-            ])
+                'label'=>'Класс',
+                'row_align' => 'center'
+            ]+ $headerAttr)
             ->addIdentifier('parents', CollectionType::class, [
                 'label'=>'Ф.И.О. родителя'
-            ])
+            ]+ $headerAttr)
             ->add('parentsRelationships', null, [
                 'label'=>'Родство'
-            ])
+            ]+ $headerAttr)
             ->add('parentsPhones', null, [
                 'label'=>'Тел. родителя'
-            ])
+            ]+ $headerAttr)
             ->add('parentsEmailes', null, [
                 'label'=>'E-mail родителя'
-            ])
+            ]+ $headerAttr)
             //->add('Application/Sonata/UserBundle/Entity/UserParent.Firstname')
             /*->add('parents', null, [
                 'associated_property' => 'Firstname'
             ])*/
-            ->add('comment', 'text', ['label'=>'Комментарий'])
+            ->add('comment', 'text', [
+                'label'=>'Комментарий',
+            ] + $headerAttr)
             //->add('enabled', 'boolean')
             //->add('locked', 'boolean')
         ;
     }
 
     protected function configureFormFields(FormMapper $formMapper) {
+
         $now = new \DateTime();
         $classNumberArray = [];
         for ($i=1; $i<=11; $i++) {
@@ -90,7 +93,6 @@ class PupilAdmin extends AbstractAdmin
             ->with('Учащийся', array('class' => 'col-md-5'))->end()
             ->with('Родители', array('class' => 'col-md-7'))->end()
         ;
-
         $formMapper
             ->with('Учащийся')
                 ->add('lastname', 'text', ['label'=>'Фамилия'])
@@ -100,7 +102,6 @@ class PupilAdmin extends AbstractAdmin
                     'required' => false
                 ])
                 ->add('dateOfBirth', 'date', [
-                    //'years' => range(1900, $now->format('Y')),
                     'widget' => 'choice',
                     'label'=>'Дата, месяц, год рождения',
                     'format' => 'dd MMMM yyyy',
@@ -129,10 +130,14 @@ class PupilAdmin extends AbstractAdmin
                     //'readonly' => 'readonly'
                 ])
             ->end()
-
             ->with('Родители')
-                ->add('parents', 'sonata_type_model', array('multiple' => true, 'by_reference' => false))
+                ->add('parents', 'sonata_type_model', [
+                    'multiple' => true,
+                    'by_reference' => false,
+                    //'required' => true
+                ])
             ->end()
+
         ;
     }
 

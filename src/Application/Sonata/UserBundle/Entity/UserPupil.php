@@ -33,7 +33,7 @@ class UserPupil extends User
     }
     public function getClassNumberString()
     {
-        return $this->classNumber ? $this->classNumber.'-й класс' : '';
+        return $this->classNumber ? $this->classNumber.'-й класс' : 'нет данных';
     }
     /**
      * @param mixed $classNumber
