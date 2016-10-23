@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Admin;
+use Application\Sonata\UserBundle\Entity\UserParent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 //use Sonata\UserBundle\Admin\Model\UserAdmin as BaseUserAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -29,11 +30,23 @@ class ParentAdmin extends AbstractAdmin
             ->addIdentifier('fullName', 'text', [
                 'label'=>'Ф.И.О. родителя',
             ])
-            ->add('email')
-            ->add('phone')
-            ->add('enabled', null, array('editable' => true))
-            ->add('locked', null, array('editable' => true))
-            ->add('createdAt')
+            ->add('email', null, [
+                'label'=>'E-mail',
+            ])
+            ->add('phone', null, [
+                'label'=>'Телефон',
+            ])
+            ->add('enabled', null, [
+                'editable' => true,
+                'label'=>'Активен',
+            ])
+            ->add('locked', null, [
+                'editable' => true,
+                'label'=>'Заблокирован',
+            ])
+            ->add('createdAt', null, [
+                'label'=>'Дата создания',
+            ])
         ;
     }
     protected function configureFormFields(FormMapper $formMapper) {
@@ -51,10 +64,16 @@ class ParentAdmin extends AbstractAdmin
                     'label'=>'Отчество',
                     'required' => false
                 ])
-            ->add('phone', 'text', [
-                'label'=>'Телефон',
-                'required' => false
-            ])
+                ->add('relationship', 'choice', [
+                    'choices' => UserParent::$relationshipArray,
+                    'choices_as_values' => true,
+                    'label'=>'Родство',
+                    'required' => false
+                ])
+                ->add('phone', 'text', [
+                    'label'=>'Телефон',
+                    'required' => false
+                ])
             ->end()
             ->with('General')
                 ->add('username')
