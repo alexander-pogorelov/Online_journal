@@ -47,7 +47,7 @@ class LoadUsers implements FixtureInterface
         $user3->setUsername('Vanya');
         $user3->setPlainPassword('vanya');
         $user3->setEmail('vanya@gmail.com');
-        $user3->setRoles(['ROLE_PARENT']);
+        $user3->setRoles(['ROLE_METODIST']);
         $user3->setEnabled(true);
 
         $manager->persist($user3);
