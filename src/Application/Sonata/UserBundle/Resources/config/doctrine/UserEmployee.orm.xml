@@ -4,8 +4,10 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Application\Sonata\UserBundle\Entity\UserParent">
-        <field name="relationship" column="relationship" type="integer" nullable="true" unique="false" />
+    <entity name="Application\Sonata\UserBundle\Entity\UserEmployee">
+        <field name="speciality" type="string" length="200" nullable="true" unique="false" />
+        <field name="workDays" type="string" length="200" nullable="true" unique="false" />
+        <field name="workHours" type="string" length="200" nullable="true" unique="false" />
     </entity>
 
 </doctrine-mapping>

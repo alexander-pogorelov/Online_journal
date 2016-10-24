@@ -25,67 +25,29 @@ use Sonata\UserBundle\Entity\BaseUser as BaseUser;
  */
 abstract class User extends BaseUser
 {
-    // TODO: Константы класса
-    // TODO: добавить свойства: отчество, адрес, комментарий
-
     /**
      * @var int $id
      */
-    //protected $id;
+    protected $id;
 
-    /**
-     * @var
-     */
     protected $patronymic;
-
-    /**
-     * @var
-     */
-    protected $comment;
-
 
     protected $address;
 
-    /**
-     * @return mixed
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
+    protected $comment;
 
     /**
-     * @param mixed $comment
+     * Get id
+     *
+     * @return int $id
      */
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-    }
-    /**
-     * @return mixed
-     */
-    public function getPatronymic()
-    {
-        return $this->patronymic;
-    }
-
-    /**
-     * @param mixed $patronymic
-     */
-    public function setPatronymic($patronymic)
-    {
-        $this->patronymic = $patronymic;
-    }
-
     public function getId()
     {
         return $this->id;
     }
-
     public function __toString()
     {
-        $string = $this->getLastname().' '.$this->getFirstname().' '.$this->getPatronymic();
-        //$string = $this->getLastname();
+        $string = $this->getFirstname().' '.$this->getLastname();
         if (!$string) {
             $string = $this->getUsername();
         }
@@ -93,6 +55,31 @@ abstract class User extends BaseUser
         //return $string ?: '';
         return $string;
     }
+
+    /**
+     * Set patronymic
+     *
+     * @param string $patronymic
+     *
+     * @return User
+     */
+    public function setPatronymic($patronymic)
+    {
+        $this->patronymic = $patronymic;
+
+        return $this;
+    }
+
+    /**
+     * Get patronymic
+     *
+     * @return string
+     */
+    public function getPatronymic()
+    {
+        return $this->patronymic;
+    }
+
     /**
      * Set address
      *
@@ -117,9 +104,27 @@ abstract class User extends BaseUser
         return $this->address;
     }
 
-
-    public function getFullName()
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     *
+     * @return User
+     */
+    public function setComment($comment)
     {
-        return $this->getLastname().' '.$this->getFirstname().' '.$this->getPatronymic() ;
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 }

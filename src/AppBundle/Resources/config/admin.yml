@@ -1,0 +1,17 @@
+services:
+     admin.teacher:
+          class: AppBundle\Admin\TeacherAdmin
+          arguments: [~, Application\Sonata\UserBundle\Entity\UserTeacher, ~]
+          tags:
+             - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Преподаватели }
+          calls:
+             - [ setTranslationDomain, [AppBundle]]
+             - [ setTemplate, [list, AppBundle:TeacherAdmin:base_list.html.twig]]
+     admin.metodist:
+                class: AppBundle\Admin\MetodistAdmin
+                arguments: [~, Application\Sonata\UserBundle\Entity\UserMetodist, ~]
+                tags:
+                   - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Методисты }
+                calls:
+                   - [ setTranslationDomain, [AppBundle]]
+                   - [ setTemplate, [list, AppBundle:MetodistAdmin:base_list.html.twig]]

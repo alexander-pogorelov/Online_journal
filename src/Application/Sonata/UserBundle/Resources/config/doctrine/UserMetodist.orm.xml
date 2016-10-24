@@ -4,8 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Application\Sonata\UserBundle\Entity\UserParent">
-        <field name="relationship" column="relationship" type="integer" nullable="true" unique="false" />
+    <entity name="Application\Sonata\UserBundle\Entity\UserMetodist">
     </entity>
 
 </doctrine-mapping>
