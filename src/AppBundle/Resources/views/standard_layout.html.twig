@@ -25,12 +25,18 @@
 {% block sonata_breadcrumb %}
 	
 	<div style="position: absolute; line-height: 50px; width: 100%; text-align: center;">
-		<span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">Электронный дневник</span>
+	{% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+		<span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">АДМИНИСТРАТОР</span>
+	{% endif %}
+	
+	{% if app.security.token and is_granted('ROLE_TEACHER') %}
+			<span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">ПРЕПОДАВАТЕЛЬ</span>
+	{% endif %}
 	</div>
 {{ parent() }}
 					
 {% endblock sonata_breadcrumb %}
 				
 {% block side_bar_after_nav %}
-YOUR CUSTOM MENU
+<!-- YOUR CUSTOM MENU -->
 {% endblock %}

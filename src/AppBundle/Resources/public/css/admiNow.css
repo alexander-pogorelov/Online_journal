@@ -1,3 +1,8 @@
+.skin-black .treeview-menu > li.active > a, .skin-black .treeview-menu > li > a:hover {
+    color: #8a2020;
+    font-weight: 700;
+}
+
 .main-header > .navbar {
     margin-left: 0px;
 }
