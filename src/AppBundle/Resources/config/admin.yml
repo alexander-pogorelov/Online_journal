@@ -8,10 +8,17 @@ services:
              - [ setTranslationDomain, [AppBundle]]
              - [ setTemplate, [list, AppBundle:TeacherAdmin:base_list.html.twig]]
      admin.metodist:
-                class: AppBundle\Admin\MetodistAdmin
-                arguments: [~, Application\Sonata\UserBundle\Entity\UserMetodist, ~]
-                tags:
-                   - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Методисты }
-                calls:
-                   - [ setTranslationDomain, [AppBundle]]
-                   - [ setTemplate, [list, AppBundle:MetodistAdmin:base_list.html.twig]]
+           class: AppBundle\Admin\MetodistAdmin
+           arguments: [~, Application\Sonata\UserBundle\Entity\UserMetodist, ~]
+           tags:
+              - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Методисты }
+           calls:
+              - [ setTranslationDomain, [AppBundle]]
+              - [ setTemplate, [list, AppBundle:MetodistAdmin:base_list.html.twig]]
+     admin.subject:
+            class: AppBundle\Admin\SubjectAdmin
+            arguments: [~, Application\Sonata\UserBundle\Entity\Subject, ~]
+            tags:
+               - { name: sonata.admin, manager_type: orm, group: Предметы, label: Предметы }
+            calls:
+               - [ setTranslationDomain, [AppBundle]]

@@ -9,7 +9,7 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 
-abstract class UserEmployee extends User
+class UserEmployee extends User
 {
     protected $speciality;
 

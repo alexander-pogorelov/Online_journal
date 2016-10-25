@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 
 
 class TeacherAdmin extends AbstractAdmin
@@ -24,15 +25,44 @@ class TeacherAdmin extends AbstractAdmin
     protected $baseRoutePattern = 'teacher';
 
 
+    public function prePersist($object)
+    {
+        $object->setRealRoles(['ROLE_TEACHER']);
+    }
+
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->addIdentifier('fullName', 'text', [
-                'label'=>'Ф.И.О. Преподователя',
+                'label'=>'Ф.И.О. Преподавателя',
                 'class' => 'col-md-1'
             ])
-            ->add('email')
-            ->add('phone', 'text', ['label'=>'Телефон'])
+            ->add('speciality', 'text', [
+                'label'=>'Специальность'
+            ])
+            ->addIdentifier('subjects', CollectionType::class, [
+                'label'=>'Предмет'
+            ])
+            ->add('workDays', 'text', [
+                'label'=>'Дни работы'
+            ])
+            ->add('workHours', 'text', [
+                'label'=>'Часы работы'
+            ])
+            ->add('email', 'text', [
+                'label'=>'Email'
+            ])
+            ->add('phone', 'text', [
+                'label'=>'Телефон'
+            ])
+            ->add('dateOfBirth', null, [
+                'label'=>'Дата рождения',
+                'format' => 'd M Y'
+            ])
+            ->add('comment', null, [
+                'label'=>'Примечание'
+            ])
         ;
     }
 
@@ -42,20 +72,24 @@ class TeacherAdmin extends AbstractAdmin
             ->add('lastname', null, [
                 'label'=>'Фамилия'
             ])
-            ->add('email')
-            ->add('phone', null, [
-                'label'=>'Телефон'
-            ])
             ->add('speciality', null, [
-                'label'=>'Специальность'
+            'label'=>'Специальность'
             ])
+            ->add('subjects', null, [
+                'label'=>'Предмет'
+            ])
+            ->add('phone', null, [
+            'label'=>'Телефон'
+            ])
+            ->add('email')
             ->add('workDays', null, [
-                'label'=>'Дни работы'
+            'label'=>'Дни работы'
             ])
             ->add('workHours', null, [
-                'label'=>'Часы работы'
+            'label'=>'Часы работы'
             ])
-        ;
+
+    ;
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
@@ -96,6 +130,8 @@ class TeacherAdmin extends AbstractAdmin
                 ->add('dateOfBirth', DateType::class, array(
                     'widget' => 'choice',
                     'label'=>'Дата рождения',
+                    'format' => 'dd MMMM yyyy',
+                    'years' => range(1900, $now->format('Y')),
                 ))
                 ->add('phone', 'text', ['label'=>'Телефон'])
                 ->add('address', 'text', ['label'=>'Адрес'])
@@ -106,6 +142,11 @@ class TeacherAdmin extends AbstractAdmin
             'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
         ))
                 ->add('email')
+                ->add('subjects', 'sonata_type_model', [
+                    'multiple' => true,
+                    'by_reference' => false,
+                    'label'=>'Предмет',
+                ])
                 ->add('workDays', 'text', [
                     'label'=>'Дни работы',
                     'required' => false
