@@ -9,7 +9,6 @@
 namespace AppBundle\Admin;
 use Application\Sonata\UserBundle\Entity\UserPupil;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-//use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -22,9 +21,8 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\CollectionTypeTest;
 class PupilAdmin extends AbstractAdmin
 
 {
-    // TODO: наследование от AbstractAdmin или от UserAdmin????
-    protected $baseRouteName = 'pupil-route-admin'; //admin_vendor_bundlename_adminclassname
-    protected $baseRoutePattern = 'pupil'; //unique-route-pattern
+    protected $baseRouteName = 'pupil-route-admin';
+    protected $baseRoutePattern = 'pupil';
 
     public function prePersist($object)
     {

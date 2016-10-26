@@ -71,7 +71,6 @@ class UserPupil extends User
             return $parent->getPhone();
         }, $this->getParents()->toArray());
 
-        //return implode(', ', $parentsPhones);
         return $this->arrayToString($parentsPhones);
     }
     public function getParentsEmailes()
@@ -88,7 +87,6 @@ class UserPupil extends User
             return $parent->getRelationshipString();
         }, $this->getParents()->toArray());
 
-        //return implode(', ', $parentsRelationships);
         return $this->arrayToString($parentsRelationships);
     }
     private function arrayToString($inputArray)

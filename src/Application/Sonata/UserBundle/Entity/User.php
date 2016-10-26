@@ -25,13 +25,6 @@ use Sonata\UserBundle\Entity\BaseUser as BaseUser;
  */
 abstract class User extends BaseUser
 {
-    // TODO: Константы класса
-    // TODO: добавить свойства: отчество, адрес, комментарий
-
-    /**
-     * @var int $id
-     */
-    //protected $id;
 
     /**
      * @var
