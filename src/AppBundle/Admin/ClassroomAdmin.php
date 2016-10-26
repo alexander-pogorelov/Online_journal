@@ -16,16 +16,16 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class AuditoriAdmin extends AbstractAdmin
+class ClassroomAdmin extends AbstractAdmin
 {
     // Создание списка аудиторий из базы данных
-    protected function configureListFields(ListMapper $listAuditori)
+    protected function configureListFields(ListMapper $listClassroom)
     {
         // Описывается каждое отображаемое поле из entity/Auditori.php
-        $listAuditori
+        $listClassroom
             ->addIdentifier('id',null, ['label'=>'№'])
-            ->add('nomer',null, ['label'=>'Номер аудитории'])
-            ->add('vmestimost',null, ['label'=>'Вместимость'])
+            ->add('number',null, ['label'=>'Номер аудитории'])
+            ->add('capacity',null, ['label'=>'Вместимость'])
             ->add('description',null, ['label'=>'Описание'])
             ->add('_action', 'actions', [ // Добавление команд в list
                 'label'=>'Действие',
@@ -38,12 +38,12 @@ class AuditoriAdmin extends AbstractAdmin
     }
 
     // Создание формы для добавления и редактирования
-    protected function configureFormFields(FormMapper $formAuditori)
+    protected function configureFormFields(FormMapper $formClassroom)
     {
-        $formAuditori
+        $formClassroom
             ->with('Добавить аудитории')
-                ->add('nomer',null, ['label'=>'Номер аудитории'])
-                ->add('vmestimost',null, ['label'=>'Вместимость'])
+                ->add('number',null, ['label'=>'Номер аудитории'])
+                ->add('capacity',null, ['label'=>'Вместимость'])
                 ->add('description',null, ['label'=>'Описание'])
             ->end();
     }
@@ -53,8 +53,8 @@ class AuditoriAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id',null, ['label'=>'№'])
-            ->add('nomer',null, ['label'=>'Номер аудитории'])
-            ->add('vmestimost',null, ['label'=>'Вместимость'])
+            ->add('number',null, ['label'=>'Номер аудитории'])
+            ->add('capacity',null, ['label'=>'Вместимость'])
             ->add('description',null, ['label'=>'Описание']);
     }
 }

@@ -3,9 +3,9 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 /**
- * Auditori
+ * Classroom
  */
-class Auditori
+class Classroom
 {
     /**
      * @var int
@@ -15,12 +15,12 @@ class Auditori
     /**
      * @var int
      */
-    private $nomer;
+    private $number;
 
     /**
      * @var int
      */
-    private $vmestimost;
+    private $capacity;
 
     /**
      * @var string
@@ -39,51 +39,51 @@ class Auditori
     }
 
     /**
-     * Set nomer
+     * Set number
      *
-     * @param integer $nomer
+     * @param integer $number
      *
-     * @return Auditori
+     * @return Classroom
      */
-    public function setNomer($nomer)
+    public function setNumber($number)
     {
-        $this->nomer = $nomer;
+        $this->number = $number;
 
         return $this;
     }
 
     /**
-     * Get nomer
+     * Get number
      *
      * @return int
      */
-    public function getNomer()
+    public function getNumber()
     {
-        return $this->nomer;
+        return $this->number;
     }
 
     /**
-     * Set vmestimost
+     * Set capacity
      *
-     * @param integer $vmestimost
+     * @param integer $capacity
      *
-     * @return Auditori
+     * @return Classroom
      */
-    public function setVmestimost($vmestimost)
+    public function setCapacity($capacity)
     {
-        $this->vmestimost = $vmestimost;
+        $this->capacity = $capacity;
 
         return $this;
     }
 
     /**
-     * Get vmestimost
+     * Get capacity
      *
      * @return int
      */
-    public function getVmestimost()
+    public function getCapacity()
     {
-        return $this->vmestimost;
+        return $this->capacity;
     }
 
     /**
@@ -91,7 +91,7 @@ class Auditori
      *
      * @param string $description
      *
-     * @return Auditori
+     * @return Classroom
      */
     public function setDescription($description)
     {
