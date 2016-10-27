@@ -9,8 +9,7 @@
 
         <one-to-many field="pupilGroupAssociations" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociations" mapped-by="pupil" >
             <cascade>
-                <cascade-persist/>
-                <cascade-remove/>
+                <cascade-all/>
             </cascade>
         </one-to-many>
 
