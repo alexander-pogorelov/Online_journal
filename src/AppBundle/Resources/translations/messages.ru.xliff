@@ -14,6 +14,10 @@
                 <source>User Metodist List</source>
                 <target>Сотрудники</target>
             </trans-unit>
+            <trans-unit id="Classroom_List">
+                <source>Classroom List</source>
+                <target>Аудитории</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

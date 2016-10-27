@@ -15,3 +15,10 @@ services:
                 calls:
                    - [ setTranslationDomain, [AppBundle]]
                    - [ setTemplate, [list, AppBundle:MetodistAdmin:base_list.html.twig]]
+     admin.classroom:
+                class: AppBundle\Admin\ClassroomAdmin
+                arguments: [~, Application\Sonata\UserBundle\Entity\Classroom, ~]
+                tags:
+                   - { name: sonata.admin, manager_type: orm, group: Аудитории , on_top: true }
+                calls:
+                   - [ setTemplate, [list, AppBundle:ClassroomAdmin:classroom_list.html.twig]]
