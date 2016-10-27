@@ -9,13 +9,19 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class UserPupil extends User
 {
     public function __construct()
     {
         parent::__construct();
-        $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parents = new ArrayCollection();
+        $this->pupilGroupAssociations = new ArrayCollection();
     }
+    protected $pupilGroupAssociations;
+
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
@@ -24,6 +30,24 @@ class UserPupil extends User
      * @var
      */
     private $classNumber;
+
+    public function addPupilGroupAssociations(PupilGroupAssociations $pupilGroupAssociations)
+    {
+        $this->pupilGroupAssociations->add($pupilGroupAssociations);
+        return $this;
+    }
+    public function removePupilGroupAssociations(PupilGroupAssociations $pupilGroupAssociations)
+    {
+        $this->pupilGroupAssociations->removeElement($pupilGroupAssociations);
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getPupilGroupAssociations()
+    {
+        return $this->pupilGroupAssociations;
+    }
+
     /**
      * @return mixed
      */
@@ -57,7 +81,6 @@ class UserPupil extends User
     {
         $this->parents = $parents;
     }
-
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
@@ -71,7 +94,6 @@ class UserPupil extends User
             return $parent->getPhone();
         }, $this->getParents()->toArray());
 
-        //return implode(', ', $parentsPhones);
         return $this->arrayToString($parentsPhones);
     }
     public function getParentsEmailes()
@@ -88,7 +110,6 @@ class UserPupil extends User
             return $parent->getRelationshipString();
         }, $this->getParents()->toArray());
 
-        //return implode(', ', $parentsRelationships);
         return $this->arrayToString($parentsRelationships);
     }
     private function arrayToString($inputArray)
