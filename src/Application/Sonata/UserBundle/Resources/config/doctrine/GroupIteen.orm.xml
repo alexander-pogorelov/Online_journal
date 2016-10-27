@@ -12,7 +12,10 @@
         <field name="note" column="note" type="string" nullable="true" unique="false" />
 
         <one-to-many field="pupilGroupAssociations" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociations" mapped-by="group" >
-
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
         </one-to-many>
 
     </entity>

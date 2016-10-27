@@ -8,7 +8,10 @@
         <field name="classNumber" column="class_mumber" type="integer" nullable="true" unique="false" />
 
         <one-to-many field="pupilGroupAssociations" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociations" mapped-by="pupil" >
-
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
         </one-to-many>
 
         <many-to-many field="parents" target-entity="Application\Sonata\UserBundle\Entity\UserParent">
