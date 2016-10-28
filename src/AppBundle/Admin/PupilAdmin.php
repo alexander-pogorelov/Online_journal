@@ -46,7 +46,7 @@ class PupilAdmin extends AbstractAdmin
             ]+ $headerAttr)
             //->add('firstname', 'text', ['label'=>'Имя'])
             //->add('patronymic', 'text', ['label'=>'Отчество'])
-            ->add('_group_', 'text', ['label'=>'Группа']+ $headerAttr)
+            ->add('groupsIteen', 'text', ['label'=>'Группа']+ $headerAttr)
             ->add('dateOfBirth', 'date', [
                 'label'=>'Дата рождения',
                 'format' => 'd M Y'

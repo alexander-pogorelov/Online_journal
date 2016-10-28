@@ -88,6 +88,16 @@ class UserPupil extends User
     {
         return $this->parents;
     }
+
+    public function getGroupsIteen()
+    {
+        $groupsArray = array_map(function (PupilGroupAssociations $pupilGroupAssociations) {
+            return $pupilGroupAssociations->getGroup();
+        }, $this->pupilGroupAssociations->toArray());
+
+        return implode(', ', $groupsArray);
+    }
+
     public function getParentsPhones()
     {
         $parentsPhones = array_map(function (UserParent $parent) {

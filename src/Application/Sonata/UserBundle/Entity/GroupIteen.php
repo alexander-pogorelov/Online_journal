@@ -26,6 +26,16 @@ class GroupIteen
 
     protected $pupilGroupAssociations;
 
+    public function getPupils()
+    {
+        $pupilsArray = array_map(function (PupilGroupAssociations $pupilGroupAssociations) {
+            return $pupilGroupAssociations->getPupil();
+        }, $this->pupilGroupAssociations->toArray());
+
+        return implode(', ', $pupilsArray);
+    }
+
+
     /**
      * @return ArrayCollection
      */
@@ -83,6 +93,14 @@ class GroupIteen
     public function setNote($note)
     {
         $this->note = $note;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getGroupName();
     }
 
 }
