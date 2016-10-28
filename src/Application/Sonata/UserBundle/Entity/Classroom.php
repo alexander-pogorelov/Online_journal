@@ -59,7 +59,9 @@ class Classroom
      */
     public function getNumber()
     {
+        // file_put_contents('errot.txt',"\t".$this->number,FILE_APPEND);
         return $this->number;
+
     }
 
     /**

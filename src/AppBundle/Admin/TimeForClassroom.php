@@ -16,17 +16,17 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class ClassroomAdmin extends AbstractAdmin
+class TimeForClassroom extends AbstractAdmin
 {
-    // Создание списка аудиторий из базы данных
+    // Создание списка времени из базы данных
     protected function configureListFields(ListMapper $listClassroom)
     {
         // Описывается каждое отображаемое поле из entity/Auditori.php
         $listClassroom
             ->addIdentifier('id',null, ['label'=>'№'])
-            ->add('number',null, ['label'=>'Номер аудитории'])
-            ->add('capacity',null, ['label'=>'Вместимость'])
-            ->add('description',null, ['label'=>'Описание'])
+            ->add('title',null, ['label'=>'Название'])
+            ->add('startTime',null, ['label'=>'Начало занятий'])
+            ->add('endTime',null, ['label'=>'Конец занятий'])
             ->add('_action', 'actions', [ // Добавление команд в list
                 'label'=>'Действие',
                 'actions' => [
@@ -42,13 +42,15 @@ class ClassroomAdmin extends AbstractAdmin
     {
         $formClassroom
             ->with('Добавить аудитории')
-                ->add('number',null, ['label'=>'Номер аудитории',
-                    'attr' => ['style' => 'width:100px;']])
-                ->add('capacity',null, ['label'=>'Вместимость',
-                    'attr' => ['style' => 'width:100px;']])
-                ->add('description',null, ['label'=>'Описание',
-                    'attr' => ['style' => 'width:300px;']])
+                ->add('title',null, ['label'=>'Название'])
+                ->add('startTime',null, ['label'=>'Начало занятий'])
+                ->add('endTime',null, ['label'=>'Конец занятий'])
+                ->setHelps(array(
+                    'title' => 'Пример: 1 пара, 2-я пара и т.д',
+                    'startTime' => 'Время начала занятий',
+                    'endTime' => 'Время окончания занятий'))
             ->end();
+        // file_put_contents('errot.txt',"\t\n",FILE_APPEND);
     }
 
     // Создание формы для просмотра
@@ -56,8 +58,8 @@ class ClassroomAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id',null, ['label'=>'№'])
-            ->add('number',null, ['label'=>'Номер аудитории'])
-            ->add('capacity',null, ['label'=>'Вместимость'])
-            ->add('description',null, ['label'=>'Описание']);
+            ->add('title',null, ['label'=>'Название'])
+            ->add('startTime',null, ['label'=>'Начало занятий'])
+            ->add('endTime',null, ['label'=>'Конец занятий']);
     }
 }
