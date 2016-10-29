@@ -32,10 +32,18 @@ class GroupIteen
             return $pupilGroupAssociations->getPupil();
         }, $this->pupilGroupAssociations->toArray());
 
-        return implode(', ', $pupilsArray);
+        return $pupilsArray;
     }
 
-
+    public function getPupilsString()
+    {
+        return implode(', ', $this->getPupils());
+    }
+    public function getPupilsAmount()
+    {
+        $pupilsAmount = count($this->getPupils());
+        return $pupilsAmount ? $pupilsAmount : '';
+    }
     /**
      * @return ArrayCollection
      */
@@ -102,5 +110,7 @@ class GroupIteen
     {
         return $this->getGroupName();
     }
+
+
 
 }

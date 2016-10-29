@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Admin;
+use Application\Sonata\UserBundle\Entity\PupilGroupAssociations;
 use Application\Sonata\UserBundle\Entity\UserPupil;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 //use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
@@ -16,6 +17,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\CollectionTypeTest;
 
@@ -44,15 +46,12 @@ class PupilAdmin extends AbstractAdmin
             ->addIdentifier('fullName', 'text', [
                 'label'=>'Ф.И.О. ученика',
             ]+ $headerAttr)
-            //->add('firstname', 'text', ['label'=>'Имя'])
-            //->add('patronymic', 'text', ['label'=>'Отчество'])
             ->add('groupsIteen', 'text', ['label'=>'Группа']+ $headerAttr)
             ->add('dateOfBirth', 'date', [
                 'label'=>'Дата рождения',
                 'format' => 'd M Y'
             ]+ $headerAttr)
             ->add('phone', 'text', ['label'=>'Телефон']+ $headerAttr)
-            //->add('email', 'text', ['label'=>'E-Mail']+ $headerAttr)
             ->add('classNumberString', null, [
                 'label'=>'Класс',
                 'row_align' => 'center'
@@ -69,15 +68,9 @@ class PupilAdmin extends AbstractAdmin
             ->add('parentsEmailes', null, [
                 'label'=>'E-mail родителя'
             ]+ $headerAttr)
-            //->add('Application/Sonata/UserBundle/Entity/UserParent.Firstname')
-            /*->add('parents', null, [
-                'associated_property' => 'Firstname'
-            ])*/
             ->add('comment', 'text', [
                 'label'=>'Комментарий',
             ] + $headerAttr)
-            //->add('enabled', 'boolean')
-            //->add('locked', 'boolean')
         ;
     }
 
@@ -92,6 +85,7 @@ class PupilAdmin extends AbstractAdmin
         $formMapper
             ->with('Учащийся', array('class' => 'col-md-5'))->end()
             ->with('Родители', array('class' => 'col-md-7'))->end()
+            ->with('Группы', array('class' => 'col-md-7'))->end()
         ;
         $formMapper
             ->with('Учащийся')
@@ -107,8 +101,6 @@ class PupilAdmin extends AbstractAdmin
                     'format' => 'dd MMMM yyyy',
                     //'choice_translation_domain' => false,
                     'years' => range(1900, $now->format('Y')),
-                    //'locale' => 'ru',
-                    //'choice_translation_domain' => 'messages',
                 ])
                 ->add('email', 'text', [
                     'label'=>'E-Mail',
@@ -127,16 +119,33 @@ class PupilAdmin extends AbstractAdmin
                 ->add('comment', TextareaType::class, [
                     'label'=>'Комментарий',
                     'required' => false,
-                    //'readonly' => 'readonly'
                 ])
             ->end()
             ->with('Родители')
                 ->add('parents', 'sonata_type_model', [
                     'multiple' => true,
                     'by_reference' => false,
-                    //'required' => true
                 ])
             ->end()
+            ->with('Группы')
+            /*
+
+            ->add('pupilGroupAssociations', 'sonata_type_model', [
+                'multiple' => true,
+                'by_reference' => false,
+            ])
+            */
+            ->add('groupsIteen', 'text', ['label'=>'Группы'])
+            /*
+            ->add('pupilGroupAssociations', EntityType::class, [
+                'class' => 'ApplicationSonataUserBundle:PupilGroupAssociations',
+                'choice_label' => 'groupName',
+                'multiple' => true,
+                'expanded' => true,
+            ])
+             */
+            ->end()
+
 
         ;
     }

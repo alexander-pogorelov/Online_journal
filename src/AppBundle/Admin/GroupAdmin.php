@@ -10,6 +10,7 @@ namespace AppBundle\Admin;
 
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -24,9 +25,11 @@ class GroupAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('groupName', 'text', [
                 'label'=>'Группа',
+                'row_align' => 'center'
             ])
             ->add('pupilsAmount', null, [
                 'label'=>'Кол-во учеников',
+                'row_align' => 'center'
             ])
             ->add('_subject_array_', null, [
                 'label'=>'Предметы',
@@ -35,10 +38,14 @@ class GroupAdmin extends AbstractAdmin
                 'label'=>'Преподаватели',
             ])
 
-            ->add('pupils', 'sonata_type_model', [
+            ->add('pupilsString', null, [
                 'multiple' => true,
                 'by_reference' => false,
-                //'required' => true
+            ])
+            ->add('_action', null, [
+                'actions' => [
+                    'show' => [],
+                ]
             ])
 
         ;
@@ -65,6 +72,19 @@ class GroupAdmin extends AbstractAdmin
             */
             ->end()
         ;
+    }
+
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
+        $id = $this->getSubject()->getId();
+        $groupRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository('ApplicationSonataUserBundle:GroupIteen');
+        $group = $groupRepository->find($id);
+        $showMapper
+            ->with($group->getGroupName())
+                //->add($group->getPupils(), null, [])
+            ->end()
+        ;
+
     }
 
 }
