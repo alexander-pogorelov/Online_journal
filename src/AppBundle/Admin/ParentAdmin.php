@@ -19,6 +19,24 @@ class ParentAdmin extends AbstractAdmin
     protected $baseRouteName = 'parent-route-admin'; //admin_vendor_bundlename_adminclassname
     protected $baseRoutePattern = 'parent'; //unique-route-pattern
 
+    public function create($object)
+    {
+        parent::create($object);
+
+        $tokenGenerator = $this->getConfigurationPool()->getContainer()->get('fos_user.util.token_generator');
+        $password = substr($tokenGenerator->generateToken(), 0, 8);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Данные для авторизации')
+            ->setFrom('testiteen@gmail.com')
+            ->setTo($object->getEmail())
+            ->setBody('Здравствуйте,'.$object->getFirstname().
+                ' Ваш логин:'.$object->getEmail().
+                ' Ваш пароль:'.$password)
+        ;
+        $this->getConfigurationPool()->getContainer()->get('mailer')->send($message);
+    }
+
     public function prePersist($object)
     {
         $object->setRealRoles(['ROLE_PARENT']);

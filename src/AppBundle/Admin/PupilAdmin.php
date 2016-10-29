@@ -158,6 +158,4 @@ class PupilAdmin extends AbstractAdmin
             ])
         ;
     }
-
-
 }

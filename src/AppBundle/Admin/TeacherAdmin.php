@@ -24,6 +24,19 @@ class TeacherAdmin extends AbstractAdmin
 
     protected $baseRoutePattern = 'teacher';
 
+    public function create($object)
+    {
+        parent::create($object);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Hello Email')
+            ->setFrom('testiteen@gmail.com')
+            ->setTo('kachinskiy.i@gmail.com')
+            ->setBody('Hello')
+        ;
+        $this->getConfigurationPool()->getContainer()->get('mailer')->send($message);
+    }
+
 
     public function prePersist($object)
     {
