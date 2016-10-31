@@ -7,14 +7,15 @@
  */
 
 namespace AppBundle\Admin;
-use Application\Sonata\UserBundle\Entity\PupilGroupAssociations;
+use Application\Sonata\UserBundle\Entity\PupilGroupAssociation;
 use Application\Sonata\UserBundle\Entity\UserPupil;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-//use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -128,25 +129,46 @@ class PupilAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Группы')
-            /*
-
-            ->add('pupilGroupAssociations', 'sonata_type_model', [
-                'multiple' => true,
-                'by_reference' => false,
-            ])
-            */
-            ->add('groupsIteen', 'text', ['label'=>'Группы'])
-            /*
-            ->add('pupilGroupAssociations', EntityType::class, [
-                'class' => 'ApplicationSonataUserBundle:PupilGroupAssociations',
-                'choice_label' => 'groupName',
-                'multiple' => true,
-                'expanded' => true,
-            ])
-             */
+                // добавляем в поле pupilGroupAssociation все группы из БД
+                ->add('pupilGroupAssociation', 'entity' , [
+                    'label' => 'Группы',
+                    'multiple' => true,
+                    'by_reference' => false,
+                    'class' => 'Application\Sonata\UserBundle\Entity\GroupIteen'
+                ])
             ->end()
-
-
+        ;
+        // получаем текущего ученика
+        $pupil = $this->getSubject();
+        // модифицируем поле pupilGroupAssociation
+        $formMapper
+            ->get('pupilGroupAssociation')
+            ->addModelTransformer(new CallbackTransformer(
+                // трансформация данных от сущности PupilGroupAssociation в форму
+                function ($associations) {
+                    // если ученик не связан ни с одной группой - возвращаем null
+                    if (!$associations) {
+                        return null;
+                    }
+                    // иначе возвращаем массив связанных с учеником групп
+                    $groupsArray = array_map(function (PupilGroupAssociation $pupilGroupAssociation) {
+                        return $pupilGroupAssociation->getGroup();
+                        }, $associations->toArray()
+                    );
+                    return $groupsArray;
+                },
+                // обратная трансформация данных от формы в сущность PupilGroupAssociation (получение связанных с учеником групп)
+                // наследование переменной $pupil из родительской области видимости
+                function($groups) use ($pupil) {
+                    $associations = new ArrayCollection();
+                    foreach ($groups as $group) {
+                        // создаем новые связи ученика с группами
+                        $associations->add(new PupilGroupAssociation($pupil, $group));
+                    }
+                    // возвращаем новые или измененные связи для персиста в сущность PupilGroupAssociation
+                    return $associations;
+                }
+            ))
         ;
     }
 

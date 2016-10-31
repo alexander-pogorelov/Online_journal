@@ -126,6 +126,7 @@ class UserPupil extends User
 
         return $this->arrayToString($parentsRelationships);
     }
+
     private function arrayToString($inputArray)
     {   $arrayToString = '';
         foreach ($inputArray as $item)
