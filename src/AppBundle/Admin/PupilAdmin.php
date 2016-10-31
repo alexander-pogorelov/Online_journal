@@ -160,12 +160,23 @@ class PupilAdmin extends AbstractAdmin
                 // обратная трансформация данных от формы в сущность PupilGroupAssociation (получение связанных с учеником групп)
                 // наследование переменной $pupil из родительской области видимости
                 function($groups) use ($pupil) {
+                    // создаем коллекцию связей
                     $associations = new ArrayCollection();
+                    // проверяем наличие уже существующих связей
+                    foreach ($pupil->getPupilGroupAssociation() as $oldAssociation) {
+                        $group = $oldAssociation->getGroup();
+                        if ($groups->contains($group)) {
+                            // добавляем в коллекцию старые связи
+                            $associations->add($oldAssociation);
+                            // удаляем уже добавленную группу из массива групп из формы
+                            $groups->removeElement($group);
+                        }
+                    }
                     foreach ($groups as $group) {
-                        // создаем новые связи ученика с группами
+                        // добавляем новые связи ученика с группами
                         $associations->add(new PupilGroupAssociation($pupil, $group));
                     }
-                    // возвращаем новые или измененные связи для персиста в сущность PupilGroupAssociation
+
                     return $associations;
                 }
             ))
