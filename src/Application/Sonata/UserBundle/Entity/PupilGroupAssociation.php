@@ -17,6 +17,12 @@ class PupilGroupAssociation
 
     private $group;
 
+    public function __construct(UserPupil $pupil, GroupIteen $group)
+    {
+        $this->pupil = $pupil;
+        $this->group = $group;
+    }
+
     /**
      * @return mixed
      */

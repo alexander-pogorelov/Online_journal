@@ -47,6 +47,10 @@ class UserPupil extends User
     {
         return $this->pupilGroupAssociation;
     }
+    public function setPupilGroupAssociation(PupilGroupAssociation $pupilGroupAssociation)
+    {
+        $this->pupilGroupAssociation = $pupilGroupAssociation;
+    }
 
     /**
      * @return mixed

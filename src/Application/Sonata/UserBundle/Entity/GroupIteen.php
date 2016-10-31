@@ -51,6 +51,11 @@ class GroupIteen
     {
         return $this->pupilGroupAssociation;
     }
+    public function setPupilGroupAssociation(PupilGroupAssociation $pupilGroupAssociation)
+    {
+        $this->pupilGroupAssociation = $pupilGroupAssociation;
+    }
+
 
     public function addPupilGroupAssociation(PupilGroupAssociation $pupilGroupAssociation)
     {
