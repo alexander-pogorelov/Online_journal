@@ -7,9 +7,9 @@
     <entity name="Application\Sonata\UserBundle\Entity\UserPupil">
         <field name="classNumber" column="class_mumber" type="integer" nullable="true" unique="false" />
 
-        <one-to-many field="pupilGroupAssociation" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociation" mapped-by="pupil" >
+        <one-to-many field="pupilGroupAssociation" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociation" mapped-by="pupil" orphan-removal="true">
             <cascade>
-                <cascade-all/>
+                <cascade-persist/>
             </cascade>
         </one-to-many>
 

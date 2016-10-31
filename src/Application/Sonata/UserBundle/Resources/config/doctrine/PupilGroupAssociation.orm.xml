@@ -9,15 +9,9 @@
             <generator strategy="AUTO" />
         </id>
         <many-to-one field="pupil" target-entity="Application\Sonata\UserBundle\Entity\UserPupil" inversed-by="pupilGroupAssociation">
-            <cascade>
-                <cascade-all/>
-            </cascade>
             <join-column name="pupil_id" referenced-column-name="id" nullable="false"/>
         </many-to-one>
         <many-to-one field="group" target-entity="Application\Sonata\UserBundle\Entity\GroupIteen" inversed-by="pupilGroupAssociation">
-            <cascade>
-                <cascade-all/>
-            </cascade>
             <join-column name="group_id" referenced-column-name="id" nullable="false"/>
         </many-to-one>
     </entity>
