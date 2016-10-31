@@ -15,7 +15,7 @@ class GroupIteen
 {
     public function __construct()
     {
-        $this->pupilGroupAssociations = new ArrayCollection();
+        $this->pupilGroupAssociation = new ArrayCollection();
     }
 
     private $id;
@@ -24,13 +24,13 @@ class GroupIteen
 
     private $note;
 
-    protected $pupilGroupAssociations;
+    protected $pupilGroupAssociation;
 
     public function getPupils()
     {
-        $pupilsArray = array_map(function (PupilGroupAssociations $pupilGroupAssociations) {
-            return $pupilGroupAssociations->getPupil();
-        }, $this->pupilGroupAssociations->toArray());
+        $pupilsArray = array_map(function (PupilGroupAssociation $pupilGroupAssociation) {
+            return $pupilGroupAssociation->getPupil();
+        }, $this->pupilGroupAssociation->toArray());
 
         return $pupilsArray;
     }
@@ -47,20 +47,20 @@ class GroupIteen
     /**
      * @return ArrayCollection
      */
-    public function getPupilGroupAssociations()
+    public function getPupilGroupAssociation()
     {
-        return $this->pupilGroupAssociations;
+        return $this->pupilGroupAssociation;
     }
 
-    public function addPupilGroupAssociations(PupilGroupAssociations $pupilGroupAssociations)
+    public function addPupilGroupAssociation(PupilGroupAssociation $pupilGroupAssociation)
     {
-        $this->pupilGroupAssociations->add($pupilGroupAssociations);
+        $this->pupilGroupAssociation->add($pupilGroupAssociation);
         return $this;
     }
 
-    public function removePupilGroupAssociations(PupilGroupAssociations $pupilGroupAssociations)
+    public function removePupilGroupAssociation(PupilGroupAssociation $pupilGroupAssociation)
     {
-        $this->pupilGroupAssociations->removeElement($pupilGroupAssociations);
+        $this->pupilGroupAssociation->removeElement($pupilGroupAssociation);
     }
 
     /**

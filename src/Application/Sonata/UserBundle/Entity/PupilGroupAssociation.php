@@ -9,7 +9,7 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 
-class PupilGroupAssociations
+class PupilGroupAssociation
 {
     private $id;
 

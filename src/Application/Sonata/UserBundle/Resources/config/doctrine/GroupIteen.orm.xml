@@ -11,7 +11,7 @@
         <field name="groupName" column="group_name" type="string" nullable="false" unique="true" />
         <field name="note" column="note" type="string" nullable="true" unique="false" />
 
-        <one-to-many field="pupilGroupAssociations" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociations" mapped-by="group" >
+        <one-to-many field="pupilGroupAssociation" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociation" mapped-by="group" >
             <cascade>
                 <cascade-all/>
             </cascade>

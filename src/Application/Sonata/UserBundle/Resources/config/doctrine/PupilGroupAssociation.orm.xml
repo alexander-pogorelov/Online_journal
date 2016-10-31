@@ -4,17 +4,17 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Application\Sonata\UserBundle\Entity\PupilGroupAssociations" table="pupil_group_associations">
+    <entity name="Application\Sonata\UserBundle\Entity\PupilGroupAssociation" table="pupil_group_association">
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
-        <many-to-one field="pupil" target-entity="Application\Sonata\UserBundle\Entity\UserPupil" inversed-by="pupilGroupAssociations">
+        <many-to-one field="pupil" target-entity="Application\Sonata\UserBundle\Entity\UserPupil" inversed-by="pupilGroupAssociation">
             <cascade>
                 <cascade-all/>
             </cascade>
             <join-column name="pupil_id" referenced-column-name="id" nullable="false"/>
         </many-to-one>
-        <many-to-one field="group" target-entity="Application\Sonata\UserBundle\Entity\GroupIteen" inversed-by="pupilGroupAssociations">
+        <many-to-one field="group" target-entity="Application\Sonata\UserBundle\Entity\GroupIteen" inversed-by="pupilGroupAssociation">
             <cascade>
                 <cascade-all/>
             </cascade>

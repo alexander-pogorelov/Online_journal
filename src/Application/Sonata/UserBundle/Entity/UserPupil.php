@@ -17,9 +17,9 @@ class UserPupil extends User
     {
         parent::__construct();
         $this->parents = new ArrayCollection();
-        $this->pupilGroupAssociations = new ArrayCollection();
+        $this->pupilGroupAssociation = new ArrayCollection();
     }
-    protected $pupilGroupAssociations;
+    protected $pupilGroupAssociation;
 
 
     /**
@@ -31,21 +31,21 @@ class UserPupil extends User
      */
     private $classNumber;
 
-    public function addPupilGroupAssociations(PupilGroupAssociations $pupilGroupAssociations)
+    public function addPupilGroupAssociation(PupilGroupAssociation $pupilGroupAssociation)
     {
-        $this->pupilGroupAssociations->add($pupilGroupAssociations);
+        $this->pupilGroupAssociation->add($pupilGroupAssociation);
         return $this;
     }
-    public function removePupilGroupAssociations(PupilGroupAssociations $pupilGroupAssociations)
+    public function removePupilGroupAssociation(PupilGroupAssociation $pupilGroupAssociation)
     {
-        $this->pupilGroupAssociations->removeElement($pupilGroupAssociations);
+        $this->pupilGroupAssociation->removeElement($pupilGroupAssociation);
     }
     /**
      * @return ArrayCollection
      */
-    public function getPupilGroupAssociations()
+    public function getPupilGroupAssociation()
     {
-        return $this->pupilGroupAssociations;
+        return $this->pupilGroupAssociation;
     }
 
     /**
@@ -91,9 +91,9 @@ class UserPupil extends User
 
     public function getGroupsIteen()
     {
-        $groupsArray = array_map(function (PupilGroupAssociations $pupilGroupAssociations) {
-            return $pupilGroupAssociations->getGroup();
-        }, $this->pupilGroupAssociations->toArray());
+        $groupsArray = array_map(function (PupilGroupAssociation $pupilGroupAssociation) {
+            return $pupilGroupAssociation->getGroup();
+        }, $this->pupilGroupAssociation->toArray());
 
         return implode(', ', $groupsArray);
     }

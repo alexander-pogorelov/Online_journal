@@ -32,8 +32,3 @@ services:
                 arguments: [~, Application\Sonata\UserBundle\Entity\GroupIteen, ~]
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: 'iTeen', label: 'Группы' }
-    app.admin.group_pupil:
-                    class: AppBundle\Admin\PupilGroupAssociationsAdmin
-                    arguments: [~, Application\Sonata\UserBundle\Entity\PupilGroupAssociations, ~]
-                    tags:
-                        - { name: sonata.admin, manager_type: orm }
