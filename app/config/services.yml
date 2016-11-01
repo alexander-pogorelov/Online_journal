@@ -27,3 +27,8 @@ services:
             arguments: [~, Application\Sonata\UserBundle\Entity\UserParent, ~]
             tags:
                 - { name: sonata.admin, manager_type: orm, group: 'iTeen', label: 'Родители' }
+    app.admin.group:
+                class: AppBundle\Admin\GroupAdmin
+                arguments: [~, Application\Sonata\UserBundle\Entity\GroupIteen, ~]
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: 'iTeen', label: 'Группы' }
