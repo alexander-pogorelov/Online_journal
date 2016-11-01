@@ -41,4 +41,3 @@ class UserParent extends User
         $this->relationship = $relationship;
     }
 }
-

@@ -8,6 +8,7 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Subject
 {
@@ -21,115 +22,11 @@ class Subject
 
     protected $comment;
 
-    private $teachers;
+    protected $TeacherSubject;
 
-
-    public function __construct() {
-        $this->teachers = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Subject
-     */
-    public function setName($name)
+    public function __construct()
     {
-        $this->name = $name;
-
-        return $this;
+        $this->TeacherSubject = new ArrayCollection();
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set abbreviation
-     *
-     * @param string $abbreviation
-     *
-     * @return Subject
-     */
-    public function setAbbreviation($abbreviation)
-    {
-        $this->abbreviation = $abbreviation;
-
-        return $this;
-    }
-
-    /**
-     * Get abbreviation
-     *
-     * @return string
-     */
-    public function getAbbreviation()
-    {
-        return $this->abbreviation;
-    }
-
-    /**
-     * Set specialization
-     *
-     * @param string $specialization
-     *
-     * @return Subject
-     */
-    public function setSpecialization($specialization)
-    {
-        $this->specialization = $specialization;
-
-        return $this;
-    }
-
-    /**
-     * Get specialization
-     *
-     * @return string
-     */
-    public function getSpecialization()
-    {
-        return $this->specialization;
-    }
-
-    /**
-     * Set comment
-     *
-     * @param string $comment
-     *
-     * @return Subject
-     */
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Get comment
-     *
-     * @return string
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 }

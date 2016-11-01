@@ -8,6 +8,7 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Subject
 {
@@ -21,16 +22,14 @@ class Subject
 
     protected $comment;
 
-    public function __toString()
-    {
-        $string = $this->getName();
-        if (!$string) {
-            $string = $this->getAbbreviation();
-        }
+    protected $TeacherSubject;
 
-        //return $string ?: '';
-        return $string;
+    public function __construct()
+    {
+        $this->TeacherSubject = new ArrayCollection();
     }
+
+
     /**
      * Set name
      *
@@ -137,4 +136,56 @@ class Subject
         return $this->id;
     }
 
+    /**
+     * Add teacherSubject
+     *
+     * @param \Application\Sonata\UserBundle\Entity\TeacherSubject $teacherSubject
+     *
+     * @return Subject
+     */
+    public function addTeacherSubject(TeacherSubject $teacherSubject)
+    {
+        $this->TeacherSubject->add($teacherSubject);;
+
+        return $this;
+    }
+
+    /**
+     * Remove teacherSubject
+     *
+     * @param \Application\Sonata\UserBundle\Entity\TeacherSubject $teacherSubject
+     */
+    public function removeTeacherSubject(TeacherSubject $teacherSubject)
+    {
+        $this->TeacherSubject->removeElement($teacherSubject);
+    }
+
+    /**
+     * Get teacherSubject
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTeacherSubject()
+    {
+        return $this->TeacherSubject;
+    }
+
+    public function setTeacherSubject(TeacherSubject $teacherSubject)
+    {
+        $this->teacherSubject = $teacherSubject;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    public function getTeachers()
+    {
+        $teachersArray = array_map(function (TeacherSubject $teacherSubject) {
+            return $teacherSubject->getTeacher();
+        }, $this->TeacherSubject->toArray());
+
+        return $teachersArray;
+    }
 }

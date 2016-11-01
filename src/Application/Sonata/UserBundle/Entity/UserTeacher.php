@@ -14,48 +14,63 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 
 class UserTeacher extends UserEmployee
 {
-    private $subjects;
-
+    protected $TeacherSubject;
 
     public function __construct() {
         parent::__construct();
-        $this->subjects = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->TeacherSubject = new ArrayCollection();
     }
 
+
     /**
-     * Add subject
+     * Add teacherSubject
      *
-     * @param \Application\Sonata\UserBundle\Entity\Subject $subject
+     * @param \Application\Sonata\UserBundle\Entity\TeacherSubject $teacherSubject
      *
      * @return UserTeacher
      */
-    public function addSubject(\Application\Sonata\UserBundle\Entity\Subject $subject)
+    public function addTeacherSubject(TeacherSubject $teacherSubject)
     {
-        $this->subjects[] = $subject;
+        $this->TeacherSubject->add($teacherSubject);;
 
         return $this;
     }
 
     /**
-     * Remove subject
+     * Remove teacherSubject
      *
-     * @param \Application\Sonata\UserBundle\Entity\Subject $subject
+     * @param \Application\Sonata\UserBundle\Entity\TeacherSubject $teacherSubject
      */
-    public function removeSubject(\Application\Sonata\UserBundle\Entity\Subject $subject)
+    public function removeTeacherSubject(TeacherSubject $teacherSubject)
     {
-        $this->subjects->removeElement($subject);
+        $this->TeacherSubject->removeElement($teacherSubject);
     }
 
     /**
-     * Get subjects
+     * Get teacherSubject
      *
      * @return \Doctrine\Common\Collections\Collection
      */
+    public function getTeacherSubject()
+    {
+        return $this->TeacherSubject;
+    }
+
+    public function setTeacherSubject(TeacherSubject $teacherSubject)
+    {
+        $this->teacherSubject = $teacherSubject;
+    }
+
     public function getSubjects()
     {
-        return $this->subjects;
+        $subjectArray = array_map(function (TeacherSubject $teacherSubject) {
+            return $teacherSubject->getSubject();
+        }, $this->TeacherSubject->toArray());
+
+        return implode(', ', $subjectArray);
     }
 }

@@ -6,16 +6,11 @@
 
     <entity name="Application\Sonata\UserBundle\Entity\UserTeacher">
 
-        <many-to-many field="subjects" target-entity="Application\Sonata\UserBundle\Entity\Subject">
-            <join-table name="teachers_subjects">
-                <join-columns>
-                    <join-column name="teacher_id" referenced-column-name="id" />
-                </join-columns>
-                <inverse-join-columns>
-                    <join-column name="subject_id" referenced-column-name="id" />
-                </inverse-join-columns>
-            </join-table>
-        </many-to-many>
+        <one-to-many field="TeacherSubject" target-entity="Application\Sonata\UserBundle\Entity\TeacherSubject" mapped-by="teacher" orphan-removal="true">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
     </entity>
 
 </doctrine-mapping>
