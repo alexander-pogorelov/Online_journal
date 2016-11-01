@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="ru" datatype="plaintext" original="SonataAdminBundle.ru.xliff">
+        <body>
+            <trans-unit id="User_Pupil_List">
+                <source>User Pupil List</source>
+                <target>Учащиеся</target>
+            </trans-unit>
+            <trans-unit id="User_Parent_List">
+                <source>User Parent List</source>
+                <target>Родители</target>
+            </trans-unit>
+            <trans-unit id="User_Metodist_List">
+                <source>User Metodist List</source>
+                <target>Сотрудники</target>
+            </trans-unit>
+            <trans-unit id="Classroom_List">
+                <source>Classroom List</source>
+                <target>Аудитории</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -50,7 +50,7 @@ class PupilAdmin extends AbstractAdmin
             ->add('groupsIteen', 'text', ['label'=>'Группа']+ $headerAttr)
             ->add('dateOfBirth', 'date', [
                 'label'=>'Дата рождения',
-                'format' => 'd M Y'
+                'format' => 'd-m-Y'
             ]+ $headerAttr)
             ->add('phone', 'text', ['label'=>'Телефон']+ $headerAttr)
             ->add('classNumberString', null, [
