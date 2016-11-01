@@ -9,13 +9,19 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class UserPupil extends User
 {
     public function __construct()
     {
         parent::__construct();
-        $this->parents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parents = new ArrayCollection();
+        $this->pupilGroupAssociation = new ArrayCollection();
     }
+    protected $pupilGroupAssociation;
+
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
@@ -24,6 +30,28 @@ class UserPupil extends User
      * @var
      */
     private $classNumber;
+
+    public function addPupilGroupAssociation(PupilGroupAssociation $pupilGroupAssociation)
+    {
+        $this->pupilGroupAssociation->add($pupilGroupAssociation);
+        return $this;
+    }
+    public function removePupilGroupAssociation(PupilGroupAssociation $pupilGroupAssociation)
+    {
+        $this->pupilGroupAssociation->removeElement($pupilGroupAssociation);
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getPupilGroupAssociation()
+    {
+        return $this->pupilGroupAssociation;
+    }
+    public function setPupilGroupAssociation(PupilGroupAssociation $pupilGroupAssociation)
+    {
+        $this->pupilGroupAssociation = $pupilGroupAssociation;
+    }
+
     /**
      * @return mixed
      */
@@ -57,7 +85,6 @@ class UserPupil extends User
     {
         $this->parents = $parents;
     }
-
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
@@ -65,13 +92,22 @@ class UserPupil extends User
     {
         return $this->parents;
     }
+
+    public function getGroupsIteen()
+    {
+        $groupsArray = array_map(function (PupilGroupAssociation $pupilGroupAssociation) {
+            return $pupilGroupAssociation->getGroup();
+        }, $this->pupilGroupAssociation->toArray());
+
+        return implode(', ', $groupsArray);
+    }
+
     public function getParentsPhones()
     {
         $parentsPhones = array_map(function (UserParent $parent) {
             return $parent->getPhone();
         }, $this->getParents()->toArray());
 
-        //return implode(', ', $parentsPhones);
         return $this->arrayToString($parentsPhones);
     }
     public function getParentsEmailes()
@@ -88,9 +124,9 @@ class UserPupil extends User
             return $parent->getRelationshipString();
         }, $this->getParents()->toArray());
 
-        //return implode(', ', $parentsRelationships);
         return $this->arrayToString($parentsRelationships);
     }
+
     private function arrayToString($inputArray)
     {   $arrayToString = '';
         foreach ($inputArray as $item)
