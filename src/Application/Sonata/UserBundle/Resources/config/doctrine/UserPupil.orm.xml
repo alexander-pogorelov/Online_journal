@@ -6,6 +6,13 @@
 
     <entity name="Application\Sonata\UserBundle\Entity\UserPupil">
         <field name="classNumber" column="class_mumber" type="integer" nullable="true" unique="false" />
+
+        <one-to-many field="pupilGroupAssociation" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociation" mapped-by="pupil" orphan-removal="true">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+
         <many-to-many field="parents" target-entity="Application\Sonata\UserBundle\Entity\UserParent">
             <cascade>
                 <cascade-all/>
