@@ -14,13 +14,15 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 
 class UserTeacher extends UserEmployee
 {
-    private $subjects;
-
+    protected $TeacherSubject;
 
     public function __construct() {
-        $this->subjects = new \Doctrine\Common\Collections\ArrayCollection();
+        parent::__construct();
+        $this->TeacherSubject = new ArrayCollection();
     }
+
 }

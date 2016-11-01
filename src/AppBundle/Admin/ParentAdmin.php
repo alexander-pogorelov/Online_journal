@@ -78,9 +78,9 @@ class ParentAdmin extends AbstractAdmin
             ->with('General')
                 ->add('username')
                 ->add('email')
-                ->add('plainPassword', 'text', array(
+                /*->add('plainPassword', 'text', array(
                     'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
-                ))
+                ))*/
             ->end()
         ;
     }
