@@ -21,12 +21,12 @@ class ParentAdmin extends AbstractAdmin
 
     public function create($object)
     {
-        parent::create($object);
-
         $tokenGenerator = $this->getConfigurationPool()->getContainer()->get('fos_user.util.token_generator');
         $password = substr($tokenGenerator->generateToken(), 0, 8);
 
         $object->setPlainPassword($password);
+
+        parent::create($object);
 
         $message = \Swift_Message::newInstance()
             ->setSubject('Данные для авторизации')
