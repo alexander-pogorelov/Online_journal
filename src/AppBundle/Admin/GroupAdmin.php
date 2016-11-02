@@ -49,8 +49,10 @@ class GroupAdmin extends AbstractAdmin
                 'by_reference' => false,
             ])
             ->add('_action', null, [
+                'label'=>'Список группы',
                 'actions' => [
-                    'show' => [],
+                    //'show' => [],
+                    'pupils' => ['template' => 'AppBundle:GroupAdmin:pupils_show_button.html.twig']
                 ]
             ])
 
