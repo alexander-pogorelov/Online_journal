@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Ксения
+ * User: Igor Kachinskiy
  * Date: 20.10.2016
  * Time: 12:03
  */

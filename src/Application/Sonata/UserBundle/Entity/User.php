@@ -78,12 +78,10 @@ abstract class User extends BaseUser
     public function __toString()
     {
         $string = $this->getLastname().' '.$this->getFirstname().' '.$this->getPatronymic();
-        //$string = $this->getLastname();
         if (!$string) {
             $string = $this->getUsername();
         }
 
-        //return $string ?: '';
         return $string;
     }
     /**
