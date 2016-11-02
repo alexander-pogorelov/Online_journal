@@ -10,6 +10,7 @@ namespace AppBundle\Admin;
 
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -19,6 +20,11 @@ class GroupAdmin extends AbstractAdmin
 {
     protected $baseRouteName = 'group-route-admin'; //admin_vendor_bundlename_adminclassname
     protected $baseRoutePattern = 'group'; //unique-route-pattern
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('showPupilsInGroup', $this->getRouterIdParameter().'/pupils');
+    }
 
     protected function configureListFields(ListMapper $listMapper)
     {
