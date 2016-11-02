@@ -23,6 +23,9 @@ class CRUDController extends Controller
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
-
+        return $this->render('AppBundle:GroupAdmin:pupils_how.html.twig', [
+            'action'=>'showPupilsInGroup',
+            'object' => $object,
+        ]);
     }
 }
