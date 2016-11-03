@@ -31,9 +31,38 @@ class TeacherAdmin extends AbstractAdmin
 
     protected $baseRoutePattern = 'teacher';
 
+    public function create($object)
+    {
+        $tokenGenerator = $this->getConfigurationPool()->getContainer()->get('fos_user.util.token_generator');
+        $password = substr($tokenGenerator->generateToken(), 0, 8);
+
+        $object->setPlainPassword($password);
+
+        parent::create($object);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Данные для авторизации')
+            ->setFrom('testiteen@gmail.com')
+            ->setTo($object->getEmail())
+            ->setContentType("text/html")
+            ->setBody('<html>' .
+                '<head></head>' .
+                '<body>' .
+                'Ваш аккаунт был успешно создан в система «Электронный журнал» МА ОЦ ПВТ.' .'<br>' .
+                'Ваш логин: ' . $object->getEmail(). '<br>' .
+                'Ваш пароль: ' .$password. '<br>' .
+                'Для активации аккаунта перейдите по ссылке: ' .
+                '</body>' .
+                '</html>'
+            )
+        ;
+        $this->getConfigurationPool()->getContainer()->get('mailer')->send($message);
+    }
+
     public function prePersist($object)
     {
         $object->setRealRoles(['ROLE_TEACHER']);
+        $object->setEnabled(true);
     }
 
 
@@ -81,9 +110,9 @@ class TeacherAdmin extends AbstractAdmin
             ->add('speciality', null, [
             'label'=>'Специальность'
             ])
-            /*->add('TeacherSubject', null, [
+            ->add('TeacherSubject.subject', null, [
                 'label'=>'Предмет'
-            ])*/
+            ])
             ->add('phone', null, [
             'label'=>'Телефон'
             ])
@@ -144,9 +173,6 @@ class TeacherAdmin extends AbstractAdmin
             ->end()
             ->with('Work')
                 ->add('username')
-                ->add('plainPassword', 'text', array(
-            'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
-        ))
                 ->add('email')
                 ->add('TeacherSubject', 'entity', [
                     'multiple' => true,

@@ -24,10 +24,38 @@ class MetodistAdmin extends AbstractAdmin
 
     protected $baseRoutePattern = 'metodist';
 
+    public function create($object)
+    {
+        $tokenGenerator = $this->getConfigurationPool()->getContainer()->get('fos_user.util.token_generator');
+        $password = substr($tokenGenerator->generateToken(), 0, 8);
+
+        $object->setPlainPassword($password);
+
+        parent::create($object);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Данные для авторизации')
+            ->setFrom('testiteen@gmail.com')
+            ->setTo($object->getEmail())
+            ->setContentType("text/html")
+            ->setBody('<html>' .
+                '<head></head>' .
+                '<body>' .
+                'Ваш аккаунт был успешно создан в система «Электронный журнал» МА ОЦ ПВТ.' .'<br>' .
+                'Ваш логин: ' . $object->getEmail(). '<br>' .
+                'Ваш пароль: ' .$password. '<br>' .
+                'Для активации аккаунта перейдите по ссылке: ' .
+                '</body>' .
+                '</html>'
+            )
+        ;
+        $this->getConfigurationPool()->getContainer()->get('mailer')->send($message);
+    }
 
     public function prePersist($object)
     {
         $object->setRealRoles(['ROLE_METODIST']);
+        $object->setEnabled(true);
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -37,11 +65,21 @@ class MetodistAdmin extends AbstractAdmin
                 'label'=>'Ф.И.О. Методиста',
                 'class' => 'col-md-1'
             ])
+            ->add('speciality', 'text', [
+                'label'=>'Специальность'
+            ])
             ->add('email', 'text', [
                 'label'=>'Email'
             ])
             ->add('phone', 'text', [
                 'label'=>'Телефон'
+            ])
+            ->add('dateOfBirth', null, [
+                'label'=>'Дата рождения',
+                'format' => 'd M Y'
+            ])
+            ->add('comment', null, [
+                'label'=>'Примечание'
             ])
         ;
     }

@@ -21,29 +21,28 @@ class ParentAdmin extends AbstractAdmin
 
     public function create($object)
     {
-        parent::create($object);
-
         $tokenGenerator = $this->getConfigurationPool()->getContainer()->get('fos_user.util.token_generator');
         $password = substr($tokenGenerator->generateToken(), 0, 8);
 
         $object->setPlainPassword($password);
 
+        parent::create($object);
+
         $message = \Swift_Message::newInstance()
             ->setSubject('Данные для авторизации')
             ->setFrom('testiteen@gmail.com')
             ->setTo($object->getEmail())
+            ->setContentType("text/html")
             ->setBody('<html>' .
                 '<head></head>' .
                 '<body>' .
-                '<p>' .
-                'Ваш аккаунт был успешно создан в система «Электронный журнал» МА ОЦ ПВТ.
-                 Ваш логин:' .$object->getEmail().
-                'Ваш пароль:' .$password.
-                'Для активации аккаунта перейдите по ссылке:' .
-                '</p>' .
+                'Ваш аккаунт был успешно создан в система «Электронный журнал» МА ОЦ ПВТ.' .'<br>' .
+                'Ваш логин: ' . $object->getEmail(). '<br>' .
+                'Ваш пароль: ' .$password. '<br>' .
+                'Для активации аккаунта перейдите по ссылке: ' .
                 '</body>' .
-                '</html>',
-                'text/html')
+                '</html>'
+                )
         ;
         $this->getConfigurationPool()->getContainer()->get('mailer')->send($message);
     }
@@ -107,9 +106,6 @@ class ParentAdmin extends AbstractAdmin
             ->with('General')
                 ->add('username')
                 ->add('email')
-                ->add('plainPassword', 'text', array(
-                    'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
-                ))
             ->end()
         ;
     }
