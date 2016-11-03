@@ -5,6 +5,7 @@
       <unique-constraint name="date_classroom_UNIQUE" columns="date_classroom"/>
       <unique-constraint name="time_classroom_UNIQUE" columns="time_classroom"/>
       <unique-constraint name="date_UNIQUE" columns="date"/>
+
     </unique-constraints>
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
