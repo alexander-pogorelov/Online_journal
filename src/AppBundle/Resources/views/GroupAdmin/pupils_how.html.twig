@@ -2,5 +2,7 @@
 
 {% block show %}
     {{ parent() }}
-    
+    {{ dump(object) }}
+    {{ dump(pupilGroupAssociations) }}
+    {{ dump(pupilsObjects) }}
 {% endblock %}

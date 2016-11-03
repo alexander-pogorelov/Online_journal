@@ -23,9 +23,34 @@ class CRUDController extends Controller
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+
+        $pupilGroupAssociations = $repository->findBy([
+            'group' => $id
+        ]);
+        $pupilsObjects = [];
+        foreach ($pupilGroupAssociations as $pupilGroupAssociation) {
+            $pupilsObjects[] = $pupilGroupAssociation->getPupil();
+        }
+        //$pupilsIdList = ltrim($pupilsIdList, ', ');
+        //$pupilsInGroup = $query->getResult();
+
+        $this->admin->checkAccess('show', $object);
+
+        $preResponse = $this->preShow($request, $object);
+        if ($preResponse !== null) {
+            return $preResponse;
+        }
+
+        $this->admin->setSubject($object);
+
+
         return $this->render('AppBundle:GroupAdmin:pupils_how.html.twig', [
             'action'=>'showPupilsInGroup',
             'object' => $object,
+            'pupilGroupAssociations' => $pupilGroupAssociations,
+            'pupilsObjects' => $pupilsObjects,
+            'elements' => $this->admin->getShow(),
         ]);
     }
 }
