@@ -44,7 +44,7 @@ class CRUDController extends Controller
         $this->admin->setSubject($object);
 
 
-        return $this->render('AppBundle:GroupAdmin:pupils_how.html.twig', [
+        return $this->render('AppBundle:GroupAdmin:pupils_show.html.twig', [
             'action'=>'showPupilsInGroup',
             'object' => $object,
             'pupilsObjects' => $pupilsObjects,

@@ -43,19 +43,13 @@ class GroupAdmin extends AbstractAdmin
             ->add('_teacher_array_', null, [
                 'label'=>'Преподаватели',
             ])
-
-            ->add('pupilsString', null, [
-                'multiple' => true,
-                'by_reference' => false,
-            ])
             ->add('_action', null, [
                 'label'=>'Список группы',
+                'row_align' => 'center',
                 'actions' => [
-                    //'show' => [],
                     'pupils' => ['template' => 'AppBundle:GroupAdmin:pupils_show_button.html.twig']
                 ]
             ])
-
         ;
     }
 
@@ -63,21 +57,15 @@ class GroupAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Группа', array('class' => 'col-md-5'))->end()
-            ->with('Ученики', array('class' => 'col-md-5'))->end()
+            ->with('Предметы', array('class' => 'col-md-5'))->end()
         ;
         $formMapper
             ->with('Группа')
             ->add('groupName', 'text', ['label'=>'Название группы'])
             ->add('note', TextareaType::class, ['label'=>'Примечание'])
             ->end()
-            ->with('Ученики')
-            /*
-            ->add('pupils', 'sonata_type_model', [
-                'multiple' => true,
-                'by_reference' => false,
-                //'required' => true
-            ])
-            */
+            ->with('Предметы')
+
             ->end()
         ;
     }

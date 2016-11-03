@@ -1,0 +1,28 @@
+{% block list_table %}
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-primary" >
+            <div class="box-body ">
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    {% block table_header %}
+                        <thead>
+                            <tr class="sonata-ba-list-field-header">
+
+                                    <th class="sonata-ba-list-field-header-{{ field_description.type}}">
+
+                                        {{ field_description.label|trans({}, field_description.translationDomain) }}
+
+                                    </th>
+
+                            </tr>
+                        </thead>
+                    {% endblock %}
+                    {% block table_body %}
+                        <tbody>
+                            {% include admin.getTemplate('outer_list_rows_' ~ admin.getListMode()) %}
+                        </tbody>
+                    {% endblock %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
