@@ -28,12 +28,11 @@ class CRUDController extends Controller
         $pupilGroupAssociations = $repository->findBy([
             'group' => $id
         ]);
+
         $pupilsObjects = [];
         foreach ($pupilGroupAssociations as $pupilGroupAssociation) {
             $pupilsObjects[] = $pupilGroupAssociation->getPupil();
         }
-        //$pupilsIdList = ltrim($pupilsIdList, ', ');
-        //$pupilsInGroup = $query->getResult();
 
         $this->admin->checkAccess('show', $object);
 

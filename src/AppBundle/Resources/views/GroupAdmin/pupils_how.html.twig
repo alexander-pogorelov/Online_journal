@@ -2,7 +2,10 @@
 
 {% block show %}
     {{ parent() }}
-    {{ dump(object) }}
-    {{ dump(pupilGroupAssociations) }}
-    {{ dump(pupilsObjects) }}
+    <h1>Ученики в группе</h1>
+    <ul>
+        {% for pupilsObject in pupilsObjects %}
+            <li>{{ pupilsObject.__toString|e }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
