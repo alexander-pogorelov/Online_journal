@@ -8,17 +8,12 @@ namespace Application\Sonata\UserBundle\Entity;
 class Classroom
 {
     /**
-     * @var int
-     */
-    private $id;
-
-    /**
-     * @var int
+     * @var integer
      */
     private $number;
 
     /**
-     * @var int
+     * @var integer
      */
     private $capacity;
 
@@ -27,16 +22,11 @@ class Classroom
      */
     private $description;
 
-
     /**
-     * Get id
-     *
-     * @return int
+     * @var integer
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $id;
+
 
     /**
      * Set number
@@ -55,13 +45,11 @@ class Classroom
     /**
      * Get number
      *
-     * @return int
+     * @return integer
      */
     public function getNumber()
     {
-        // file_put_contents('errot.txt',"\t".$this->number,FILE_APPEND);
         return $this->number;
-
     }
 
     /**
@@ -81,7 +69,7 @@ class Classroom
     /**
      * Get capacity
      *
-     * @return int
+     * @return integer
      */
     public function getCapacity()
     {
@@ -110,6 +98,22 @@ class Classroom
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return 'а.'.(string)$this->getNumber();
     }
 }
 

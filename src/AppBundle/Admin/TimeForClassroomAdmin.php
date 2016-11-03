@@ -10,18 +10,20 @@ namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+//use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+//use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+//use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class TimeForClassroom extends AbstractAdmin
+class TimeForClassroomAdmin extends AbstractAdmin
 {
+    // Класс для создания списка интервалов времени
+
     // Создание списка времени из базы данных
     protected function configureListFields(ListMapper $listClassroom)
     {
-        // Описывается каждое отображаемое поле из entity/Auditori.php
+        // Описывается каждое отображаемое поле из entity
         $listClassroom
             ->addIdentifier('id',null, ['label'=>'№'])
             ->add('title',null, ['label'=>'Название'])
@@ -38,10 +40,10 @@ class TimeForClassroom extends AbstractAdmin
     }
 
     // Создание формы для добавления и редактирования
-    protected function configureFormFields(FormMapper $formClassroom)
+    protected function configureFormFields(FormMapper $formTimeForClassroom)
     {
-        $formClassroom
-            ->with('Добавить аудитории')
+        $formTimeForClassroom
+            ->with('Добавить новый интервал времени',['class' => 'col-md-6'])
                 ->add('title',null, ['label'=>'Название'])
                 ->add('startTime',null, ['label'=>'Начало занятий'])
                 ->add('endTime',null, ['label'=>'Конец занятий'])
@@ -50,7 +52,6 @@ class TimeForClassroom extends AbstractAdmin
                     'startTime' => 'Время начала занятий',
                     'endTime' => 'Время окончания занятий'))
             ->end();
-        // file_put_contents('errot.txt',"\t\n",FILE_APPEND);
     }
 
     // Создание формы для просмотра

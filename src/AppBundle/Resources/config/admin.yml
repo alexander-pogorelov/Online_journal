@@ -22,10 +22,3 @@ services:
                    - { name: sonata.admin, manager_type: orm, group: Аудитории , on_top: true }
                 calls:
                    - [ setTemplate, [list, AppBundle:ClassroomAdmin:classroom_list.html.twig]]
-     admin.TimeForClassroom:
-                class: AppBundle\Admin\TimeForClassroom
-                arguments: [~, Application\Sonata\UserBundle\Entity\TimeForClassroom, ~]
-                tags:
-                   - { name: sonata.admin, manager_type: orm, group: Время занятий , on_top: true }
-                calls:
-                   - [ setTemplate, [list, AppBundle:TimeForClassroom:TimeForClassroom_list.html.twig]]
