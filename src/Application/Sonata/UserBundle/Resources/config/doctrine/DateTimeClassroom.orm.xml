@@ -2,10 +2,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="Application\Sonata\UserBundle\Entity\DateTimeClassroom" table="date_time_classroom">
     <unique-constraints>
-      <unique-constraint name="date_classroom_UNIQUE" columns="date_classroom"/>
-      <unique-constraint name="time_classroom_UNIQUE" columns="time_classroom"/>
-      <unique-constraint name="date_UNIQUE" columns="date"/>
-
+      <unique-constraint name="date_time_classroom_classroom_UNIQUE" columns="date,time_classroom,date_classroom"/>
     </unique-constraints>
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
