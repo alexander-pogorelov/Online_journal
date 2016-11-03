@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Application\Sonata\UserBundle\Entity\DateTimeClassroom" table="date_time_classroom">
+    <unique-constraints>
+      <unique-constraint name="date_classroom_UNIQUE" columns="date_classroom"/>
+      <unique-constraint name="time_classroom_UNIQUE" columns="time_classroom"/>
+      <unique-constraint name="date_UNIQUE" columns="date"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="date" type="date" column="date" nullable="true"/>
+    <many-to-one field="timeClassroom" target-entity="Timeforclassroom" fetch="LAZY">
+      <join-columns>
+        <join-column name="time_classroom" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="dateClassroom" target-entity="Classroom" fetch="LAZY">
+      <join-columns>
+        <join-column name="date_classroom" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

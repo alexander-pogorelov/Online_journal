@@ -41,7 +41,7 @@ class ClassroomAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formClassroom)
     {
         $formClassroom
-            ->with('Добавить аудитории')
+            ->with('Добавить аудитории',['class' => 'col-md-6'])
                 ->add('number',null, ['label'=>'Номер аудитории'])
                 ->add('capacity',null, ['label'=>'Вместимость'])
                 ->add('description',null, ['label'=>'Описание'])
