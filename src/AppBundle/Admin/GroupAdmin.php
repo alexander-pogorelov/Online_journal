@@ -28,28 +28,29 @@ class GroupAdmin extends AbstractAdmin
 
     protected function configureListFields(ListMapper $listMapper)
     {
+        $headerAttr = ['header_style' => 'text-align: center'];
         $listMapper
             ->addIdentifier('groupName', 'text', [
                 'label'=>'Группа',
                 'row_align' => 'center'
-            ])
+            ]+ $headerAttr)
             ->add('pupilsAmount', null, [
                 'label'=>'Кол-во учеников',
                 'row_align' => 'center'
-            ])
+            ]+ $headerAttr)
             ->add('_subject_array_', null, [
                 'label'=>'Предметы',
-            ])
+            ]+ $headerAttr)
             ->add('_teacher_array_', null, [
                 'label'=>'Преподаватели',
-            ])
+            ]+ $headerAttr)
             ->add('_action', null, [
                 'label'=>'Список группы',
                 'row_align' => 'center',
                 'actions' => [
                     'pupils' => ['template' => 'AppBundle:GroupAdmin:pupils_show_button.html.twig']
                 ]
-            ])
+            ]+ $headerAttr)
         ;
     }
 
@@ -76,7 +77,7 @@ class GroupAdmin extends AbstractAdmin
         $groupRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository('ApplicationSonataUserBundle:GroupIteen');
         $group = $groupRepository->find($id);
         $showMapper
-            ->with($group->getGroupName())
+            ->with('Группа:   '.$group->getGroupName())
                 //->add($group->getPupils(), null, [])
             ->end()
         ;

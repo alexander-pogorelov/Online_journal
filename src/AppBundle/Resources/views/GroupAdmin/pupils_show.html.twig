@@ -1,45 +1,43 @@
 {% extends 'SonataAdminBundle:CRUD:show.html.twig' %}
 
-{% block show %}
-    {{ parent() }}
-    {% block list_table %}
-        <div class="col-xs-12 col-md-12">
-            <div class="box box-primary" >
-                <div class="box-body ">
-                    <table class="table table-bordered table-striped sonata-ba-list">
-                        {% block table_header %}
-                            <thead>
-                                <tr class="sonata-ba-list-field-header">
-                                    <th class="sonata-ba-list-field-header-text">
-                                        Ф.И.О. учащегося
-                                    </th>
-                                    <th>Дата рождения</th>
-                                    <th>Телефон учащегося</th>
-                                    <th>Ф.И.О. родителя</th>
-                                    <th>Телефон родителя</th>
-                                    <th>E-mail родителя</th>
-                                </tr>
-                            </thead>
-                        {% endblock %}
-                        {% block table_body %}
-                            <tbody>
-                                {% for pupilsObject in pupilsObjects %}
-                                    <tr>
-                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                            {{ pupilsObject.__toString|e }}
-                                        </td>
-                                        <td>{{ pupilsObject.dateOfBirth|date("d/M/Y") }}</td>
-                                        <td>{{ pupilsObject.phone|e }}</td>
-                                        <td>{{ pupilsObject.ParentsString|e }}</td>
-                                        <td>{{ pupilsObject.parentsPhones|e }}</td>
-                                        <td>{{ pupilsObject.parentsEmailes|e }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        {% endblock %}
-                    </table>
-                </div>
+
+{% block list_table %}
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-primary" >
+            <div class="box-body ">
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    {% block table_header %}
+                        <thead>
+                        <tr class="sonata-ba-list-field-header">
+                            <th class="sonata-ba-list-field-header-text">
+                                Ф.И.О. учащегося
+                            </th>
+                            <th>Дата рождения</th>
+                            <th>Телефон учащегося</th>
+                            <th>Ф.И.О. родителя</th>
+                            <th>Телефон родителя</th>
+                            <th>E-mail родителя</th>
+                        </tr>
+                        </thead>
+                    {% endblock %}
+                    {% block table_body %}
+                        <tbody>
+                        {% for pupilsObject in pupilsObjects %}
+                            <tr>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ pupilsObject.__toString|e }}
+                                </td>
+                                <td>{{ pupilsObject.dateOfBirth|date("d/M/Y") }}</td>
+                                <td>{{ pupilsObject.phone|e }}</td>
+                                <td>{{ pupilsObject.ParentsString|e }}</td>
+                                <td>{{ pupilsObject.parentsPhones|e }}</td>
+                                <td>{{ pupilsObject.parentsEmailes|e }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    {% endblock %}
+                </table>
             </div>
         </div>
-    {% endblock %}
+    </div>
 {% endblock %}
