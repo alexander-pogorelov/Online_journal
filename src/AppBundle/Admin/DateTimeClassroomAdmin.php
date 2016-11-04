@@ -26,8 +26,8 @@ class DateTimeClassroomAdmin extends AbstractAdmin
         $formDateTimeClassroom
             ->with('Добавить/Редактировать дату занятий',['class' => 'col-md-6'])
                 ->add('date',null, ['label'=>'Дата занятия'])
-                ->add('time_id',null, ['label'=>'Время занятий'])
-                ->add('classroom_id',null, ['label'=>'Аудитория'])
+                ->add('time',null, ['label'=>'Время занятий'])
+                ->add('classroom',null, ['label'=>'Аудитория'])
             ->end();
     }
 
@@ -37,7 +37,7 @@ class DateTimeClassroomAdmin extends AbstractAdmin
         $showMapper
             ->add('id',null, ['label'=>'№'])
             ->add('date',null, ['label'=>'Дата занятия'])
-            ->add('time_id',null, ['label'=>'Время занятий'])
-            ->add('classroom_id',null, ['label'=>'Аудитория']);
+            ->add('time',null, ['label'=>'Время занятий'])
+            ->add('classroom',null, ['label'=>'Аудитория']);
     }
 }

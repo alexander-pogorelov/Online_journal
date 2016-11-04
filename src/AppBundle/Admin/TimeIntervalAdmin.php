@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 //use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 //use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class TimeForClassroomAdmin extends AbstractAdmin
+class TimeIntervalAdmin extends AbstractAdmin
 {
     // Класс для создания списка интервалов времени
 
