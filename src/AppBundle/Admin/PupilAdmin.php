@@ -7,15 +7,18 @@
  */
 
 namespace AppBundle\Admin;
+use Application\Sonata\UserBundle\Entity\PupilGroupAssociation;
 use Application\Sonata\UserBundle\Entity\UserPupil;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-//use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\CollectionTypeTest;
 
@@ -44,15 +47,12 @@ class PupilAdmin extends AbstractAdmin
             ->addIdentifier('fullName', 'text', [
                 'label'=>'Ф.И.О. ученика',
             ]+ $headerAttr)
-            //->add('firstname', 'text', ['label'=>'Имя'])
-            //->add('patronymic', 'text', ['label'=>'Отчество'])
-            ->add('_group_', 'text', ['label'=>'Группа']+ $headerAttr)
+            ->add('groupsIteen', 'text', ['label'=>'Группа']+ $headerAttr)
             ->add('dateOfBirth', 'date', [
                 'label'=>'Дата рождения',
                 'format' => 'd-m-Y'
             ]+ $headerAttr)
             ->add('phone', 'text', ['label'=>'Телефон']+ $headerAttr)
-            //->add('email', 'text', ['label'=>'E-Mail']+ $headerAttr)
             ->add('classNumberString', null, [
                 'label'=>'Класс',
                 'row_align' => 'center'
@@ -69,15 +69,9 @@ class PupilAdmin extends AbstractAdmin
             ->add('parentsEmailes', null, [
                 'label'=>'E-mail родителя'
             ]+ $headerAttr)
-            //->add('Application/Sonata/UserBundle/Entity/UserParent.Firstname')
-            /*->add('parents', null, [
-                'associated_property' => 'Firstname'
-            ])*/
             ->add('comment', 'text', [
                 'label'=>'Комментарий',
             ] + $headerAttr)
-            //->add('enabled', 'boolean')
-            //->add('locked', 'boolean')
         ;
     }
 
@@ -92,6 +86,7 @@ class PupilAdmin extends AbstractAdmin
         $formMapper
             ->with('Учащийся', array('class' => 'col-md-5'))->end()
             ->with('Родители', array('class' => 'col-md-7'))->end()
+            ->with('Группы', array('class' => 'col-md-7'))->end()
         ;
         $formMapper
             ->with('Учащийся')
@@ -107,8 +102,6 @@ class PupilAdmin extends AbstractAdmin
                     'format' => 'dd MMMM yyyy',
                     //'choice_translation_domain' => false,
                     'years' => range(1900, $now->format('Y')),
-                    //'locale' => 'ru',
-                    //'choice_translation_domain' => 'messages',
                 ])
                 ->add('email', 'text', [
                     'label'=>'E-Mail',
@@ -127,17 +120,66 @@ class PupilAdmin extends AbstractAdmin
                 ->add('comment', TextareaType::class, [
                     'label'=>'Комментарий',
                     'required' => false,
-                    //'readonly' => 'readonly'
                 ])
             ->end()
             ->with('Родители')
                 ->add('parents', 'sonata_type_model', [
                     'multiple' => true,
                     'by_reference' => false,
-                    //'required' => true
                 ])
             ->end()
+            ->with('Группы')
+                // добавляем в поле pupilGroupAssociation все группы из БД
+                ->add('pupilGroupAssociation', 'entity' , [
+                    'label' => 'Группы',
+                    'multiple' => true,
+                    'by_reference' => false,
+                    'class' => 'Application\Sonata\UserBundle\Entity\GroupIteen'
+                ])
+            ->end()
+        ;
+        // получаем текущего ученика
+        $pupil = $this->getSubject();
+        // модифицируем поле pupilGroupAssociation
+        $formMapper
+            ->get('pupilGroupAssociation')
+            ->addModelTransformer(new CallbackTransformer(
+                // трансформация данных от сущности PupilGroupAssociation в форму
+                function ($associations) {
+                    // если ученик не связан ни с одной группой - возвращаем null
+                    if (!$associations) {
+                        return null;
+                    }
+                    // иначе возвращаем массив связанных с учеником групп
+                    $groupsArray = array_map(function (PupilGroupAssociation $pupilGroupAssociation) {
+                        return $pupilGroupAssociation->getGroup();
+                        }, $associations->toArray()
+                    );
+                    return $groupsArray;
+                },
+                // обратная трансформация данных от формы в сущность PupilGroupAssociation (получение связанных с учеником групп)
+                // наследование переменной $pupil из родительской области видимости
+                function($groups) use ($pupil) {
+                    // создаем коллекцию связей
+                    $associations = new ArrayCollection();
+                    // проверяем наличие уже существующих связей
+                    foreach ($pupil->getPupilGroupAssociation() as $oldAssociation) {
+                        $group = $oldAssociation->getGroup();
+                        if ($groups->contains($group)) {
+                            // добавляем в коллекцию старые связи
+                            $associations->add($oldAssociation);
+                            // удаляем уже добавленную группу из массива групп из формы
+                            $groups->removeElement($group);
+                        }
+                    }
+                    foreach ($groups as $group) {
+                        // добавляем новые связи ученика с группами
+                        $associations->add(new PupilGroupAssociation($pupil, $group));
+                    }
 
+                    return $associations;
+                }
+            ))
         ;
     }
 
