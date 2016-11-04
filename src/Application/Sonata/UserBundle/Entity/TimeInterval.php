@@ -3,9 +3,9 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 /**
- * Timeforclassroom
+ * TimeInterval
  */
-class Timeforclassroom
+class TimeInterval
 {
     /**
      * @var string
@@ -33,7 +33,7 @@ class Timeforclassroom
      *
      * @param string $title
      *
-     * @return Timeforclassroom
+     * @return TimeInterval
      */
     public function setTitle($title)
     {
@@ -57,7 +57,7 @@ class Timeforclassroom
      *
      * @param \DateTime $startTime
      *
-     * @return Timeforclassroom
+     * @return TimeInterval
      */
     public function setStartTime($startTime)
     {
@@ -81,7 +81,7 @@ class Timeforclassroom
      *
      * @param \DateTime $endTime
      *
-     * @return Timeforclassroom
+     * @return TimeInterval
      */
     public function setEndTime($endTime)
     {
@@ -115,5 +115,6 @@ class Timeforclassroom
         // TODO: Implement __toString() method.
         return $this->getStartTime()->format('H:i').' - '.$this->getEndTime()->format('H:i');
     }
+
 }
 

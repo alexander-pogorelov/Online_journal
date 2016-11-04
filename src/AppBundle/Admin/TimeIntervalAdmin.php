@@ -16,15 +16,15 @@ use Sonata\AdminBundle\Show\ShowMapper;
 //use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 //use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class TimeForClassroomAdmin extends AbstractAdmin
+class TimeIntervalAdmin extends AbstractAdmin
 {
     // Класс для создания списка интервалов времени
 
     // Создание списка времени из базы данных
-    protected function configureListFields(ListMapper $listClassroom)
+    protected function configureListFields(ListMapper $listTimeForClassroom)
     {
         // Описывается каждое отображаемое поле из entity
-        $listClassroom
+        $listTimeForClassroom
             ->addIdentifier('id',null, ['label'=>'№'])
             ->add('title',null, ['label'=>'Название'])
             ->add('startTime',null, ['label'=>'Начало занятий'])

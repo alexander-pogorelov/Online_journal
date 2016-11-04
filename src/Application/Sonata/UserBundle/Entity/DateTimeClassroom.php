@@ -18,14 +18,14 @@ class DateTimeClassroom
     private $id;
 
     /**
-     * @var \Application\Sonata\UserBundle\Entity\Timeforclassroom
+     * @var \Application\Sonata\UserBundle\Entity\TimeInterval
      */
-    private $timeClassroom;
+    private $time;
 
     /**
      * @var \Application\Sonata\UserBundle\Entity\Classroom
      */
-    private $dateClassroom;
+    private $classroom;
 
 
     /**
@@ -63,51 +63,51 @@ class DateTimeClassroom
     }
 
     /**
-     * Set timeClassroom
+     * Set time
      *
-     * @param \Application\Sonata\UserBundle\Entity\Timeforclassroom $timeClassroom
+     * @param \Application\Sonata\UserBundle\Entity\TimeInterval $time
      *
      * @return DateTimeClassroom
      */
-    public function setTimeClassroom(\Application\Sonata\UserBundle\Entity\Timeforclassroom $timeClassroom = null)
+    public function setTime(\Application\Sonata\UserBundle\Entity\TimeInterval $time = null)
     {
-        $this->timeClassroom = $timeClassroom;
+        $this->time = $time;
 
         return $this;
     }
 
     /**
-     * Get timeClassroom
+     * Get time
      *
-     * @return \Application\Sonata\UserBundle\Entity\Timeforclassroom
+     * @return \Application\Sonata\UserBundle\Entity\TimeInterval
      */
-    public function getTimeClassroom()
+    public function getTime()
     {
-        return $this->timeClassroom;
+        return $this->time;
     }
 
     /**
-     * Set dateClassroom
+     * Set classroom
      *
-     * @param \Application\Sonata\UserBundle\Entity\Classroom $dateClassroom
+     * @param \Application\Sonata\UserBundle\Entity\Classroom $classroom
      *
      * @return DateTimeClassroom
      */
-    public function setDateClassroom(\Application\Sonata\UserBundle\Entity\Classroom $dateClassroom = null)
+    public function setClassroom(\Application\Sonata\UserBundle\Entity\Classroom $classroom = null)
     {
-        $this->dateClassroom = $dateClassroom;
+        $this->classroom = $classroom;
 
         return $this;
     }
 
     /**
-     * Get dateClassroom
+     * Get classroom
      *
      * @return \Application\Sonata\UserBundle\Entity\Classroom
      */
-    public function getDateClassroom()
+    public function getClassroom()
     {
-        return $this->dateClassroom;
+        return $this->classroom;
     }
 }
 
