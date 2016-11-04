@@ -8,13 +8,20 @@ services:
              - [ setTranslationDomain, [AppBundle]]
              - [ setTemplate, [list, AppBundle:TeacherAdmin:base_list.html.twig]]
      admin.metodist:
-                class: AppBundle\Admin\MetodistAdmin
-                arguments: [~, Application\Sonata\UserBundle\Entity\UserMetodist, ~]
-                tags:
-                   - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Методисты }
-                calls:
-                   - [ setTranslationDomain, [AppBundle]]
-                   - [ setTemplate, [list, AppBundle:MetodistAdmin:base_list.html.twig]]
+           class: AppBundle\Admin\MetodistAdmin
+           arguments: [~, Application\Sonata\UserBundle\Entity\UserMetodist, ~]
+           tags:
+              - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Методисты }
+           calls:
+              - [ setTranslationDomain, [AppBundle]]
+              - [ setTemplate, [list, AppBundle:MetodistAdmin:base_list.html.twig]]
+     admin.subject:
+            class: AppBundle\Admin\SubjectAdmin
+            arguments: [~, Application\Sonata\UserBundle\Entity\Subject, ~]
+            tags:
+               - { name: sonata.admin, manager_type: orm, group: Предметы, on_top: true }
+            calls:
+               - [ setTranslationDomain, [AppBundle]]
      admin.classroom:
                 class: AppBundle\Admin\ClassroomAdmin
                 arguments: [~, Application\Sonata\UserBundle\Entity\Classroom, ~]
@@ -32,3 +39,4 @@ services:
                 arguments: [~, Application\Sonata\UserBundle\Entity\DateTimeClassroom, ~]
                 tags:
                    - { name: sonata.admin, manager_type: orm, group: Дата занятия , on_top: true, show_in_dashboard: false}
+

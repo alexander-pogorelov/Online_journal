@@ -25,9 +25,8 @@ use Symfony\Component\Form\Tests\Extension\Core\Type\CollectionTypeTest;
 class PupilAdmin extends AbstractAdmin
 
 {
-    // TODO: наследование от AbstractAdmin или от UserAdmin????
-    protected $baseRouteName = 'pupil-route-admin'; //admin_vendor_bundlename_adminclassname
-    protected $baseRoutePattern = 'pupil'; //unique-route-pattern
+    protected $baseRouteName = 'pupil-route-admin';
+    protected $baseRoutePattern = 'pupil';
 
     public function prePersist($object)
     {
@@ -202,6 +201,4 @@ class PupilAdmin extends AbstractAdmin
             ])
         ;
     }
-
-
 }
