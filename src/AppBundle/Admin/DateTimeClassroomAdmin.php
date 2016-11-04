@@ -21,13 +21,13 @@ class DateTimeClassroomAdmin extends AbstractAdmin
     // Класс для создания списка интервалов времени
 
     // Создание формы для добавления и редактирования
-    protected function configureFormFields(FormMapper $formTimeForClassroom)
+    protected function configureFormFields(FormMapper $formDateTimeClassroom)
     {
-        $formTimeForClassroom
+        $formDateTimeClassroom
             ->with('Добавить/Редактировать дату занятий',['class' => 'col-md-6'])
                 ->add('date',null, ['label'=>'Дата занятия'])
-                ->add('timeClassroom',null, ['label'=>'Время занятий'])
-                ->add('dateClassroom',null, ['label'=>'Аудитория'])
+                ->add('time_id',null, ['label'=>'Время занятий'])
+                ->add('classroom_id',null, ['label'=>'Аудитория'])
             ->end();
     }
 
@@ -37,7 +37,7 @@ class DateTimeClassroomAdmin extends AbstractAdmin
         $showMapper
             ->add('id',null, ['label'=>'№'])
             ->add('date',null, ['label'=>'Дата занятия'])
-            ->add('timeClassroom',null, ['label'=>'Время занятий'])
-            ->add('dateClassroom',null, ['label'=>'Аудитория']);
+            ->add('time_id',null, ['label'=>'Время занятий'])
+            ->add('classroom_id',null, ['label'=>'Аудитория']);
     }
 }

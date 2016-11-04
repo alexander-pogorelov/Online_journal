@@ -21,10 +21,10 @@ class TimeForClassroomAdmin extends AbstractAdmin
     // Класс для создания списка интервалов времени
 
     // Создание списка времени из базы данных
-    protected function configureListFields(ListMapper $listClassroom)
+    protected function configureListFields(ListMapper $listTimeForClassroom)
     {
         // Описывается каждое отображаемое поле из entity
-        $listClassroom
+        $listTimeForClassroom
             ->addIdentifier('id',null, ['label'=>'№'])
             ->add('title',null, ['label'=>'Название'])
             ->add('startTime',null, ['label'=>'Начало занятий'])
