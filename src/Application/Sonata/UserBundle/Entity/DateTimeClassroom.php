@@ -18,14 +18,14 @@ class DateTimeClassroom
     private $id;
 
     /**
-     * @var \Application\Sonata\UserBundle\Entity\Timeforclassroom
+     * @var \Application\Sonata\UserBundle\Entity\TimeInterval
      */
-    private $time_id;
+    private $time;
 
     /**
      * @var \Application\Sonata\UserBundle\Entity\Classroom
      */
-    private $classroom_id;
+    private $classroom;
 
 
     /**
@@ -63,51 +63,51 @@ class DateTimeClassroom
     }
 
     /**
-     * Set timeId
+     * Set time
      *
-     * @param \Application\Sonata\UserBundle\Entity\Timeforclassroom $timeId
+     * @param \Application\Sonata\UserBundle\Entity\TimeInterval $time
      *
      * @return DateTimeClassroom
      */
-    public function setTimeId(\Application\Sonata\UserBundle\Entity\Timeforclassroom $timeId = null)
+    public function setTime(\Application\Sonata\UserBundle\Entity\TimeInterval $time = null)
     {
-        $this->time_id = $timeId;
+        $this->time = $time;
 
         return $this;
     }
 
     /**
-     * Get timeId
+     * Get time
      *
-     * @return \Application\Sonata\UserBundle\Entity\Timeforclassroom
+     * @return \Application\Sonata\UserBundle\Entity\TimeInterval
      */
-    public function getTimeId()
+    public function getTime()
     {
-        return $this->time_id;
+        return $this->time;
     }
 
     /**
-     * Set classroomId
+     * Set classroom
      *
-     * @param \Application\Sonata\UserBundle\Entity\Classroom $classroomId
+     * @param \Application\Sonata\UserBundle\Entity\Classroom $classroom
      *
      * @return DateTimeClassroom
      */
-    public function setClassroomId(\Application\Sonata\UserBundle\Entity\Classroom $classroomId = null)
+    public function setClassroom(\Application\Sonata\UserBundle\Entity\Classroom $classroom = null)
     {
-        $this->classroom_id = $classroomId;
+        $this->classroom = $classroom;
 
         return $this;
     }
 
     /**
-     * Get classroomId
+     * Get classroom
      *
      * @return \Application\Sonata\UserBundle\Entity\Classroom
      */
-    public function getClassroomId()
+    public function getClassroom()
     {
-        return $this->classroom_id;
+        return $this->classroom;
     }
 }
 

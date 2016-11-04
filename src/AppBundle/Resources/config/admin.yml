@@ -22,9 +22,9 @@ services:
                    - { name: sonata.admin, manager_type: orm, group: Аудитории , on_top: true }
                 calls:
                    - [ setTemplate, [list, AppBundle:ClassroomAdmin:classroom_list.html.twig]]
-     admin.timeforclassroom:
-                class: AppBundle\Admin\TimeForClassroomAdmin
-                arguments: [~, Application\Sonata\UserBundle\Entity\Timeforclassroom, ~]
+     admin.timeinterval:
+                class: AppBundle\Admin\TimeIntervalAdmin
+                arguments: [~, Application\Sonata\UserBundle\Entity\TimeInterval, ~]
                 tags:
                    - { name: sonata.admin, manager_type: orm, group: Интервалы времени , on_top: true, show_in_dashboard: false}
      admin.datetimeclassroom:
