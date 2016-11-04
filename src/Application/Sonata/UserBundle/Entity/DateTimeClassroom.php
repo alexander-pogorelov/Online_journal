@@ -20,12 +20,12 @@ class DateTimeClassroom
     /**
      * @var \Application\Sonata\UserBundle\Entity\Timeforclassroom
      */
-    private $timeClassroom;
+    private $time_id;
 
     /**
      * @var \Application\Sonata\UserBundle\Entity\Classroom
      */
-    private $dateClassroom;
+    private $classroom_id;
 
 
     /**
@@ -63,51 +63,51 @@ class DateTimeClassroom
     }
 
     /**
-     * Set timeClassroom
+     * Set timeId
      *
-     * @param \Application\Sonata\UserBundle\Entity\Timeforclassroom $timeClassroom
+     * @param \Application\Sonata\UserBundle\Entity\Timeforclassroom $timeId
      *
      * @return DateTimeClassroom
      */
-    public function setTimeClassroom(\Application\Sonata\UserBundle\Entity\Timeforclassroom $timeClassroom = null)
+    public function setTimeId(\Application\Sonata\UserBundle\Entity\Timeforclassroom $timeId = null)
     {
-        $this->timeClassroom = $timeClassroom;
+        $this->time_id = $timeId;
 
         return $this;
     }
 
     /**
-     * Get timeClassroom
+     * Get timeId
      *
      * @return \Application\Sonata\UserBundle\Entity\Timeforclassroom
      */
-    public function getTimeClassroom()
+    public function getTimeId()
     {
-        return $this->timeClassroom;
+        return $this->time_id;
     }
 
     /**
-     * Set dateClassroom
+     * Set classroomId
      *
-     * @param \Application\Sonata\UserBundle\Entity\Classroom $dateClassroom
+     * @param \Application\Sonata\UserBundle\Entity\Classroom $classroomId
      *
      * @return DateTimeClassroom
      */
-    public function setDateClassroom(\Application\Sonata\UserBundle\Entity\Classroom $dateClassroom = null)
+    public function setClassroomId(\Application\Sonata\UserBundle\Entity\Classroom $classroomId = null)
     {
-        $this->dateClassroom = $dateClassroom;
+        $this->classroom_id = $classroomId;
 
         return $this;
     }
 
     /**
-     * Get dateClassroom
+     * Get classroomId
      *
      * @return \Application\Sonata\UserBundle\Entity\Classroom
      */
-    public function getDateClassroom()
+    public function getClassroomId()
     {
-        return $this->dateClassroom;
+        return $this->classroom_id;
     }
 }
 
