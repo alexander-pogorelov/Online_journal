@@ -18,6 +18,10 @@
                 <source>Classroom List</source>
                 <target>Аудитории</target>
             </trans-unit>
+            <trans-unit id="Group_Iteen_List">
+                <source>Group Iteen List</source>
+                <target>Ученики в группе</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
