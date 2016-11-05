@@ -18,6 +18,10 @@
                 <source>User Teacher List</source>
                 <target>Преподаватели</target>
             </trans-unit>
+            <trans-unit id="Subject_List">
+                <source>Subject List</source>
+                <target>Предметы</target>
+            </trans-unit>
             <trans-unit id="Classroom_List">
                 <source>Classroom List</source>
                 <target>Аудитории</target>
