@@ -10,9 +10,9 @@ namespace AppBundle\Admin;
 
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
@@ -63,7 +63,7 @@ class GroupAdmin extends AbstractAdmin
         $formMapper
             ->with('Группа')
             ->add('groupName', 'text', ['label'=>'Название группы'])
-            ->add('note', TextareaType::class, ['label'=>'Примечание'])
+            ->add('note', 'textarea', ['label'=>'Примечание'])
             ->end()
             ->with('Предметы')
 
@@ -82,6 +82,20 @@ class GroupAdmin extends AbstractAdmin
             ->end()
         ;
 
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('groupName', null, [
+                'label'=>'Номер группы'
+            ])
+            /*
+            ->add('pupilsAmount', null, [
+                'label'=>'Количество учеников'
+            ])
+            */
+        ;
     }
 
 }
