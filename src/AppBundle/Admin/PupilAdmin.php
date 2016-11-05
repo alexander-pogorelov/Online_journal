@@ -20,8 +20,10 @@ use Symfony\Component\Form\CallbackTransformer;
 class PupilAdmin extends AbstractAdmin
 
 {
+
     protected $baseRouteName = 'pupil-route-admin'; //admin_vendor_bundlename_adminclassname
     protected $baseRoutePattern = 'pupil'; //unique-route-pattern
+
 
     public function prePersist($object)
     {
@@ -196,6 +198,4 @@ class PupilAdmin extends AbstractAdmin
             ])
         ;
     }
-
-
 }

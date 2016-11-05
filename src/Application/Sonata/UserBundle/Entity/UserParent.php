@@ -20,6 +20,7 @@ class UserParent extends User
         'другое' => 5
     ];
 
+
     /**
      * @return mixed
      */
