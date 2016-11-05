@@ -12,10 +12,10 @@ web_profiler:
     intercept_redirects: false
 
 swiftmailer:
-    transport: gmail
+    transport: '%mailer_transport%'
     username:  '%mailer_user%'
     password:  '%mailer_password%'
-    host:       gmail-smtp-msa.l.google.com
+    host:      '%mailer_host%'
 
 monolog:
     handlers:

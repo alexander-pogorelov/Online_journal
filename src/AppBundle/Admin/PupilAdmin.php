@@ -8,7 +8,6 @@
 
 namespace AppBundle\Admin;
 use Application\Sonata\UserBundle\Entity\PupilGroupAssociation;
-use Application\Sonata\UserBundle\Entity\UserPupil;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -16,17 +15,15 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Tests\Extension\Core\Type\CollectionTypeTest;
+
 
 class PupilAdmin extends AbstractAdmin
 
 {
-    protected $baseRouteName = 'pupil-route-admin';
-    protected $baseRoutePattern = 'pupil';
+
+    protected $baseRouteName = 'pupil-route-admin'; //admin_vendor_bundlename_adminclassname
+    protected $baseRoutePattern = 'pupil'; //unique-route-pattern
+
 
     public function prePersist($object)
     {
@@ -116,7 +113,7 @@ class PupilAdmin extends AbstractAdmin
                     'label'=>'Телефон',
                     'required' => false
                 ])
-                ->add('comment', TextareaType::class, [
+                ->add('comment', 'textarea', [
                     'label'=>'Комментарий',
                     'required' => false,
                 ])

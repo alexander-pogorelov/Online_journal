@@ -41,8 +41,7 @@ class GroupIteen
     }
     public function getPupilsAmount()
     {
-        $pupilsAmount = count($this->getPupils());
-        return $pupilsAmount ? $pupilsAmount : '';
+        return count($this->getPupils());
     }
     /**
      * @return ArrayCollection
