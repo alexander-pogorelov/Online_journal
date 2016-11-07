@@ -26,18 +26,20 @@ class MetodistAdmin extends AbstractAdmin
 
     public function create($object)
     {
-        $tokenGenerator = $this->getConfigurationPool()->getContainer()->get('fos_user.util.token_generator');
+		$container = $this->getConfigurationPool()->getContainer();
+        $tokenGenerator = $container->get('fos_user.util.token_generator');
         $password = substr($tokenGenerator->generateToken(), 0, 8);
 
         $object->setPlainPassword($password);
 
         parent::create($object);
-
+		
+		$templating = $container->get('templating');
         $message = \Swift_Message::newInstance()
             ->setSubject('Данные для авторизации')
             ->setFrom('testiteen@gmail.com')
             ->setTo($object->getEmail())
-            ->setBody($this->getConfigurationPool()->getContainer()->get('templating')->render(
+            ->setBody($templating->render(
                 'AppBundle:Emails:registration.html.twig',
                 array('login' => $object->getEmail(),
                     'password' => $password)
@@ -45,7 +47,7 @@ class MetodistAdmin extends AbstractAdmin
                 'text/html'
             )
         ;
-        $this->getConfigurationPool()->getContainer()->get('mailer')->send($message);
+        $container->get('mailer')->send($message);
     }
 
     public function prePersist($object)
