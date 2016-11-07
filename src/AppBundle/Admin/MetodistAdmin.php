@@ -37,16 +37,12 @@ class MetodistAdmin extends AbstractAdmin
             ->setSubject('Данные для авторизации')
             ->setFrom('testiteen@gmail.com')
             ->setTo($object->getEmail())
-            ->setContentType("text/html")
-            ->setBody('<html>' .
-                '<head></head>' .
-                '<body>' .
-                'Ваш аккаунт был успешно создан в система «Электронный журнал» МА ОЦ ПВТ.' .'<br>' .
-                'Ваш логин: ' . $object->getEmail(). '<br>' .
-                'Ваш пароль: ' .$password. '<br>' .
-                'Для активации аккаунта перейдите по ссылке: ' .
-                '</body>' .
-                '</html>'
+            ->setBody($this->getConfigurationPool()->getContainer()->get('templating')->render(
+                'AppBundle:Emails:registration.html.twig',
+                array('login' => $object->getEmail(),
+                    'password' => $password)
+            ),
+                'text/html'
             )
         ;
         $this->getConfigurationPool()->getContainer()->get('mailer')->send($message);
@@ -152,9 +148,6 @@ class MetodistAdmin extends AbstractAdmin
             ->end()
             ->with('Work')
             ->add('username')
-            ->add('plainPassword', 'text', array(
-                'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
-            ))
             ->add('email')
             ->add('workDays', 'text', [
                 'label'=>'Дни работы',
