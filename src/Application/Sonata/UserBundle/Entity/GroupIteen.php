@@ -16,6 +16,7 @@ class GroupIteen
     public function __construct()
     {
         $this->pupilGroupAssociation = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
     }
 
     private $id;
@@ -25,6 +26,10 @@ class GroupIteen
     private $note;
 
     protected $pupilGroupAssociation;
+
+    private $subjects;
+
+
 
     public function getPupils()
     {
@@ -117,4 +122,38 @@ class GroupIteen
 
 
 
+
+    /**
+     * Add subject
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Subject $subject
+     *
+     * @return GroupIteen
+     */
+    public function addSubject(\Application\Sonata\UserBundle\Entity\Subject $subject)
+    {
+        $this->subjects[] = $subject;
+
+        return $this;
+    }
+
+    /**
+     * Remove subject
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Subject $subject
+     */
+    public function removeSubject(\Application\Sonata\UserBundle\Entity\Subject $subject)
+    {
+        $this->subjects->removeElement($subject);
+    }
+
+    /**
+     * Get subjects
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSubjects()
+    {
+        return $this->subjects;
+    }
 }
