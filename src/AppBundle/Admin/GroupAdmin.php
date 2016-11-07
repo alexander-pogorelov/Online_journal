@@ -38,7 +38,7 @@ class GroupAdmin extends AbstractAdmin
                 'label'=>'Кол-во учеников',
                 'row_align' => 'center'
             ]+ $headerAttr)
-            ->add('_subject_array_', null, [
+            ->add('subjects', null, [
                 'label'=>'Предметы',
             ]+ $headerAttr)
             ->add('_teacher_array_', null, [
@@ -66,7 +66,10 @@ class GroupAdmin extends AbstractAdmin
             ->add('note', 'textarea', ['label'=>'Примечание'])
             ->end()
             ->with('Предметы')
-
+            ->add('subjects', 'sonata_type_model', [
+                'multiple' => true,
+                'by_reference' => false,
+            ])
             ->end()
         ;
     }

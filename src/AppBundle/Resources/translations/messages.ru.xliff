@@ -28,7 +28,7 @@
             </trans-unit>
             <trans-unit id="Group_Iteen_List">
                 <source>Group Iteen List</source>
-                <target>Ученики в группе</target>
+                <target>Группы</target>
             </trans-unit>
         </body>
     </file>
