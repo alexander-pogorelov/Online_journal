@@ -29,8 +29,6 @@ class GroupIteen
 
     private $subjects;
 
-
-
     public function getPupils()
     {
         $pupilsArray = array_map(function (PupilGroupAssociation $pupilGroupAssociation) {
@@ -156,4 +154,5 @@ class GroupIteen
     {
         return $this->subjects;
     }
+
 }
