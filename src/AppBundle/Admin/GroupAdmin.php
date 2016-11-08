@@ -93,9 +93,12 @@ class GroupAdmin extends AbstractAdmin
             ->add('groupName', null, [
                 'label'=>'Номер группы'
             ])
+            ->add('subjects', null, [
+                'label'=>'Предмет'
+            ])
             /*
-            ->add('pupilsAmount', null, [
-                'label'=>'Количество учеников'
+            ->add('PupilsAmount', null, [
+                'label'=>'Предмет'
             ])
             */
         ;

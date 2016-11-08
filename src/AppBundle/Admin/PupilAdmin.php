@@ -181,8 +181,10 @@ class PupilAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-            ->add('lastname', null, [
-                'label'=>'Фамилия'
+            ->add('full_name', 'doctrine_orm_callback', [
+                'label'=>'Ф.И.О. Ученика',
+                'callback' => [$this, 'getFullTextFilter'],
+                'field_type' => 'text'
             ])
             ->add('dateOfBirth', null, [
                 'label'=>'Дата рождения'
@@ -194,8 +196,23 @@ class PupilAdmin extends AbstractAdmin
                 'label'=>'e-mail'
             ])
             ->add('comment', null, [
-                'label'=>'Комментарий'
+
             ])
         ;
+    }
+
+    public function getFullTextFilter($queryBuilder, $alias, $field, $value)
+    {
+        if (!$value['value']) {
+            return;
+        }
+
+        $queryBuilder->andWhere($queryBuilder->expr()->orX(
+            $queryBuilder->expr()->like($alias.'.lastname', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
+            $queryBuilder->expr()->like($alias.'.firstname', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
+            $queryBuilder->expr()->like($alias.'.patronymic', $queryBuilder->expr()->literal('%' . $value['value'] . '%'))
+        ));
+
+        return true;
     }
 }

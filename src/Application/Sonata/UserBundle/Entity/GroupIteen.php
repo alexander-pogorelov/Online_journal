@@ -44,7 +44,7 @@ class GroupIteen
     }
     public function getPupilsAmount()
     {
-        return count($this->getPupils());
+        return count($this->pupilGroupAssociation);
     }
     /**
      * @return ArrayCollection
