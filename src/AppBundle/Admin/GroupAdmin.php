@@ -84,7 +84,6 @@ class GroupAdmin extends AbstractAdmin
             ->with('Группа:   '.$group->getGroupName())
             ->end()
         ;
-
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -109,12 +108,6 @@ class GroupAdmin extends AbstractAdmin
         if (!$value['value'] || !$value['value']['value'] || !$value['value']['type']) {
             return;
         }
-        /*
-        echo "<pre>";
-        print_r($value);
-        echo "</pre>";
-        exit;
-        */
 
         /**
          * @var \Doctrine\ORM\QueryBuilder $qb2
@@ -168,12 +161,7 @@ class GroupAdmin extends AbstractAdmin
             )
 
         );
-        /*
-        echo "<pre>";
-        print_r($qb->getQuery()->getSql());
-        echo "</pre>";
-        exit;
-        */
+
         return true;
     }
 

@@ -7,6 +7,9 @@
  */
 
 namespace AppBundle\Admin;
+use AppBundle\Admin\Filters\AllFilters;
+use AppBundle\Admin\Filters\FullNameFilter;
+use AppBundle\AppBundle;
 use Application\Sonata\UserBundle\Entity\PupilGroupAssociation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -183,7 +186,7 @@ class PupilAdmin extends AbstractAdmin
         $datagridMapper
             ->add('full_name', 'doctrine_orm_callback', [
                 'label'=>'Ф.И.О. Ученика',
-                'callback' => [$this, 'getFullTextFilter'],
+                'callback' => 'AppBundle\Admin\Filters\AllFilters::getFullNameFilter',
                 'field_type' => 'text'
             ])
             ->add('dateOfBirth', null, [
