@@ -29,22 +29,9 @@ class GroupIteen
 
     private $subjects;
 
-    public function getPupils()
-    {
-        $pupilsArray = array_map(function (PupilGroupAssociation $pupilGroupAssociation) {
-            return $pupilGroupAssociation->getPupil();
-        }, $this->pupilGroupAssociation->toArray());
-
-        return $pupilsArray;
-    }
-
-    public function getPupilsString()
-    {
-        return implode(', ', $this->getPupils());
-    }
     public function getPupilsAmount()
     {
-        return count($this->pupilGroupAssociation);
+        return (string) count($this->pupilGroupAssociation);
     }
     /**
      * @return ArrayCollection

@@ -11,6 +11,7 @@ namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -81,7 +82,6 @@ class GroupAdmin extends AbstractAdmin
         $group = $groupRepository->find($id);
         $showMapper
             ->with('Группа:   '.$group->getGroupName())
-                //->add($group->getPupils(), null, [])
             ->end()
         ;
 
@@ -96,12 +96,85 @@ class GroupAdmin extends AbstractAdmin
             ->add('subjects', null, [
                 'label'=>'Предмет'
             ])
-            /*
-            ->add('PupilsAmount', null, [
-                'label'=>'Предмет'
+            ->add('pupilsAmount', 'doctrine_orm_callback', [
+                'label' => 'Количество учеников',
+                'row_align' => 'center',
+                'field_type' => 'sonata_type_filter_number',
+                'callback' => [$this, 'filterByPupilAmount'],
             ])
-            */
         ;
+    }
+
+    public function filterByPupilAmount($qb, $alias, $field, $value) {
+        if (!$value['value'] || !$value['value']['value'] || !$value['value']['type']) {
+            return;
+        }
+        /*
+        echo "<pre>";
+        print_r($value);
+        echo "</pre>";
+        exit;
+        */
+
+        /**
+         * @var \Doctrine\ORM\QueryBuilder $qb2
+         */
+        $qb2 = $qb->getEntityManager()->createQueryBuilder();
+
+        switch ($value['value']['type']) {
+            case NumberType::TYPE_EQUAL:
+                $comparasion = $qb->expr()->eq(
+                    $qb2->expr()->count('pga.id'),
+                    $value['value']['value']
+                );
+                break;
+            case NumberType::TYPE_GREATER_EQUAL:
+                $comparasion = $qb->expr()->gte(
+                    $qb2->expr()->count('pga.id'),
+                    $value['value']['value']
+                );
+                break;
+            case NumberType::TYPE_GREATER_THAN:
+                $comparasion = $qb->expr()->gt(
+                    $qb2->expr()->count('pga.id'),
+                    $value['value']['value']
+                );
+                break;
+            case NumberType::TYPE_LESS_EQUAL:
+                $comparasion = $qb->expr()->lte(
+                    $qb2->expr()->count('pga.id'),
+                    $value['value']['value']
+                );
+                break;
+            case NumberType::TYPE_LESS_THAN:
+                $comparasion = $qb->expr()->lt(
+                    $qb2->expr()->count('pga.id'),
+                    $value['value']['value']
+                );
+                break;
+        }
+
+        $qb->andWhere(
+            $qb->expr()->in(
+                $alias . '.id',
+                $qb2->select([
+                    'gi.id'
+                ])
+                    ->from('ApplicationSonataUserBundle:GroupIteen', 'gi')
+                    ->innerJoin('gi.pupilGroupAssociation', 'pga')
+                    ->groupBy('gi.id')
+                    ->having($comparasion)
+                    ->getDQL()
+            )
+
+        );
+        /*
+        echo "<pre>";
+        print_r($qb->getQuery()->getSql());
+        echo "</pre>";
+        exit;
+        */
+        return true;
     }
 
 }
