@@ -9,8 +9,6 @@
 namespace AppBundle\Admin;
 use Application\Sonata\UserBundle\Entity\UserParent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-//use Sonata\UserBundle\Admin\Model\UserAdmin as BaseUserAdmin;
-use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

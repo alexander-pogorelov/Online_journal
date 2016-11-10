@@ -7,9 +7,6 @@
  */
 
 namespace AppBundle\Admin;
-use AppBundle\Admin\Filters\AllFilters;
-use AppBundle\Admin\Filters\FullNameFilter;
-use AppBundle\AppBundle;
 use Application\Sonata\UserBundle\Entity\PupilGroupAssociation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -199,7 +196,7 @@ class PupilAdmin extends AbstractAdmin
                 'label'=>'e-mail'
             ])
             ->add('comment', null, [
-
+                'label'=>'Комментарий'
             ])
         ;
     }
