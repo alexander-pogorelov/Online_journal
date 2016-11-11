@@ -47,6 +47,8 @@ class ParentAdmin extends AbstractAdmin
 
     public function prePersist($object)
     {
+        $name = 'parent'.time();
+        $object->setUsername($name);
         $object->setRealRoles(['ROLE_PARENT']);
         $object->setEnabled(true);
     }
@@ -102,14 +104,15 @@ class ParentAdmin extends AbstractAdmin
                     'label'=>'Родство',
                     'required' => false
                 ])
+
+            ->end()
+            ->with('Данные')
+                //->add('username')
+                ->add('email')
                 ->add('phone', 'text', [
                     'label'=>'Телефон',
                     'required' => false
                 ])
-            ->end()
-            ->with('Данные')
-                ->add('username')
-                ->add('email')
             ->end()
         ;
     }
