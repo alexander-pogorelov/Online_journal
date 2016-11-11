@@ -9,7 +9,7 @@
 namespace AppBundle\Admin\Filters;
 
 
-class AllFilters
+class GeneralFilters
 {
     public static function getFullNameFilter($queryBuilder, $alias, $field, $value)
     {
