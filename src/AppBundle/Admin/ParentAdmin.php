@@ -119,7 +119,7 @@ class ParentAdmin extends AbstractAdmin
         $datagridMapper
             ->add('full_name', 'doctrine_orm_callback', [
                 'label'=>'Ф.И.О. Родителя',
-                'callback' => 'AppBundle\Admin\Filters\AllFilters::getFullNameFilter',
+                'callback' => 'AppBundle\Admin\Filters\GeneralFilters::getFullNameFilter',
                 'field_type' => 'text'
             ])
         ;

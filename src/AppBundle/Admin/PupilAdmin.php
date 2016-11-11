@@ -183,7 +183,7 @@ class PupilAdmin extends AbstractAdmin
         $datagridMapper
             ->add('full_name', 'doctrine_orm_callback', [
                 'label'=>'Ф.И.О. Ученика',
-                'callback' => 'AppBundle\Admin\Filters\AllFilters::getFullNameFilter',
+                'callback' => 'AppBundle\Admin\Filters\GeneralFilters::getFullNameFilter',
                 'field_type' => 'text'
             ])
             ->add('dateOfBirth', null, [
@@ -201,18 +201,4 @@ class PupilAdmin extends AbstractAdmin
         ;
     }
 
-    public function getFullTextFilter($queryBuilder, $alias, $field, $value)
-    {
-        if (!$value['value']) {
-            return;
-        }
-
-        $queryBuilder->andWhere($queryBuilder->expr()->orX(
-            $queryBuilder->expr()->like($alias.'.lastname', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
-            $queryBuilder->expr()->like($alias.'.firstname', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
-            $queryBuilder->expr()->like($alias.'.patronymic', $queryBuilder->expr()->literal('%' . $value['value'] . '%'))
-        ));
-
-        return true;
-    }
 }
