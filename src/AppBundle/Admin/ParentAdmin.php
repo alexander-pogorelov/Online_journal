@@ -9,7 +9,7 @@
 namespace AppBundle\Admin;
 use Application\Sonata\UserBundle\Entity\UserParent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-//use Sonata\UserBundle\Admin\Model\UserAdmin as BaseUserAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
@@ -77,15 +77,21 @@ class ParentAdmin extends AbstractAdmin
     }
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
-            ->with('Profile', array('class' => 'col-md-5'))->end()
-            ->with('General', array('class' => 'col-md-5'))->end()
+            ->with('Родитель', array('class' => 'col-md-5'))->end()
+            ->with('Данные', array('class' => 'col-md-5'))->end()
             ->end()
         ;
         $now = new \DateTime();
         $formMapper
-            ->with('Profile')
-                ->add('lastname', null, array('required' => true))
-                ->add('firstname', null, array('required' => true))
+            ->with('Родитель')
+                ->add('lastname', null, [
+                    'required' => true,
+                    'label'=>'Фамилия',
+                ])
+                ->add('firstname', null, [
+                    'required' => true,
+                    'label'=>'Имя',
+                ])
                 ->add('patronymic', 'text', [
                     'label'=>'Отчество',
                     'required' => false
@@ -101,10 +107,21 @@ class ParentAdmin extends AbstractAdmin
                     'required' => false
                 ])
             ->end()
-            ->with('General')
+            ->with('Данные')
                 ->add('username')
                 ->add('email')
             ->end()
+        ;
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('full_name', 'doctrine_orm_callback', [
+                'label'=>'Ф.И.О. Родителя',
+                'callback' => 'AppBundle\Admin\Filters\GeneralFilters::getFullNameFilter',
+                'field_type' => 'text'
+            ])
         ;
     }
 }
