@@ -56,7 +56,7 @@
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml",
-            "keep-outdated": false
+            "keep-outdated": true
         }
     }
 }
