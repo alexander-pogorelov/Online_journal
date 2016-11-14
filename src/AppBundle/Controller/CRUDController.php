@@ -51,4 +51,9 @@ class CRUDController extends Controller
             'elements' => $this->admin->getShow(),
         ]);
     }
+
+    public function showGroupJournalAction($id = null)
+    {
+
+    }
 }

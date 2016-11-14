@@ -35,3 +35,11 @@ services:
             - AppBundle:CRUD
         tags:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Группы' }
+    app.admin.journal:
+        class: AppBundle\Admin\JournalAdmin
+        arguments:
+            - null
+            - Application\Sonata\UserBundle\Entity\GroupIteen
+            - AppBundle:CRUD
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Журналы' }
