@@ -1,0 +1,15 @@
+.Default
+{
+    font-family:Verdana;
+    font-size:12px;
+    color:#000000;
+    cursor: hand;
+}
+.Default2
+{
+    font-family:Verdana;
+    font-size:12px;
+    color:#CC9900;
+    background: #0099FF80;
+    cursor: hand;
+} 
