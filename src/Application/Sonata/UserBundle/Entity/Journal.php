@@ -129,4 +129,28 @@ class Journal
     {
         return $this->pupilGroup;
     }
+
+    /**
+     * Set lesson
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Lesson $lesson
+     *
+     * @return Journal
+     */
+    public function setLesson(\Application\Sonata\UserBundle\Entity\Lesson $lesson)
+    {
+        $this->lesson = $lesson;
+
+        return $this;
+    }
+
+    /**
+     * Get lesson
+     *
+     * @return \Application\Sonata\UserBundle\Entity\Lesson
+     */
+    public function getLesson()
+    {
+        return $this->lesson;
+    }
 }

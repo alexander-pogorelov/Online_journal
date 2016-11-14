@@ -52,8 +52,4 @@ class CRUDController extends Controller
         ]);
     }
 
-    public function showGroupJournalAction($id = null)
-    {
-
-    }
 }
