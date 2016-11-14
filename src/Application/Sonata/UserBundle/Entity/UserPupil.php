@@ -92,7 +92,14 @@ class UserPupil extends User
     {
         return $this->parents;
     }
+    public function getParentsString()
+    {
+        $parentsString = array_map(function (UserParent $parent) {
+            return $parent->__toString();
+        }, $this->getParents()->toArray());
 
+        return implode(', ', $parentsString);
+    }
     public function getGroupsIteen()
     {
         $groupsArray = array_map(function (PupilGroupAssociation $pupilGroupAssociation) {

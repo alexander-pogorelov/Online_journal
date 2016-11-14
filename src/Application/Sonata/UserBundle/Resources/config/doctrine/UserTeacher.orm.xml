@@ -5,6 +5,12 @@
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity name="Application\Sonata\UserBundle\Entity\UserTeacher">
+
+        <one-to-many field="TeacherSubject" target-entity="Application\Sonata\UserBundle\Entity\TeacherSubject" mapped-by="teacher" orphan-removal="true">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
     </entity>
 
 </doctrine-mapping>

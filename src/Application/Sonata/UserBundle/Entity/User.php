@@ -25,13 +25,6 @@ use Sonata\UserBundle\Entity\BaseUser as BaseUser;
  */
 abstract class User extends BaseUser
 {
-    // TODO: Константы класса
-    // TODO: добавить свойства: отчество, адрес, комментарий
-
-    /**
-     * @var int $id
-     */
-    //protected $id;
 
     /**
      * @var
@@ -85,12 +78,10 @@ abstract class User extends BaseUser
     public function __toString()
     {
         $string = $this->getLastname().' '.$this->getFirstname().' '.$this->getPatronymic();
-        //$string = $this->getLastname();
         if (!$string) {
             $string = $this->getUsername();
         }
 
-        //return $string ?: '';
         return $string;
     }
     /**

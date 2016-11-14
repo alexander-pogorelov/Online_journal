@@ -12,11 +12,23 @@
             </trans-unit>
             <trans-unit id="User_Metodist_List">
                 <source>User Metodist List</source>
-                <target>Сотрудники</target>
+                <target>Методисты</target>
+            </trans-unit>
+            <trans-unit id="User_Teacher_List">
+                <source>User Teacher List</source>
+                <target>Преподаватели</target>
+            </trans-unit>
+            <trans-unit id="Subject_List">
+                <source>Subject List</source>
+                <target>Предметы</target>
             </trans-unit>
             <trans-unit id="Classroom_List">
                 <source>Classroom List</source>
                 <target>Аудитории</target>
+            </trans-unit>
+            <trans-unit id="Group_Iteen_List">
+                <source>Group Iteen List</source>
+                <target>Группы</target>
             </trans-unit>
         </body>
     </file>

@@ -16,6 +16,7 @@ class GroupIteen
     public function __construct()
     {
         $this->pupilGroupAssociation = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
     }
 
     private $id;
@@ -26,23 +27,11 @@ class GroupIteen
 
     protected $pupilGroupAssociation;
 
-    public function getPupils()
-    {
-        $pupilsArray = array_map(function (PupilGroupAssociation $pupilGroupAssociation) {
-            return $pupilGroupAssociation->getPupil();
-        }, $this->pupilGroupAssociation->toArray());
+    private $subjects;
 
-        return $pupilsArray;
-    }
-
-    public function getPupilsString()
-    {
-        return implode(', ', $this->getPupils());
-    }
     public function getPupilsAmount()
     {
-        $pupilsAmount = count($this->getPupils());
-        return $pupilsAmount ? $pupilsAmount : '';
+        return (string) count($this->pupilGroupAssociation);
     }
     /**
      * @return ArrayCollection
@@ -117,5 +106,40 @@ class GroupIteen
     }
 
 
+
+
+    /**
+     * Add subject
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Subject $subject
+     *
+     * @return GroupIteen
+     */
+    public function addSubject(\Application\Sonata\UserBundle\Entity\Subject $subject)
+    {
+        $this->subjects[] = $subject;
+
+        return $this;
+    }
+
+    /**
+     * Remove subject
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Subject $subject
+     */
+    public function removeSubject(\Application\Sonata\UserBundle\Entity\Subject $subject)
+    {
+        $this->subjects->removeElement($subject);
+    }
+
+    /**
+     * Get subjects
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSubjects()
+    {
+        return $this->subjects;
+    }
 
 }
