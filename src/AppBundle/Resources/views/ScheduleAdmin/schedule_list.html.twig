@@ -9,10 +9,27 @@
 {% block javascripts %}
     {{ parent() }}
     {# put links to javascript libraries here if you need any #}
+	<script type="text/javascript">
+function change(myid){
+	document.getElementById('tab1').style.display = "none";
+	document.getElementById('tab2').style.display = "none";
+	document.getElementById('tab3').style.display = "none";
+	document.getElementById(myid).style.display = "block";
+};
+</SCRIPT>
 {% endblock %}
 
 {% block sonata_admin_content -%}
         <h1>{{ name }}</h1>
+		<div class="tabsLink">
+			<input type="button" value="По группам" style="width:200px;" onClick="change('tab1')">
+			<input type="button" value="По преподавателям" style="width:200px;" onClick="change('tab2')">
+			<input type="button" value="По аудиториям" style="width:200px;" onClick="change('tab3')">
+			<br />
+			<br />
+		</div>
+		
+ 	<div id="tab1" style="background: white; display:block;">	
         <TABLE RULES=ALL BORDER=2>
             <TBODY>
             <TR>
@@ -54,4 +71,13 @@
             {% endfor %}
             </TBODY>
         </TABLE>
+	</div>	
+	
+        <div id="tab2" style="display:none;">
+		По преподавателям 2 <br>
+        </div>
+		
+        <div id="tab3" style="display:none;">
+		По аудиториям 3 <br>
+        </div>
 {% endblock sonata_admin_content %}
