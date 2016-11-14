@@ -21,12 +21,12 @@ services:
         class: AppBundle\Admin\PupilAdmin
         arguments: [~, Application\Sonata\UserBundle\Entity\UserPupil, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: 'iTeen', label: 'Учащиеся' }
+            - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Учащиеся' }
     app.admin.parent:
         class: AppBundle\Admin\ParentAdmin
         arguments: [~, Application\Sonata\UserBundle\Entity\UserParent, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: 'iTeen', label: 'Родители' }
+            - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Родители' }
     app.admin.group:
         class: AppBundle\Admin\GroupAdmin
         arguments:
@@ -34,4 +34,12 @@ services:
             - Application\Sonata\UserBundle\Entity\GroupIteen
             - AppBundle:CRUD
         tags:
-            - { name: sonata.admin, manager_type: orm, group: 'iTeen', label: 'Группы' }
+            - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Группы' }
+    app.admin.journal:
+        class: AppBundle\Admin\JournalAdmin
+        arguments:
+            - null
+            - Application\Sonata\UserBundle\Entity\GroupIteen
+            - AppBundle:CRUD
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Журналы' }
