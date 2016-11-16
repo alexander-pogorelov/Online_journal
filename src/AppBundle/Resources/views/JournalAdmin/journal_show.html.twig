@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:show.html.twig' %}
+
+{% block show %}
+    {{ parent() }}
+    <p>ID Группы</p>
+    {{ dump(groupId) }}
+    {{ dump(objectGroup) }}
+    <p>ID Предмета</p>
+    {{ dump(subjectId) }}
+    {{ dump(object) }}
+{% endblock %}

@@ -15,7 +15,10 @@ services:
               - [ setTemplate, [list, AppBundle:MetodistAdmin:base_list.html.twig]]
      admin.subject:
             class: AppBundle\Admin\SubjectAdmin
-            arguments: [~, Application\Sonata\UserBundle\Entity\Subject, ~]
+            arguments:
+               - null
+               - Application\Sonata\UserBundle\Entity\Subject
+               - AppBundle:CRUD
             tags:
                - { name: sonata.admin, manager_type: orm, group: Предметы, on_top: true }
      admin.classroom:

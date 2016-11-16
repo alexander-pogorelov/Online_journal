@@ -52,6 +52,40 @@ class CRUDController extends Controller
         ]);
     }
 
+    public function showAction($id = null)
+    {
+        $request = $this->getRequest();
 
+        $subjectId = $request->get($this->admin->getIdParameter());
+        $groupId = $request->get($this->admin->getParent()->getIdParameter());
+
+        $objectGroup = $this->admin->getParent()->getObject($groupId);
+        $objectSubject = $this->admin->getObject($subjectId);
+
+        if (!$objectSubject) {
+            throw $this->createNotFoundException(sprintf('unable to find the objectSubject with id : %s', $subjectId));
+        }
+        if (!$objectGroup) {
+            throw $this->createNotFoundException(sprintf('unable to find the objectGroup with id : %s', $groupId));
+        }
+
+        $this->admin->checkAccess('show', $objectSubject);
+
+        $preResponse = $this->preShow($request, $objectSubject);
+        if ($preResponse !== null) {
+            return $preResponse;
+        }
+
+        $this->admin->setSubject($objectSubject);
+
+        return $this->render('AppBundle:JournalAdmin:journal_show.html.twig', [
+            'action' => 'show',
+            'object' => $objectSubject,
+            'objectGroup' => $objectGroup,
+            'elements' => $this->admin->getShow(),
+            'subjectId' => $subjectId,
+            'groupId' => $groupId,
+        ], null);
+    }
 
 }

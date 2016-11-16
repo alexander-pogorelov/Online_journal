@@ -35,7 +35,7 @@ class JournalAdmin extends AbstractAdmin
                 ]+ $headerAttr)
             ->add('subjects', null, [
                     'label'=>'Предметы',
-                    'template' =>'AppBundle:JournalAdmin:subject_list.html.twig'
+                    'template' =>'AppBundle:JournalAdmin:subject_field.html.twig'
                 ]+ $headerAttr)
             ->add('_action', null, [
                     'label'=>'Перейти к журналу',
