@@ -1,15 +1,12 @@
-.Default
-{
-    font-family:Verdana;
-    font-size:12px;
-    color:#000000;
-    cursor: hand;
+td{
+    text-align: center;
 }
-.Default2
-{
-    font-family:Verdana;
-    font-size:12px;
-    color:#CC9900;
-    background: #0099FF80;
-    cursor: hand;
+
+td.cell_table:hover {
+    color:#000;
+    background: rgba(0, 153, 255, 0.4);
+}
+
+tr.line_table:hover {
+    background: rgba(49, 158, 32, 0.14);
 }

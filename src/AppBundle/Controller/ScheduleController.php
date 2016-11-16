@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use Application\Sonata\UserBundle\ApplicationSonataUserBundle;
 use Application\Sonata\UserBundle\Entity\GroupIteen;
+use Application\Sonata\UserBundle\Entity\UserTeacher;
+use Application\Sonata\UserBundle\Entity\Classroom;
 use Sonata\AdminBundle\Controller\CoreController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -13,7 +15,6 @@ class ScheduleController extends CoreController
     {
         $weekdays = ['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'];
         $timeIntervals = ['9.00-10.20','13.30-14.50','15.00-16.20','16.30-17.50'];
-        $link = 'http://s3pjo0.axshare.com/#p=%D1%80%D0%B0%D1%81%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D1%8F';
 
        /* if (false === $this->admin->isGranted('LIST')) {
             throw new AccessDeniedException();
@@ -23,7 +24,8 @@ class ScheduleController extends CoreController
 
         $em = $this->getDoctrine()->getManager();
         $groups = $em->getRepository('ApplicationSonataUserBundle:GroupIteen')->findAll();
-
+        $teachers = $em->getRepository('ApplicationSonataUserBundle:UserTeacher')->findAll();
+        $classrooms = $em->getRepository('ApplicationSonataUserBundle:Classroom')->findAll();
         $name = 'Расписание';
 
        return $this->render('AppBundle:ScheduleAdmin:schedule_list.html.twig', array(
@@ -31,7 +33,8 @@ class ScheduleController extends CoreController
                     'groups'=> $groups,
                     'weekdays'=>$weekdays,
                     'timeIntervals'=>$timeIntervals,
-                    'link'=>$link
+                    'teachers'=>$teachers,
+                    'classrooms'=>$classrooms
                 ));
     }
 }

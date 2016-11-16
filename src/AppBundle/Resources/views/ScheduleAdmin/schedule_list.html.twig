@@ -10,74 +10,160 @@
     {{ parent() }}
     {# put links to javascript libraries here if you need any #}
 	<script type="text/javascript">
-function change(myid){
-	document.getElementById('tab1').style.display = "none";
-	document.getElementById('tab2').style.display = "none";
-	document.getElementById('tab3').style.display = "none";
-	document.getElementById(myid).style.display = "block";
-};
-</SCRIPT>
+        function changeVisibility(viewId){
+            document.getElementById('tab1').style.display = "none";
+            document.getElementById('tab2').style.display = "none";
+            document.getElementById('tab3').style.display = "none";
+            document.getElementById(viewId).style.display = "block";
+        };
+        $(document).ready(function(){
+            $('#groups_view').click(changeVisibility.bind(null, 'tab1'));
+            $('#teacher_view').click(changeVisibility.bind(null, 'tab2'));
+            $('#classroom_view').click(changeVisibility.bind(null, 'tab3'));
+        });
+    </script>
 {% endblock %}
 
-{% block sonata_admin_content -%}
-        <h1>{{ name }}</h1>
+{%- block sonata_admin_content -%}
+        <h2>{{ name }}</h2>
 		<div class="tabsLink">
-			<input type="button" value="По группам" style="width:200px;" onClick="change('tab1')">
-			<input type="button" value="По преподавателям" style="width:200px;" onClick="change('tab2')">
-			<input type="button" value="По аудиториям" style="width:200px;" onClick="change('tab3')">
-			<br />
-			<br />
+			<input type="button" value="По группам" style="width:200px;" id="groups_view">
+			<input type="button" value="По преподавателям" style="width:200px;" id="teacher_view">
+			<input type="button" value="По аудиториям" style="width:200px;" id="classroom_view">
+            <br /> <br />
 		</div>
-		
+
+    {# по группам #}
  	<div id="tab1" style="background: white; display:block;">	
-        <TABLE RULES=ALL BORDER=2>
-            <TBODY>
-            <TR>
-                <TD  COLSPAN=2 ROWSPAN=2 WIDTH=171 HEIGHT=34 ALIGN=CENTER>Время занятий</TD>
+        <table rules=all border=2>
+            <tbody>
+            <tr>
+                <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
                 {% for group in groups %}
-                    <TD  COLSPAN=3 WIDTH=257 ALIGN=CENTER>Группа № {{ group.groupName }}</TD>
+                    <td  colspan=3 width=257>Группа № {{ group.groupName }}</td>
                 {% endfor %}
-            </TR>
-            <TR>
+            </tr>
+            <tr>
              {% for group in groups %}
-                <TD  ALIGN=CENTER>Предмет</TD>
-                <TD  ALIGN=CENTER>Ауд.</TD>
-                <TD  ALIGN=CENTER>Преподаватель</TD>
+                <td>Предмет</td>
+                <td>Ауд.</td>
+                <td>Преподаватель</td>
              {% endfor %}
-            </TR>
+            </tr>
             {% for weekday in weekdays %}
                 {% for timeInterval in timeIntervals %}
                     {% if loop.first %}
-                        <TR>
-                            <TD  ROWSPAN={{ loop.length }} HEIGHT=75 ALIGN=CENTER>{{ weekday }}</TD>
-                            <TD  ALIGN=CENTER>{{ timeInterval }}</TD>
+                        <tr class="line_table">
+                            <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
+                            <td>{{ timeInterval }}</td>
                             {% for group in groups %}
-                                <TD  align="center" class="Default"  onMouseOver="className='Default2'" onMouseOut="className='Default'" onClick="location='{{ link }}'"><BR></TD>
-                                <TD  align="center" class="Default"  onMouseOver="className='Default2'" onMouseOut="className='Default'" onClick="location='{{ link }}'"><BR></TD>
-                                <TD  align="center" class="Default"  onMouseOver="className='Default2'" onMouseOut="className='Default'" onClick="location='{{ link }}'"><BR></TD>
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
                             {% endfor %}
-                        </TR>
+                        </tr>
                     {% else %}
-                        <TR>
-                           <TD  ALIGN=CENTER>{{ timeInterval }}</TD>
+                        <tr class="line_table">
+                           <td>{{ timeInterval }}</td>
                             {% for group in groups %}
-                                <TD  align="center" class="Default"  onMouseOver="className='Default2'" onMouseOut="className='Default'" onClick="location='{{ link }}'"><BR></TD>
-                                <TD  align="center" class="Default"  onMouseOver="className='Default2'" onMouseOut="className='Default'" onClick="location='{{ link }}'"><BR></TD>
-                                <TD  align="center" class="Default"  onMouseOver="className='Default2'" onMouseOut="className='Default'" onClick="location='{{ link }}'"><BR></TD>
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
                             {% endfor %}
-                        </TR>
+                        </tr>
                     {% endif %}
                 {% endfor %}
             {% endfor %}
-            </TBODY>
-        </TABLE>
-	</div>	
-	
-        <div id="tab2" style="display:none;">
-		По преподавателям 2 <br>
+            </tbody>
+        </table>
+	</div>
+    {# по преподователям #}
+        <div id="tab2" style="background: white; display:none;">
+            <table rules=all border=2>
+                <tbody>
+                <tr>
+                    <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
+                    {% for teacher in teachers %}
+                        <td  colspan=3 width=257> Преподаватель: {{ teacher.fullName }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for teacher in teachers %}
+                        <td>Предмет</td>
+                        <td>Группа</td>
+                        <td>Ауд.</td>
+                    {% endfor %}
+                </tr>
+                {% for weekday in weekdays %}
+                    {% for timeInterval in timeIntervals %}
+                        {% if loop.first %}
+                            <tr class="line_table">
+                                <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
+                                <td>{{ timeInterval }}</td>
+                                {% for teacher in teachers %}
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                {% endfor %}
+                            </tr>
+                        {% else %}
+                            <tr class="line_table">
+                                <td>{{ timeInterval }}</td>
+                                {% for teacher in teachers %}
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
-		
-        <div id="tab3" style="display:none;">
-		По аудиториям 3 <br>
+
+    {# по аудиториям #}
+        <div id="tab3" style="background: white; display:none;">
+        <table rules=all border=2>
+            <tbody>
+            <tr>
+                <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
+                {% for classroom in classrooms %}
+                    <td  colspan=3 width=257>Аудитория № {{ classroom.number }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for classroom in classrooms %}
+                    <td>Предмет</td>
+                    <td>Группа</td>
+                    <td>Преподаватель</td>
+                {% endfor %}
+            </tr>
+            {% for weekday in weekdays %}
+                {% for timeInterval in timeIntervals %}
+                    {% if loop.first %}
+                        <tr class="line_table">
+                            <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
+                            <td>{{ timeInterval }}</td>
+                            {% for classroom in classrooms %}
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                            {% endfor %}
+                        </tr>
+                    {% else %}
+                        <tr class="line_table">
+                            <td>{{ timeInterval }}</td>
+                            {% for classroom in classrooms %}
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
         </div>
-{% endblock sonata_admin_content %}
+{%- endblock sonata_admin_content -%}
