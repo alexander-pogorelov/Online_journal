@@ -21,15 +21,16 @@ class ParentAdmin extends AbstractAdmin
 
     public function create($object)
     {
-		$container = $this->getConfigurationPool()->getContainer();
+        $container = $this->getConfigurationPool()->getContainer();
         $tokenGenerator = $container->get('fos_user.util.token_generator');
         $password = substr($tokenGenerator->generateToken(), 0, 8);
 
         $object->setPlainPassword($password);
+        $object->setUsername($object->getEmail());
 
         parent::create($object);
-		
-		$templating = $container->get('templating');
+
+        $templating = $container->get('templating');
         $message = \Swift_Message::newInstance()
             ->setSubject('Данные для авторизации')
             ->setFrom('testiteen@gmail.com')
@@ -102,7 +103,6 @@ class ParentAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('General')
-                ->add('username')
                 ->add('email')
             ->end()
         ;

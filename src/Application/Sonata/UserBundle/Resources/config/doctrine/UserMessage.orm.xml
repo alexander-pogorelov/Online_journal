@@ -14,10 +14,10 @@
 
         <field name="status" type="boolean" nullable="true" unique="false" />
 
-        <many-to-one field="user" target-entity="Application\Sonata\UserBundle\Entity\User" inversed-by="UserMessage">
+        <many-to-one field="user" target-entity="Application\Sonata\UserBundle\Entity\User" inversed-by="userMessage">
             <join-column name="user_id" referenced-column-name="id" nullable="false"/>
         </many-to-one>
-        <many-to-one field="message" target-entity="Application\Sonata\UserBundle\Entity\Message" inversed-by="UserMessage">
+        <many-to-one field="message" target-entity="Application\Sonata\UserBundle\Entity\Message" inversed-by="userMessage">
             <join-column name="message_id" referenced-column-name="id" nullable="false"/>
         </many-to-one>
 

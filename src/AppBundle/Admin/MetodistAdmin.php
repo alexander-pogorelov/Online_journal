@@ -26,15 +26,16 @@ class MetodistAdmin extends AbstractAdmin
 
     public function create($object)
     {
-		$container = $this->getConfigurationPool()->getContainer();
+        $container = $this->getConfigurationPool()->getContainer();
         $tokenGenerator = $container->get('fos_user.util.token_generator');
         $password = substr($tokenGenerator->generateToken(), 0, 8);
 
         $object->setPlainPassword($password);
+        $object->setUsername($object->getEmail());
 
         parent::create($object);
-		
-		$templating = $container->get('templating');
+
+        $templating = $container->get('templating');
         $message = \Swift_Message::newInstance()
             ->setSubject('Данные для авторизации')
             ->setFrom('testiteen@gmail.com')
@@ -127,14 +128,14 @@ class MetodistAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Bio', array('class' => 'col-md-6'))->end()
-            ->with('Work', array('class' => 'col-md-6'))->end()
+            ->with('Личные данные', array('class' => 'col-md-6'))->end()
+            ->with('Дополнительная информация', array('class' => 'col-md-6'))->end()
         ;
 
         $now = new \DateTime();
 
         $formMapper
-            ->with('Bio')
+            ->with('Личные данные')
             ->add('lastname', 'text', ['label'=>'Фамилия'])
             ->add('firstname', 'text', ['label'=>'Имя'])
             ->add('patronymic', 'text', ['label'=>'Отчество'])
@@ -148,8 +149,7 @@ class MetodistAdmin extends AbstractAdmin
             ->add('phone', 'text', ['label'=>'Телефон'])
             ->add('address', 'text', ['label'=>'Адрес'])
             ->end()
-            ->with('Work')
-            ->add('username')
+            ->with('Дополнительная информация')
             ->add('email')
             ->add('workDays', 'text', [
                 'label'=>'Дни работы',

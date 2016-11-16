@@ -12,8 +12,9 @@
 
         <field name="topic" type="string" length="255" nullable="true" unique="false" />
         <field name="message" type="text" nullable="true" unique="false" />
+        <field name="messageGroup" type="integer" nullable="true" unique="false" />
 
-        <one-to-many field="UserMessage" target-entity="Application\Sonata\UserBundle\Entity\UserMessage" mapped-by="message" orphan-removal="true">
+        <one-to-many field="userMessage" target-entity="Application\Sonata\UserBundle\Entity\UserMessage" mapped-by="message" orphan-removal="true">
             <cascade>
                 <cascade-persist/>
             </cascade>

@@ -21,15 +21,43 @@ class Message
 
     protected $userMessage;
 
+    protected $messageGroup;
+
+
+    public static $messageGroupArray = [
+        'все'=> 1,
+        'методисты'=> 4,
+        'преподаватели'=> 2,
+        'учащиеся' => 3,
+        'группы' => 5,
+    ];
+
+
+    /**
+     * @return mixed
+     */
+    public function getMessageGroup()
+    {
+        return $this->messageGroup;
+    }
+    public function getMessageGroupString()
+    {
+        return array_search($this->messageGroup , self::$messageGroupArray, true);
+    }
+
     public function __construct()
     {
         $this->userMessage = new ArrayCollection();
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $UserMessage;
 
+    public function getReceivers()
+    {
+        return implode(' ', [
+            $this->getUsers(),
+            $this->getMessageGroupString()
+        ]
+        );
+    }
 
     /**
      * Set topic
@@ -98,7 +126,7 @@ class Message
      */
     public function addUserMessage(UserMessage $userMessage)
     {
-        $this->UserMessage->add($userMessage);
+        $this->userMessage->add($userMessage);
 
         return $this;
     }
@@ -110,7 +138,7 @@ class Message
      */
     public function removeUserMessage(UserMessage $userMessage)
     {
-        $this->UserMessage->removeElement($userMessage);
+        $this->userMessage->removeElement($userMessage);
     }
 
     /**
@@ -120,6 +148,29 @@ class Message
      */
     public function getUserMessage()
     {
-        return $this->UserMessage;
+        return $this->userMessage;
+    }
+
+    public function getUsers()
+    {
+        $usersArray = array_map(function (UserMessage $userMessage) {
+            return $userMessage->getUser();
+        }, $this->userMessage->toArray());
+
+        return implode(', ', $usersArray);
+    }
+
+    /**
+     * Set messageGroup
+     *
+     * @param integer $messageGroup
+     *
+     * @return Message
+     */
+    public function setMessageGroup($messageGroup)
+    {
+        $this->messageGroup = $messageGroup;
+
+        return $this;
     }
 }

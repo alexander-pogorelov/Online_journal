@@ -14,13 +14,29 @@
                 <source>User Metodist List</source>
                 <target>Методисты</target>
             </trans-unit>
+            <trans-unit id="User_Metodist_Create">
+                <source>User Metodist Create</source>
+                <target>Создание</target>
+             </trans-unit>
             <trans-unit id="User_Teacher_List">
                 <source>User Teacher List</source>
                 <target>Преподаватели</target>
             </trans-unit>
+            <trans-unit id="User_Teacher_Create">
+                <source>User Teacher Create</source>
+                <target>Создание</target>
+            </trans-unit>
             <trans-unit id="Subject_List">
                 <source>Subject List</source>
                 <target>Предметы</target>
+            </trans-unit>
+            <trans-unit id="Subject_Create">
+                <source>Subject Create</source>
+                <target>Создание</target>
+            </trans-unit>
+            <trans-unit id="Message_List">
+                <source>Message List</source>
+                <target>Сообщения</target>
             </trans-unit>
             <trans-unit id="Classroom_List">
                 <source>Classroom List</source>

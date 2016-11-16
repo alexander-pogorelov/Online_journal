@@ -8,12 +8,17 @@
 
 namespace AppBundle\Admin;
 
+use Application\Sonata\UserBundle\Entity\Message;
+use Application\Sonata\UserBundle\Entity\UserMessage;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\CallbackTransformer;
+use Sonata\AdminBundle\Form\Type\CollectionType;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class MessageAdmin extends AbstractAdmin
 {
@@ -25,17 +30,14 @@ class MessageAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('abbreviation', 'text', [
-                'label'=>'Аббревиатура',
+            ->addIdentifier('receivers', 'text', [
+                'label'=>'Кому'
             ])
-            ->add('name', 'text', [
-                'label'=>'Предмет',
+            ->add('topic', 'text', [
+                'label'=>'Тема',
             ])
-            ->add('specialization', 'text', [
-                'label'=>'Специализация',
-            ])
-            ->add('comment', 'text', [
-                'label'=>'Примечание',
+            ->add('message', 'text', [
+                'label'=>'Содержание',
             ])
         ;
     }
@@ -43,16 +45,15 @@ class MessageAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filterMapper)
     {
         $filterMapper
-            ->add('abbreviation', null, [
-                'label'=>'Аббревиатура'
+            ->add('topic', null, [
+                'label'=>'Тема'
             ])
-            ->add('name', null, [
-                'label'=>'Предмет'
+            ->add('message', null, [
+                'label'=>'Содержание'
             ])
-            ->add('specialization', null, [
-                'label'=>'Специализация'
+            ->add('userMessage.user', null, [
+                'label'=>'Кому'
             ])
-
         ;
     }
 
@@ -60,26 +61,70 @@ class MessageAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Предмет', array('class' => 'col-md-6'))->end()
+            ->with('Сообщение', array('class' => 'col-md-6'))->end()
         ;
 
-
         $formMapper
-            ->with('Предмет')
-            ->add('abbreviation', 'text', [
-                'label'=>'Аббревиатура',
+            ->with('Сообщение')
+            ->add('userMessage', 'entity' , [
+                'label' => 'Кому',
+                'multiple' => true,
+                'by_reference' => false,
+                'required' => false,
+                'class' => 'Application\Sonata\UserBundle\Entity\User'
             ])
-            ->add('name', 'text', [
-                'label'=>'Предмет',
-            ])
-            ->add('specialization', 'text', [
-                'label'=>'Специализация',
-            ])
-            ->add('comment', TextareaType::class, [
-                'label'=>'Примечание',
+            ->add('messageGroup', 'choice', [
+                'choices' => Message::$messageGroupArray,
+                'choices_as_values' => true,
+                'multiple' => true,
+                'label'=>'Группы пользователей',
                 'required' => false
             ])
+            /*->add('groupName', 'entity' , [
+                'label' => 'Кому',
+                'multiple' => true,
+                'by_reference' => false,
+                'class' => 'Application\Sonata\UserBundle\Entity\GroupIteen'
+            ])*/
+            ->add('topic', 'text', [
+                'label'=>'Тема',
+            ])
+            ->add('message', TextareaType::class, [
+                'label'=>'Сообщение',
+            ])
             ->end()
+        ;
+        $message = $this->getSubject();
+
+        $formMapper
+            ->get('userMessage')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($associations) {
+                    if (!$associations) {
+                        return null;
+                    }
+                    $messageArray = array_map(function (UserMessage $userMessage) {
+                        return $userMessage->getUser();
+                    }, $associations->toArray()
+                    );
+                    return $messageArray;
+                },
+                function($users) use ($message) {
+                    $associations = new ArrayCollection();
+                    foreach ($message->getUserMessage() as $oldAssociation) {
+                        $user = $oldAssociation->getUser();
+                        if ($users->contains($user)) {
+                            $associations->add($oldAssociation);
+                            $users->removeElement($user);
+                        }
+                    }
+                    foreach ($users as $user) {
+                        $associations->add(new UserMessage($user, $message));
+                    }
+
+                    return $associations;
+                }
+            ))
         ;
     }
 }

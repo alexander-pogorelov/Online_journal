@@ -124,8 +124,6 @@ abstract class User extends BaseUser
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $UserMessage;
-
 
     /**
      * Add userMessage
@@ -136,7 +134,7 @@ abstract class User extends BaseUser
      */
     public function addUserMessage(UserMessage $userMessage)
     {
-        $this->UserMessage->add($userMessage);
+        $this->userMessage->add($userMessage);
 
         return $this;
     }
@@ -148,7 +146,7 @@ abstract class User extends BaseUser
      */
     public function removeUserMessage(UserMessage $userMessage)
     {
-        $this->UserMessage->removeElement($userMessage);
+        $this->userMessage->removeElement($userMessage);
     }
 
     /**
@@ -158,6 +156,6 @@ abstract class User extends BaseUser
      */
     public function getUserMessage()
     {
-        return $this->UserMessage;
+        return $this->userMessage;
     }
 }

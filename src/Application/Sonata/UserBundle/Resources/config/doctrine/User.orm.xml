@@ -23,7 +23,7 @@
         <field name="address" type="string" length="255" nullable="true" unique="false" />
         <field name="comment" type="text" length="255" nullable="true" unique="false" />
 
-        <one-to-many field="UserMessage" target-entity="Application\Sonata\UserBundle\Entity\UserMessage" mapped-by="user" orphan-removal="true">
+        <one-to-many field="userMessage" target-entity="Application\Sonata\UserBundle\Entity\UserMessage" mapped-by="user" orphan-removal="true">
             <cascade>
                 <cascade-persist/>
             </cascade>
