@@ -181,8 +181,10 @@ class PupilAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-            ->add('lastname', null, [
-                'label'=>'Фамилия'
+            ->add('full_name', 'doctrine_orm_callback', [
+                'label'=>'Ф.И.О. Ученика',
+                'callback' => 'AppBundle\Admin\Filters\GeneralFilters::getFullNameFilter',
+                'field_type' => 'text'
             ])
             ->add('dateOfBirth', null, [
                 'label'=>'Дата рождения'
@@ -198,4 +200,5 @@ class PupilAdmin extends AbstractAdmin
             ])
         ;
     }
+
 }
