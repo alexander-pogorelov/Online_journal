@@ -11,10 +11,10 @@
     {# put links to javascript libraries here if you need any #}
 	<script type="text/javascript">
         function changeVisibility(viewId){
-            document.getElementById('tab1').style.display = "none";
-            document.getElementById('tab2').style.display = "none";
-            document.getElementById('tab3').style.display = "none";
-            document.getElementById(viewId).style.display = "block";
+            $('#tab1').hide();
+            $('#tab2').hide();
+            $('#tab3').hide();
+            $('#'+viewId).show();
         };
         $(document).ready(function(){
             $('#groups_view').click(changeVisibility.bind(null, 'tab1'));
