@@ -27,6 +27,11 @@ class GroupAdmin extends AbstractAdmin
         $collection->add('showPupilsInGroup', $this->getRouterIdParameter().'/pupils');
     }
 
+    public function prePersist($object)
+    {
+        $object->setCreatedAt(new \DateTime());
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $headerAttr = ['header_style' => 'text-align: center'];

@@ -13,12 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class GroupIteen
 {
-    public function __construct()
-    {
-        $this->pupilGroupAssociation = new ArrayCollection();
-        $this->subjects = new ArrayCollection();
-    }
-
     private $id;
 
     private $groupName;
@@ -28,6 +22,30 @@ class GroupIteen
     protected $pupilGroupAssociation;
 
     private $subjects;
+
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->pupilGroupAssociation = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
 
     public function getPupilsAmount()
     {
