@@ -78,6 +78,8 @@ sonata_admin:
 
     templates:
         layout: AppBundle::standard_layout.html.twig
+        edit: AppBundle:CRUD:base_edit.html.twig
+    show_mosaic_button: false
 
 sonata_user:
     security_acl: true

@@ -5,7 +5,6 @@ services:
           tags:
              - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Преподаватели }
           calls:
-             - [ setTranslationDomain, [AppBundle]]
              - [ setTemplate, [list, AppBundle:TeacherAdmin:base_list.html.twig]]
      admin.metodist:
            class: AppBundle\Admin\MetodistAdmin
@@ -13,15 +12,17 @@ services:
            tags:
               - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Методисты }
            calls:
-              - [ setTranslationDomain, [AppBundle]]
               - [ setTemplate, [list, AppBundle:MetodistAdmin:base_list.html.twig]]
      admin.subject:
             class: AppBundle\Admin\SubjectAdmin
             arguments: [~, Application\Sonata\UserBundle\Entity\Subject, ~]
             tags:
                - { name: sonata.admin, manager_type: orm, group: Предметы, on_top: true }
-            calls:
-               - [ setTranslationDomain, [AppBundle]]
+     admin.message:
+                 class: AppBundle\Admin\MessageAdmin
+                 arguments: [~, Application\Sonata\UserBundle\Entity\Message, ~]
+                 tags:
+                    - { name: sonata.admin, manager_type: orm, group: Сообщения, on_top: true }
      admin.classroom:
                 class: AppBundle\Admin\ClassroomAdmin
                 arguments: [~, Application\Sonata\UserBundle\Entity\Classroom, ~]

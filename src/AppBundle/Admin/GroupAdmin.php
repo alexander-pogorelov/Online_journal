@@ -25,6 +25,7 @@ class GroupAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('showPupilsInGroup', $this->getRouterIdParameter().'/pupils');
+        $collection->remove('export');
     }
 
     protected function configureListFields(ListMapper $listMapper)
