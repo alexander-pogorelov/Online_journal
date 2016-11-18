@@ -29,7 +29,7 @@ class LoadAdmins implements FixtureInterface
         $admin->setLastname('Silver');
         $admin->setUsername('admin');
         $admin->setPlainPassword('admin');
-        $admin->setEmail('ics.price@gmail.com');
+        $admin->setEmail('admin@example.com');
         $admin->setRealRoles(['ROLE_SUPER_ADMIN']);
         $admin->setEnabled(true);
 

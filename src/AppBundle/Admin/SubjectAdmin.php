@@ -14,6 +14,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 
 class SubjectAdmin extends AbstractAdmin
@@ -22,6 +23,10 @@ class SubjectAdmin extends AbstractAdmin
 
     protected $baseRoutePattern = 'subject';
 
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('export');
+    }
 
     protected function configureListFields(ListMapper $listMapper)
     {

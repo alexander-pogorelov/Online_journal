@@ -16,6 +16,8 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 
 class MetodistAdmin extends AbstractAdmin
@@ -57,6 +59,27 @@ class MetodistAdmin extends AbstractAdmin
         $object->setEnabled(true);
     }
 
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('export');
+    }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        $errorElement
+            ->with('email')
+                ->assertEmail()
+                ->assertNotBlank()
+            ->end()
+            ->with('firstname')
+                ->assertNotBlank()
+            ->end()
+            ->with('lastname')
+                ->assertNotBlank()
+            ->end()
+        ;
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -86,8 +109,10 @@ class MetodistAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filterMapper)
     {
         $filterMapper
-            ->add('lastname', null, [
-                'label'=>'Фамилия'
+            ->add('full_name', 'doctrine_orm_callback', [
+                'label'=>'Ф.И.О. Методиста',
+                'callback' => 'AppBundle\Admin\Filters\GeneralFilters::getFullNameFilter',
+                'field_type' => 'text'
             ])
             ->add('speciality', null, [
                 'label'=>'Специальность'
@@ -150,14 +175,12 @@ class MetodistAdmin extends AbstractAdmin
             ->add('address', 'text', ['label'=>'Адрес'])
             ->end()
             ->with('Дополнительная информация')
-            ->add('email')
+            ->add('email', 'email')
             ->add('workDays', 'text', [
                 'label'=>'Дни работы',
-                'required' => false
             ])
             ->add('workHours', 'text', [
                 'label'=>'Часы работы',
-                'required' => false
             ])
             ->add('comment', TextareaType::class, [
                 'label'=>'Примечание',

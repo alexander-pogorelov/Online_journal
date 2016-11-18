@@ -9,14 +9,27 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class Subject
 {
     protected $id;
 
+    /**
+     * @Assert\NotBlank()
+     */
     protected $name;
 
+    /**
+     * @Assert\NotBlank()
+     */
+
     protected $abbreviation;
+
+    /**
+     * @Assert\NotBlank()
+     */
 
     protected $specialization;
 

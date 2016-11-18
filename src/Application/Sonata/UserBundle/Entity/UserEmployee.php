@@ -8,13 +8,25 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class UserEmployee extends User
 {
+    /**
+     * @Assert\NotBlank()
+     */
     protected $speciality;
+
+    /**
+     * @Assert\NotBlank()
+     */
 
     protected $workDays;
 
+    /**
+     * @Assert\NotBlank()
+     */
     protected $workHours;
 
     /**
