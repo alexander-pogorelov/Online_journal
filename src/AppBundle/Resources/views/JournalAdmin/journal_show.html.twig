@@ -1,11 +1,52 @@
 {% extends 'SonataAdminBundle:CRUD:show.html.twig' %}
 
-{% block show %}
-    {{ parent() }}
-    <p>ID Группы</p>
-    {{ dump(groupId) }}
-    {{ dump(objectGroup) }}
-    <p>ID Предмета</p>
-    {{ dump(subjectId) }}
-    {{ dump(object) }}
+
+
+
+{% block list_table %}
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-primary" >
+            <div class="box-body ">
+                {% for subject in subjectList %}
+                    <a class="btn btn-sm btn-default" href="{{ path('journal-route-admin_subject_show', {
+                            'id': groupId,
+                            'childId': subject.id
+                        }) }}">
+                        {{ subject.getName }}
+                    </a>
+                {% endfor %}
+
+                <p>Группа:&nbsp {{ groupName }}</p>
+                <p>Предмет:&nbsp {{ object.name }}</p>
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    {% block table_header %}
+                        <thead>
+                        <tr class="sonata-ba-list-field-header">
+                            <th class="sonata-ba-list-field-header-text">
+                                Ф.И.О. учащегося
+                            </th>
+                        </tr>
+                        </thead>
+                    {% endblock %}
+
+
+                    {% block table_body %}
+                        <tbody>
+                        {% for pupil in pupilGroup %}
+                            <tr>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ pupil.getPupil|e }}
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    {% endblock %}
+
+
+
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

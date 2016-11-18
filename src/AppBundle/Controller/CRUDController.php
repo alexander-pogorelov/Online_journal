@@ -8,6 +8,8 @@
 
 namespace AppBundle\Controller;
 
+use Application\Sonata\UserBundle\ApplicationSonataUserBundle;
+use Application\Sonata\UserBundle\Entity\Subject;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
 class CRUDController extends Controller
@@ -55,11 +57,15 @@ class CRUDController extends Controller
     public function showAction($id = null)
     {
         $request = $this->getRequest();
-
+        // ID предмета
         $subjectId = $request->get($this->admin->getIdParameter());
+        // ID группы
         $groupId = $request->get($this->admin->getParent()->getIdParameter());
-
+        // Объект группы
         $objectGroup = $this->admin->getParent()->getObject($groupId);
+        // Имя группы
+        $groupName = $objectGroup->getGroupName();
+        // Объект предмета
         $objectSubject = $this->admin->getObject($subjectId);
 
         if (!$objectSubject) {
@@ -68,6 +74,19 @@ class CRUDController extends Controller
         if (!$objectGroup) {
             throw $this->createNotFoundException(sprintf('unable to find the objectGroup with id : %s', $groupId));
         }
+
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:GroupIteen');
+        $currentGroup = $repository->find($groupId);
+        $subjectList = $currentGroup->getSubjects(); // список предметов группы
+
+
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+
+        $pupilGroup = $repository->findby([
+            'group' => $groupId
+        ]);
+
+
 
         $this->admin->checkAccess('show', $objectSubject);
 
@@ -80,9 +99,11 @@ class CRUDController extends Controller
 
         return $this->render('AppBundle:JournalAdmin:journal_show.html.twig', [
             'action' => 'show',
-            'object' => $objectSubject,
-            'objectGroup' => $objectGroup,
             'elements' => $this->admin->getShow(),
+            'pupilGroup' => $pupilGroup,
+            'subjectList' => $subjectList,
+            'object' => $objectSubject, // изменить на имя предмета и предать другой объект
+            'groupName' => $groupName,
             'subjectId' => $subjectId,
             'groupId' => $groupId,
         ], null);
