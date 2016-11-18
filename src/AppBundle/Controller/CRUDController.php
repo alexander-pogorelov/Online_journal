@@ -104,7 +104,6 @@ class CRUDController extends Controller
             'subjectList' => $subjectList,
             'object' => $objectSubject, // изменить на имя предмета и предать другой объект
             'groupName' => $groupName,
-            'subjectId' => $subjectId,
             'groupId' => $groupId,
         ], null);
     }

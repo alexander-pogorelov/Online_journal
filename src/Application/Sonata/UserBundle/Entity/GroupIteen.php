@@ -31,6 +31,15 @@ class GroupIteen
         $this->subjects = new ArrayCollection();
     }
 
+    public function getFirstSubjectId()
+    {
+        $firstSubject = $this->subjects->first();
+        if ($firstSubject) {
+            return $firstSubject->getId();
+        } else {
+            return false;
+        }
+    }
     /**
      * @return mixed
      */
