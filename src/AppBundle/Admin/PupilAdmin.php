@@ -129,7 +129,6 @@ class PupilAdmin extends AbstractAdmin
                 ])
                 ->add('email', 'email', [
                     'label'=>'E-Mail',
-                    'required' => false
                 ])
             ->add('classNumber', 'choice', [
                 'choices' => $classNumberArray,

@@ -119,8 +119,7 @@ class ParentAdmin extends AbstractAdmin
             ->end()
             ->with('Данные')
                 //->add('username')
-                ->add('email', 'email',[
-                ])
+                ->add('email', 'email')
                 ->add('phone', 'text', [
                     'label'=>'Телефон',
                     'required' => false
