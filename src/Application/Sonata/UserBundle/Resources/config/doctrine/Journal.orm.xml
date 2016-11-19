@@ -11,7 +11,7 @@
         <field name="isAbsent" column="is_absent" type="boolean" nullable="false" unique="false" />
         <field name="remark" column="remark" type="string" length="255" nullable="true" unique="false" />
         <field name="assessment" column="assessment" type="integer" nullable="true" unique="false" />
-        <many-to-one field="pupilGroup" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociation">
+        <many-to-one field="pupilGroup" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociation" inversed-by="journal">
             <join-columns>
                 <join-column  name="pupil_group_id" referenced-column-name="id" nullable="false"/>
             </join-columns>

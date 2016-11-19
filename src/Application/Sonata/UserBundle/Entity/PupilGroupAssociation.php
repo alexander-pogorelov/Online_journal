@@ -17,6 +17,24 @@ class PupilGroupAssociation
 
     private $group;
 
+    private $journal;
+
+    /**
+     * @return mixed
+     */
+    public function getJournal()
+    {
+        return $this->journal;
+    }
+
+    /**
+     * @param mixed $journal
+     */
+    public function setJournal($journal)
+    {
+        $this->journal = $journal;
+    }
+
     public function __construct(UserPupil $pupil, GroupIteen $group)
     {
         $this->pupil = $pupil;

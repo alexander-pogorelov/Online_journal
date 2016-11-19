@@ -11,6 +11,7 @@
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
+        <one-to-many field="journal" target-entity="Application\Sonata\UserBundle\Entity\Journal" mapped-by="pupilGroup" />
 
         <many-to-one field="pupil" target-entity="Application\Sonata\UserBundle\Entity\UserPupil" inversed-by="pupilGroupAssociation">
             <join-column name="pupil_id" referenced-column-name="id" nullable="false"/>

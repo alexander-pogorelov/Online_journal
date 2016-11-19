@@ -9,6 +9,7 @@
 namespace AppBundle\Controller;
 
 use Application\Sonata\UserBundle\ApplicationSonataUserBundle;
+use Application\Sonata\UserBundle\Entity\Journal;
 use Application\Sonata\UserBundle\Entity\Subject;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
@@ -77,7 +78,38 @@ class CRUDController extends Controller
 
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:GroupIteen');
         $currentGroup = $repository->find($groupId);
-        $subjectList = $currentGroup->getSubjects(); // список предметов группы
+        // список предметов группы
+        $subjectList = $currentGroup->getSubjects();
+
+        ////////
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+        $query = $repository->createQueryBuilder('pga')
+            ->leftJoin('pga.journal', 'j')
+            ->leftJoin('j.lesson', 'l')
+            ->addSelect('j.assessment')
+            ->addSelect('l.id')
+            ->where('pga.group = :groupId')
+            ->setParameter('groupId', $groupId)
+            ->getQuery()
+        ;
+        //    ->leftJoin()
+         //   ->where('g.id = :groupId')
+         //   ->setParameter('groupId', $groupId)
+         //   ->getQuery()
+        //;
+        //$repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Journal');
+        //$query = $repository->createQueryBuilder('j')
+         //   ->leftJoin('j.pupilGroup', 'pga')
+          //  ->innerJoin()
+          //  ->getQuery()
+        //;
+
+
+        $result = $query->getResult();
+        //$result = $query->getArrayResult();
+        $sql = $query->getSql();
+
+
 
 
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
@@ -102,9 +134,11 @@ class CRUDController extends Controller
             'elements' => $this->admin->getShow(),
             'pupilGroup' => $pupilGroup,
             'subjectList' => $subjectList,
-            'object' => $objectSubject, // изменить на имя предмета и предать другой объект
+            'object' => $objectSubject, // нужен для роутов
             'groupName' => $groupName,
             'groupId' => $groupId,
+            'sql' => $sql,
+            'result' => $result,
         ], null);
     }
 
