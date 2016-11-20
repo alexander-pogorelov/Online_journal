@@ -83,13 +83,15 @@ class CRUDController extends Controller
 
         ////////
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
-        $query = $repository->createQueryBuilder('pga')
+        $qb = $repository->createQueryBuilder('pga');
+        $query = $qb
             ->leftJoin('pga.journal', 'j')
             ->leftJoin('j.lesson', 'l')
-            ->addSelect('j.assessment')
-            ->addSelect('l.id')
-            ->where('pga.group = :groupId')
-            ->setParameter('groupId', $groupId)
+            ->addSelect('j')
+            ->addSelect('l')
+            //->where('pga.group = :groupId')
+            ->where($qb->expr()->eq('pga.group', $groupId))
+            //->setParameter('groupId', $groupId)
             ->getQuery()
         ;
         //    ->leftJoin()

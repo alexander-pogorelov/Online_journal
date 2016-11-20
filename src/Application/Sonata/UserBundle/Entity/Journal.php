@@ -17,36 +17,11 @@ class Journal
 
     private $pupilGroup;
 
-    private $isAbsent; // если 1, значит отсутствует на уроке
-
-    private $assessment; // оценка по предмету
+    private $assessment; // оценка по предмету (если "-1", то отсутствует на уроке)
 
     private $remark; // комментарий к оценке
 
 
-    /**
-     * Set isAbsent
-     *
-     * @param boolean $isAbsent
-     *
-     * @return Journal
-     */
-    public function setIsAbsent($isAbsent)
-    {
-        $this->isAbsent = $isAbsent;
-
-        return $this;
-    }
-
-    /**
-     * Get isAbsent
-     *
-     * @return boolean
-     */
-    public function getIsAbsent()
-    {
-        return $this->isAbsent;
-    }
 
     /**
      * Get id
@@ -152,5 +127,34 @@ class Journal
     public function getLesson()
     {
         return $this->lesson;
+    }
+    /**
+     * @var boolean
+     */
+    private $isAbsent;
+
+
+    /**
+     * Set isAbsent
+     *
+     * @param boolean $isAbsent
+     *
+     * @return Journal
+     */
+    public function setIsAbsent($isAbsent)
+    {
+        $this->isAbsent = $isAbsent;
+
+        return $this;
+    }
+
+    /**
+     * Get isAbsent
+     *
+     * @return boolean
+     */
+    public function getIsAbsent()
+    {
+        return $this->isAbsent;
     }
 }
