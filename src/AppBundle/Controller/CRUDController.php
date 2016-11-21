@@ -75,11 +75,26 @@ class CRUDController extends Controller
         if (!$objectGroup) {
             throw $this->createNotFoundException(sprintf('unable to find the objectGroup with id : %s', $groupId));
         }
-
+        // Извлекаем список предметов группы
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:GroupIteen');
         $currentGroup = $repository->find($groupId);
-        // список предметов группы
         $subjectList = $currentGroup->getSubjects();
+
+        // Извлекаем список уроков по предмету
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Lesson');
+        $qb = $repository->createQueryBuilder('l');
+        $query = $qb
+            ->leftJoin('l.teacherSubject', 'ts')
+            ->where($qb->expr()->eq('ts.subject', $subjectId))
+            ->andWhere($qb->expr()->isNotNull('l.topic')) // запрашиваем только проведенные уроки
+            ->andWhere($qb->expr()->eq('l.group', $groupId))
+            ->getQuery()
+        ;
+        $lessonsList = $query->getResult();
+        $lessonsListSQL = $query->getSql();
+
+
+
 
         ////////
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
@@ -87,14 +102,14 @@ class CRUDController extends Controller
         $query = $qb
             ->leftJoin('pga.journal', 'j')
             ->leftJoin('j.lesson', 'l')
-            ->leftJoin('l.teacherSubject', 'ts')
+            //->leftJoin('l.teacherSubject', 'ts')
             ->addSelect('j')
             ->addSelect('l')
             ->where($qb->expr()->eq('pga.group', $groupId))
-            ->andWhere($qb->expr()->orX(
-                $qb->expr()->isNull('ts.subject'),
-                $qb->expr()->eq('ts.subject', $subjectId)
-            ))
+            //->andWhere($qb->expr()->orX(
+                //$qb->expr()->isNull('ts.subject'),
+                //$qb->expr()->eq('ts.subject', $subjectId)
+            //))
             ->getQuery()
         ;
         $result = $query->getResult();
@@ -102,37 +117,9 @@ class CRUDController extends Controller
         //$result = $query->getArrayResult();
         $sql = $query->getSql();
         ////////////////////////////////////////
-        //->add('where', $qb->expr()->orX(
-        //$qb->expr()->eq('pga.group', $groupId),
-        //$qb->expr()->eq('pga.group', null)
-        //))
-        /*
-        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Journal');
-        $qb2 = $repository->createQueryBuilder('j');
-        $query2 = $qb2
-            ->leftJoin('j.pupilGroup', 'pga')
-            ->leftJoin('j.lesson', 'l')
-            ->addSelect('pga')
-            ->addSelect('l')
-            ->where($qb2->expr()->eq('pga.group', $groupId))
-            ->getQuery()
-        ;
-        $result2 = $query->getArrayResult();
-        $sql2 = $query2->getSql();
-        */
 
 
-        //    ->leftJoin()
-         //   ->where('g.id = :groupId')
-         //   ->setParameter('groupId', $groupId)
-         //   ->getQuery()
-        //;
-        //$repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Journal');
-        //$query = $repository->createQueryBuilder('j')
-         //   ->leftJoin('j.pupilGroup', 'pga')
-          //  ->innerJoin()
-          //  ->getQuery()
-        //;
+
         //\Doctrine\Common\Util\Debug::dump($qb);
         //exit;
 
@@ -151,15 +138,15 @@ class CRUDController extends Controller
         return $this->render('AppBundle:JournalAdmin:journal_show.html.twig', [
             'action' => 'show',
             'elements' => $this->admin->getShow(),
-            //'pupilGroup' => $pupilGroup,
             'subjectList' => $subjectList,
             'object' => $objectSubject, // нужен для роутов
             'groupName' => $groupName,
             'groupId' => $groupId,
             'sql' => $sql,
             'result' => $result,
-            //'sql2' => $sql2,
             'result2' => $result2,
+            'lessonsList' => $lessonsList,
+            'lessonsListSQL' => $lessonsListSQL,
         ], null);
     }
 
