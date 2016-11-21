@@ -128,33 +128,5 @@ class Journal
     {
         return $this->lesson;
     }
-    /**
-     * @var boolean
-     */
-    private $isAbsent;
 
-
-    /**
-     * Set isAbsent
-     *
-     * @param boolean $isAbsent
-     *
-     * @return Journal
-     */
-    public function setIsAbsent($isAbsent)
-    {
-        $this->isAbsent = $isAbsent;
-
-        return $this;
-    }
-
-    /**
-     * Get isAbsent
-     *
-     * @return boolean
-     */
-    public function getIsAbsent()
-    {
-        return $this->isAbsent;
-    }
 }

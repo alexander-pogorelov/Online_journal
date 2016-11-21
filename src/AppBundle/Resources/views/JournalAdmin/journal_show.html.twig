@@ -9,6 +9,7 @@
             <div class="box-body ">
                 {{ dump(sql) }}
                 {{ dump(result) }}
+                {{ dump(result2) }}
                 <p>ID Группы:
                 {{ groupId }}
                 </p>
@@ -37,13 +38,10 @@
 
                     {% block table_body %}
                         <tbody>
-                        {% for pupil in pupilGroup %}
+                        {% for pga in result %}
                             <tr>
                                 <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                    {{ pupil.getPupil|e }}
-                                </td>
-                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                    {# result[0]|e #}
+                                    {{ pga.pupil.__toString }}
                                 </td>
                             </tr>
                         {% endfor %}
