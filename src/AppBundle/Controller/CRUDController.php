@@ -75,12 +75,13 @@ class CRUDController extends Controller
         if (!$objectGroup) {
             throw $this->createNotFoundException(sprintf('unable to find the objectGroup with id : %s', $groupId));
         }
+
         // Извлекаем список предметов группы
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:GroupIteen');
         $currentGroup = $repository->find($groupId);
         $subjectList = $currentGroup->getSubjects();
 
-        // Извлекаем список уроков по предмету
+        // Извлекаем список уроков группы по предмету
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Lesson');
         $qb = $repository->createQueryBuilder('l');
         $query = $qb
@@ -91,38 +92,20 @@ class CRUDController extends Controller
             ->getQuery()
         ;
         $lessonsList = $query->getResult();
-        $lessonsListSQL = $query->getSql();
 
 
-
-
-        ////////
+        // Извлекаем список журналов и уроков для учеников группы
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
         $qb = $repository->createQueryBuilder('pga');
         $query = $qb
             ->leftJoin('pga.journal', 'j')
             ->leftJoin('j.lesson', 'l')
-            //->leftJoin('l.teacherSubject', 'ts')
             ->addSelect('j')
             ->addSelect('l')
             ->where($qb->expr()->eq('pga.group', $groupId))
-            //->andWhere($qb->expr()->orX(
-                //$qb->expr()->isNull('ts.subject'),
-                //$qb->expr()->eq('ts.subject', $subjectId)
-            //))
             ->getQuery()
         ;
-        $result = $query->getResult();
-        $result2 = $query->getArrayResult();
-        //$result = $query->getArrayResult();
-        $sql = $query->getSql();
-        ////////////////////////////////////////
-
-
-
-        //\Doctrine\Common\Util\Debug::dump($qb);
-        //exit;
-
+        $journalsData = $query->getResult();
 
 
 
@@ -139,14 +122,11 @@ class CRUDController extends Controller
             'action' => 'show',
             'elements' => $this->admin->getShow(),
             'subjectList' => $subjectList,
-            'object' => $objectSubject, // нужен для роутов
+            'object' => $objectSubject,
             'groupName' => $groupName,
             'groupId' => $groupId,
-            'sql' => $sql,
-            'result' => $result,
-            'result2' => $result2,
+            'journalsData' => $journalsData,
             'lessonsList' => $lessonsList,
-            'lessonsListSQL' => $lessonsListSQL,
         ], null);
     }
 
