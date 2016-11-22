@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Application\Sonata\UserBundle\Entity\Lesson" table="lesson">
+    <entity name="Application\Sonata\UserBundle\Entity\Lesson" table="lesson" repository-class="Application\Sonata\UserBundle\Repository\LessonRepository">
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>

@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Application\Sonata\UserBundle\Entity\PupilGroupAssociation" table="pupil_group_association">
+    <entity name="Application\Sonata\UserBundle\Entity\PupilGroupAssociation" table="pupil_group_association" repository-class="Application\Sonata\UserBundle\Repository\PupilGroupAssociationRepository">
         <unique-constraints>
             <unique-constraint columns="pupil_id,group_id" />
         </unique-constraints>

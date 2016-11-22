@@ -81,33 +81,13 @@ class CRUDController extends Controller
         $currentGroup = $repository->find($groupId);
         $subjectList = $currentGroup->getSubjects();
 
-        // Извлекаем список уроков группы по предмету
+        // Извлекаем список уроков группы по предмету, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Lesson');
-        $qb = $repository->createQueryBuilder('l');
-        $query = $qb
-            ->leftJoin('l.teacherSubject', 'ts')
-            ->where($qb->expr()->eq('ts.subject', $subjectId))
-            ->andWhere($qb->expr()->isNotNull('l.topic')) // запрашиваем только проведенные уроки
-            ->andWhere($qb->expr()->eq('l.group', $groupId))
-            ->getQuery()
-        ;
-        $lessonsList = $query->getResult();
+        $lessonsList = $repository->findBySubjectAndGroup($subjectId, $groupId);
 
-
-        // Извлекаем список журналов и уроков для учеников группы
+        // Извлекаем список всех журналов для учеников группы, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
-        $qb = $repository->createQueryBuilder('pga');
-        $query = $qb
-            ->leftJoin('pga.journal', 'j')
-            ->leftJoin('j.lesson', 'l')
-            ->addSelect('j')
-            ->addSelect('l')
-            ->where($qb->expr()->eq('pga.group', $groupId))
-            ->getQuery()
-        ;
-        $journalsData = $query->getResult();
-
-
+        $journalsData = $repository->findAllJournals($groupId);
 
         $this->admin->checkAccess('show', $objectSubject);
 
