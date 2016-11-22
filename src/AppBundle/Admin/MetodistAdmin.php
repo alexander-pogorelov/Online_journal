@@ -74,7 +74,7 @@ class MetodistAdmin extends AbstractAdmin
             ->with('firstname')
                 ->assertNotBlank()
             ->end()
-            ->with('lastname')
+            ->with('address')
                 ->assertNotBlank()
             ->end()
         ;
