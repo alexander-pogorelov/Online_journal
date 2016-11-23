@@ -10,6 +10,7 @@
         </id>
         <field name="groupName" column="group_name" type="string" nullable="false" unique="true" />
         <field name="note" column="note" type="string" nullable="true" unique="false" />
+        <field name="createdAt" column="created_at" type="datetime"/>
 
         <one-to-many field="pupilGroupAssociation" target-entity="Application\Sonata\UserBundle\Entity\PupilGroupAssociation" mapped-by="group" orphan-removal="true">
             <cascade>

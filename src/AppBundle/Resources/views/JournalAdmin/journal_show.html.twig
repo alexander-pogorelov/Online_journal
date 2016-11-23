@@ -1,0 +1,88 @@
+{% extends 'SonataAdminBundle:CRUD:show.html.twig' %}
+
+{% block sonata_page_content_header %}
+{% endblock %}
+
+{%- block actions -%}
+{% endblock %}
+
+{% block list_table %}
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-primary" >
+            <div class="box-body ">
+                <p>Группа:&nbsp {{ groupName }}</p>
+                <p>Предмет:&nbsp {{ object.name }}</p>
+                {# Вывод кнопок перключения предметов #}
+                {% for subject in subjectList %}
+                    <a class="btn btn-sm btn-default" href="{{ path('journal-route-admin_subject_show', {
+                            'id': groupId,
+                            'childId': subject.id
+                        }) }}">
+                        {{ subject.getName }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-primary" >
+            <div class="box-body ">
+                <table class="table table-bordered table-striped sonata-ba-list">
+
+                    {% block table_header %}
+                        <thead>
+                            <tr class="sonata-ba-list-field-header">
+                                <th class="sonata-ba-list-field-header-text">
+                                    Ф.И.О. учащегося
+                                </th>
+                                {# Вывод проведенных уроков по предмету в заголовке таблицы журнала #}
+                                {% for currentLesson in lessonsList %}
+                                    <th style="text-align:center">
+                                        {{ currentLesson.date|date("d/m") }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                    {% endblock %}
+
+                    {% block table_body %}
+                        <tbody>
+                        {# Вывод строк журнала #}
+                        {% for pga in journalsData %}
+                            <tr>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ pga.pupil.__toString }}
+                                </td>
+                                {# Вывод оценок #}
+                                {% set flag = false %}
+                                {% for currentLesson in lessonsList %}
+                                    {# Проверяем совпадение ID урока предмета с ID урока в коллекции журналов #}
+                                    {% for journal in pga.journal %}
+                                        {% if journal.lesson.id == currentLesson.id %}
+                                            <td style="text-align:center">
+                                                {% if journal.assessment == -1 %}
+                                                    н
+                                                {% else %}
+                                                    {{ journal.assessment }}
+                                                {% endif %}
+                                            </td>
+                                            {% set flag = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {# если совпадение не найдено, генерируем пустую ячейку #}
+                                    {% if flag == false %}
+                                        <td></td>
+                                    {% else %}
+                                        {% set flag = false %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    {% endblock %}
+
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -23,6 +23,8 @@ class Lesson
 
     private $dateTimeClassroom;
 
+    private $date;
+
     /**
      * Set topic
      *
@@ -151,5 +153,29 @@ class Lesson
     public function getDateTimeClassroom()
     {
         return $this->dateTimeClassroom;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Lesson
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }
