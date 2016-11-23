@@ -11,6 +11,8 @@ namespace Application\Sonata\UserBundle\Entity;
 
 class Journal
 {
+    const  IS_ABSENT = -1;
+
     private $id;
 
     private $lesson;
