@@ -8,8 +8,9 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
-
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class Message
 {
@@ -23,13 +24,14 @@ class Message
 
     protected $messageGroup;
 
+    protected $receiver;
+
 
     public static $messageGroupArray = [
-        'все'=> 1,
+        'все'=> 0,
         'методисты'=> 4,
         'преподаватели'=> 2,
-        'учащиеся' => 3,
-        'группы' => 5,
+        'учащиеся' => 1,
     ];
 
 
@@ -57,6 +59,13 @@ class Message
             $this->getMessageGroupString()
         ]
         );
+    }
+
+    public function setReceivers($receiver)
+    {
+        $this->receiver = $receiver;
+
+        return $this;
     }
 
     /**

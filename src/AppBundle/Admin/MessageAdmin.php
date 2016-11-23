@@ -19,6 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\CallbackTransformer;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Doctrine\Common\Collections\ArrayCollection;
+use Sonata\AdminBundle\Route\RouteCollection;
+
 
 class MessageAdmin extends AbstractAdmin
 {
@@ -26,6 +28,10 @@ class MessageAdmin extends AbstractAdmin
 
     protected $baseRoutePattern = 'message';
 
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('export');
+    }
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -76,16 +82,9 @@ class MessageAdmin extends AbstractAdmin
             ->add('messageGroup', 'choice', [
                 'choices' => Message::$messageGroupArray,
                 'choices_as_values' => true,
-                'multiple' => true,
                 'label'=>'Группы пользователей',
                 'required' => false
             ])
-            /*->add('groupName', 'entity' , [
-                'label' => 'Кому',
-                'multiple' => true,
-                'by_reference' => false,
-                'class' => 'Application\Sonata\UserBundle\Entity\GroupIteen'
-            ])*/
             ->add('topic', 'text', [
                 'label'=>'Тема',
             ])

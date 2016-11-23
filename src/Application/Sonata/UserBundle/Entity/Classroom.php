@@ -2,6 +2,7 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Classroom
  */

@@ -51,4 +51,5 @@ class CRUDController extends Controller
             'elements' => $this->admin->getShow(),
         ]);
     }
+
 }

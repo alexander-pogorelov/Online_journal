@@ -10,6 +10,7 @@ namespace Application\Sonata\UserBundle\Entity;
 
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class UserPupil extends User
 {
@@ -24,10 +25,12 @@ class UserPupil extends User
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
+     * @Assert\NotBlank()
      */
     private $parents;
+
     /**
-     * @var
+     * @Assert\NotBlank()
      */
     private $classNumber;
 

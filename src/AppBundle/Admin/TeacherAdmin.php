@@ -23,6 +23,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\CollectionTypeTest;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 
 class TeacherAdmin extends AbstractAdmin
@@ -64,6 +66,29 @@ class TeacherAdmin extends AbstractAdmin
         $object->setEnabled(true);
     }
 
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('export');
+    }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        $errorElement
+            ->with('email')
+                ->assertEmail()
+                ->assertNotBlank()
+            ->end()
+            ->with('firstname')
+                ->assertNotBlank()
+            ->end()
+            ->with('lastname')
+                ->assertNotBlank()
+            ->end()
+            ->with('address')
+                ->assertNotBlank()
+            ->end()
+        ;
+    }
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -103,8 +128,10 @@ class TeacherAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filterMapper)
     {
         $filterMapper
-            ->add('lastname', null, [
-                'label'=>'Фамилия'
+            ->add('full_name', 'doctrine_orm_callback', [
+                'label'=>'Ф.И.О. Преподавателя',
+                'callback' => 'AppBundle\Admin\Filters\GeneralFilters::getFullNameFilter',
+                'field_type' => 'text'
             ])
             ->add('speciality', null, [
             'label'=>'Специальность'
@@ -171,7 +198,7 @@ class TeacherAdmin extends AbstractAdmin
                 ->add('address', 'text', ['label'=>'Адрес'])
             ->end()
             ->with('Дополнительная информация')
-                ->add('email')
+                ->add('email', 'email')
                 ->add('TeacherSubject', 'entity', [
                     'multiple' => true,
                     'by_reference' => false,
@@ -180,11 +207,9 @@ class TeacherAdmin extends AbstractAdmin
                 ])
                 ->add('workDays', 'text', [
                     'label'=>'Дни работы',
-                    'required' => false
                 ])
                 ->add('workHours', 'text', [
                     'label'=>'Часы работы',
-                    'required' => false
                 ])
                 ->add('comment', TextareaType::class, [
                     'label'=>'Примечание',

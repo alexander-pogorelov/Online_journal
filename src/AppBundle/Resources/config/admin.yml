@@ -20,7 +20,7 @@ services:
                - { name: sonata.admin, manager_type: orm, group: Предметы, on_top: true }
      admin.message:
                  class: AppBundle\Admin\MessageAdmin
-                 arguments: [~, Application\Sonata\UserBundle\Entity\Message, ~]
+                 arguments: [~, Application\Sonata\UserBundle\Entity\Message, AppBundle:Message]
                  tags:
                     - { name: sonata.admin, manager_type: orm, group: Сообщения, on_top: true }
      admin.classroom:
@@ -40,4 +40,10 @@ services:
                 arguments: [~, Application\Sonata\UserBundle\Entity\DateTimeClassroom, ~]
                 tags:
                    - { name: sonata.admin, manager_type: orm, group: Дата занятия , on_top: true, show_in_dashboard: false}
+     app.admin.schedule:
+                class: AppBundle\Admin\ScheduleAdmin
+                arguments: [~, ~, AppBundle:Schedule]
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: Расписание, on_top: true, show_in_dashboard: true}
+
 

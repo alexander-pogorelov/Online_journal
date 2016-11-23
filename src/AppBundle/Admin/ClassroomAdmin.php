@@ -15,26 +15,23 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class ClassroomAdmin extends AbstractAdmin
 {
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('export');
+    }
     // Создание списка аудиторий из базы данных
     protected function configureListFields(ListMapper $listClassroom)
     {
         // Описывается каждое отображаемое поле из entity/Auditori.php
         $listClassroom
-            ->addIdentifier('id',null, ['label'=>'№'])
-            ->add('number',null, ['label'=>'Номер аудитории'])
+            ->addIdentifier('number',null, ['label'=>'Номер аудитории'])
             ->add('capacity',null, ['label'=>'Вместимость'])
             ->add('description',null, ['label'=>'Описание'])
-            ->add('_action', 'actions', [ // Добавление команд в list
-                'label'=>'Действие',
-                'actions' => [
-                    'view' => [], // команда показать
-                    'edit' => [], // команда редактировать
-                    'delete' => [], // команда удалить
-                ]
-            ]);
+            ;
     }
 
     // Создание формы для добавления и редактирования
@@ -42,9 +39,15 @@ class ClassroomAdmin extends AbstractAdmin
     {
         $formClassroom
             ->with('Добавить аудитории',['class' => 'col-md-6'])
-                ->add('number',null, ['label'=>'Номер аудитории'])
+                ->add('number', 'integer', [
+                    'label'=>'Номер аудитории',
+                    'attr' => array('min' => 1)
+                ])
                 ->add('capacity',null, ['label'=>'Вместимость'])
-                ->add('description',null, ['label'=>'Описание'])
+                ->add('description',null, [
+                    'label'=>'Описание',
+                    'required' => false
+                ])
             ->end();
     }
 
