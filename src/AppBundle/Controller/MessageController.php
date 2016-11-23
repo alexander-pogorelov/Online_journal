@@ -9,10 +9,11 @@
 namespace AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Application\Sonata\UserBundle\Entity;
 
 class MessageController extends Controller
 {
-    public function createMessageAction()
+    public function createAction()
     {
         $request = $this->getRequest();
         // the key used to lookup the template
@@ -45,6 +46,9 @@ class MessageController extends Controller
         $this->admin->setSubject($object);
 
         /** @var $form \Symfony\Component\Form\Form */
+
+        $form = $this->admin->getForm();
+
         $fieldIndex = $form['messageGroup']->getData();
 
         $repository = $this->getDoctrine()->getRepository('User');
@@ -53,8 +57,17 @@ class MessageController extends Controller
             'user_type' => $fieldIndex
         ]);
 
-        $form = $this->admin->getForm();
+        $message = new Entity\Message();
+        $message->setReceivers($userMessage);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($message);
+
+        $em->flush();
+
         $form->setData($object);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {

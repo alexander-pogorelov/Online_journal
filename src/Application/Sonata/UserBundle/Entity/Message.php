@@ -24,13 +24,14 @@ class Message
 
     protected $messageGroup;
 
+    protected $receiver;
+
 
     public static $messageGroupArray = [
-        'все'=> 1,
-        'методисты'=> 2,
-        'преподаватели'=> 3,
-        'учащиеся' => 4,
-        'группы' => 5,
+        'все'=> 0,
+        'методисты'=> 4,
+        'преподаватели'=> 2,
+        'учащиеся' => 1,
     ];
 
 
@@ -58,6 +59,13 @@ class Message
             $this->getMessageGroupString()
         ]
         );
+    }
+
+    public function setReceivers($receiver)
+    {
+        $this->receiver = $receiver;
+
+        return $this;
     }
 
     /**
