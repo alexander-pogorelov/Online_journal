@@ -84,6 +84,9 @@ class TeacherAdmin extends AbstractAdmin
             ->with('lastname')
                 ->assertNotBlank()
             ->end()
+            ->with('address')
+                ->assertNotBlank()
+            ->end()
         ;
     }
 

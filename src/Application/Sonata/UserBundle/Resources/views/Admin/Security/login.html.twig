@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <title>login</title>
-    <link rel="stylesheet/less" type="text/css" href="{{ asset('bundles/applicationsonatauser/css/style.css') }}">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.min.js"></script>
     <link rel="stylesheet" href="{{ asset('bundles/applicationsonatauser/css/style.css') }}">
 </head>
 <body>
-<!--TEST TEST TEST-->
+{% block fos_user_content %}
+{% block sonata_user_login %}
     <header id="header_1">
         <img src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="iTeen Academy">
         <p>Образовательный центр Парка высоких технологий</p>
@@ -23,11 +22,19 @@
      </header>
      <article>
      <h2>Вход</h2>
-     <section>
+     <section class = "logIn">
+{% block sonata_user_login_form %}
          <form id = "enter" action='{{ path("sonata_user_admin_security_check") }}' method="post" role="form">
              <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+             {% block sonata_user_login_error %}
+                 {% if error %}
+                     <div class="alert alert-danger alert-error">
+                         Неверный логин или пароль. Пожалуйста, проверьте данные и попробуйте еще раз.
+                     </div>
+                 {% endif %}
+             {% endblock %}
              <label> <p>Логин </p>
-                 <input type="email" placeholder="example@example.com" name="_username" value="{{ last_username }}" required="required">
+                 <input type="text" placeholder="example@example.com" name="_username" value="{{ last_username }}" required="required">
              </label>
              <label> <p>Пароль</p>
                  <input type="password" name="_password" required="required">
@@ -39,6 +46,8 @@
              <input value = "Войти" type = "submit" id = "submitButton">
          </form>
          <a href="{{ reset_route }}">Забыли пароль?</a>
+{% endblock %}
+         {% endblock %}
      </section>
  </article>
  <footer>
@@ -47,5 +56,6 @@
  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
  <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
  <script src="{{ asset('bundles/applicationsonatauser/js/login1.js') }}"></script>
+{% endblock fos_user_content %}
 </body>
 </html>

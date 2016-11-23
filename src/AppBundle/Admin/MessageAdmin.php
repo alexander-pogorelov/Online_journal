@@ -82,7 +82,6 @@ class MessageAdmin extends AbstractAdmin
             ->add('messageGroup', 'choice', [
                 'choices' => Message::$messageGroupArray,
                 'choices_as_values' => true,
-                'multiple' => true,
                 'label'=>'Группы пользователей',
                 'required' => false
             ])
