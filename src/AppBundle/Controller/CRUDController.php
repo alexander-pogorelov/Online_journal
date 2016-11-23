@@ -8,9 +8,6 @@
 
 namespace AppBundle\Controller;
 
-//use Application\Sonata\UserBundle\ApplicationSonataUserBundle;
-//use Application\Sonata\UserBundle\Entity\Journal;
-//use Application\Sonata\UserBundle\Entity\Subject;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
 class CRUDController extends Controller

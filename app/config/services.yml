@@ -45,3 +45,8 @@ services:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Журналы' }
         calls:
             - [addChild, ['@admin.subject']]
+    app.admin.lesson:
+        class: AppBundle\Admin\LessonAdmin
+        arguments: [~, Application\Sonata\UserBundle\Entity\Lesson, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Уроки' }

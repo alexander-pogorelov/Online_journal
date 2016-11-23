@@ -60,7 +60,7 @@
                                     {% for journal in pga.journal %}
                                         {% if journal.lesson.id == currentLesson.id %}
                                             <td style="text-align:center">
-                                                {% if journal.assessment == -1 %}
+                                                {% if journal.assessment == constant('Application\\Sonata\\UserBundle\\Entity\\Journal::IS_ABSENT') %}
                                                     н
                                                 {% else %}
                                                     {{ journal.assessment }}
