@@ -1,0 +1,12 @@
+td{
+    text-align: center;
+}
+
+td.cell_table:hover {
+    color:#000;
+    background: rgba(0, 153, 255, 0.4);
+}
+
+tr.line_table:hover {
+    background: rgba(49, 158, 32, 0.14);
+}

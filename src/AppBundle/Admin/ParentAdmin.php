@@ -12,6 +12,8 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 
 class ParentAdmin extends AbstractAdmin
@@ -21,15 +23,15 @@ class ParentAdmin extends AbstractAdmin
 
     public function create($object)
     {
-		$container = $this->getConfigurationPool()->getContainer();
+        $container = $this->getConfigurationPool()->getContainer();
         $tokenGenerator = $container->get('fos_user.util.token_generator');
         $password = substr($tokenGenerator->generateToken(), 0, 8);
 
         $object->setPlainPassword($password);
 
         parent::create($object);
-		
-		$templating = $container->get('templating');
+
+        $templating = $container->get('templating');
         $message = \Swift_Message::newInstance()
             ->setSubject('Данные для авторизации')
             ->setFrom('testiteen@gmail.com')
@@ -53,6 +55,27 @@ class ParentAdmin extends AbstractAdmin
         $object->setEnabled(true);
     }
 
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('export');
+    }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        $errorElement
+            ->with('email')
+                ->assertEmail()
+                ->assertNotBlank()
+            ->end()
+            ->with('firstname')
+                ->assertNotBlank()
+            ->end()
+            ->with('lastname')
+                ->assertNotBlank()
+            ->end()
+        ;
+    }
+
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
             ->addIdentifier('fullName', 'text', [
@@ -63,17 +86,6 @@ class ParentAdmin extends AbstractAdmin
             ])
             ->add('phone', null, [
                 'label'=>'Телефон',
-            ])
-            ->add('enabled', null, [
-                'editable' => true,
-                'label'=>'Активен',
-            ])
-            ->add('locked', null, [
-                'editable' => true,
-                'label'=>'Заблокирован',
-            ])
-            ->add('createdAt', null, [
-                'label'=>'Дата создания',
             ])
         ;
     }
@@ -96,7 +108,6 @@ class ParentAdmin extends AbstractAdmin
                 ])
                 ->add('patronymic', 'text', [
                     'label'=>'Отчество',
-                    'required' => false
                 ])
                 ->add('relationship', 'choice', [
                     'choices' => UserParent::$relationshipArray,
@@ -108,7 +119,7 @@ class ParentAdmin extends AbstractAdmin
             ->end()
             ->with('Данные')
                 //->add('username')
-                ->add('email')
+                ->add('email', 'email')
                 ->add('phone', 'text', [
                     'label'=>'Телефон',
                     'required' => false

@@ -88,6 +88,7 @@ class PupilGroupAssociation
         $this->journal->removeElement($journal);
     }
 
+
     /**
      * Get journal
      *
@@ -97,4 +98,5 @@ class PupilGroupAssociation
     {
         return $this->journal;
     }
+
 }
