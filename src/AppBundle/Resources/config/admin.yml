@@ -20,7 +20,7 @@ services:
                - { name: sonata.admin, manager_type: orm, group: Предметы, on_top: true }
      admin.message:
                  class: AppBundle\Admin\MessageAdmin
-                 arguments: [~, Application\Sonata\UserBundle\Entity\Message, AppBundle:Message]
+                 arguments: [~, Application\Sonata\UserBundle\Entity\Message, ~]
                  tags:
                     - { name: sonata.admin, manager_type: orm, group: Сообщения, on_top: true }
      admin.classroom:

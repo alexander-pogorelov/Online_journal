@@ -24,8 +24,6 @@ class Message
 
     protected $messageGroup;
 
-    protected $receiver;
-
 
     public static $messageGroupArray = [
         'все'=> 0,
@@ -59,13 +57,6 @@ class Message
             $this->getMessageGroupString()
         ]
         );
-    }
-
-    public function setReceivers($receiver)
-    {
-        $this->receiver = $receiver;
-
-        return $this;
     }
 
     /**

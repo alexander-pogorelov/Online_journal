@@ -57,15 +57,6 @@ class MessageController extends Controller
             'user_type' => $fieldIndex
         ]);
 
-        $message = new Entity\Message();
-        $message->setReceivers($userMessage);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($message);
-
-        $em->flush();
-
         $form->setData($object);
 
         $form->handleRequest($request);
