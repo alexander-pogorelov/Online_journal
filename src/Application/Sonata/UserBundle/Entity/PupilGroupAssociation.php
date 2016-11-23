@@ -9,6 +9,8 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class PupilGroupAssociation
 {
     private $id;
@@ -17,10 +19,13 @@ class PupilGroupAssociation
 
     private $group;
 
+    private $journal;
+
     public function __construct(UserPupil $pupil, GroupIteen $group)
     {
         $this->pupil = $pupil;
         $this->group = $group;
+        $this->journal = new ArrayCollection();
     }
 
     /**
@@ -59,6 +64,39 @@ class PupilGroupAssociation
         return $this->group;
     }
 
+    /**
+     * Add journal
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Journal $journal
+     *
+     * @return PupilGroupAssociation
+     */
+    public function addJournal(\Application\Sonata\UserBundle\Entity\Journal $journal)
+    {
+        $this->journal[] = $journal;
 
+        return $this;
+    }
+
+    /**
+     * Remove journal
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Journal $journal
+     */
+    public function removeJournal(\Application\Sonata\UserBundle\Entity\Journal $journal)
+    {
+        $this->journal->removeElement($journal);
+    }
+
+
+    /**
+     * Get journal
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getJournal()
+    {
+        return $this->journal;
+    }
 
 }

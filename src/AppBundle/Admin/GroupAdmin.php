@@ -28,6 +28,11 @@ class GroupAdmin extends AbstractAdmin
         $collection->remove('export');
     }
 
+    public function prePersist($object)
+    {
+        $object->setCreatedAt(new \DateTime());
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $headerAttr = ['header_style' => 'text-align: center'];

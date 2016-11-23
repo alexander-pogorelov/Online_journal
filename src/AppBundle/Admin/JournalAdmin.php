@@ -23,7 +23,6 @@ class JournalAdmin extends AbstractAdmin
         $collection->remove('delete');
         $collection->remove('create');
         $collection->remove('export');
-        //$collection->add('showGroupJournal', $this->getRouterIdParameter().'/show');
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -36,9 +35,7 @@ class JournalAdmin extends AbstractAdmin
                 ]+ $headerAttr)
             ->add('subjects', null, [
                     'label'=>'Предметы',
-                ]+ $headerAttr)
-            ->add('_teacher_array_', null, [
-                    'label'=>'Преподаватели',
+                    'template' =>'AppBundle:JournalAdmin:subject_field.html.twig'
                 ]+ $headerAttr)
             ->add('_action', null, [
                     'label'=>'Перейти к журналу',

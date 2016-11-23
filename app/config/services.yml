@@ -43,3 +43,5 @@ services:
             - AppBundle:CRUD
         tags:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Журналы' }
+        calls:
+            - [addChild, ['@admin.subject']]
