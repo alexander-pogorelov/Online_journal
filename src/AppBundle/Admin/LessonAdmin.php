@@ -11,6 +11,7 @@ namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 
 
 class LessonAdmin extends AbstractAdmin
@@ -25,7 +26,7 @@ class LessonAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('date', 'date', [
+            ->addIdentifier('date', 'date', [
                 'label'=>'Дата',
                 'row_align' => 'center',
                 'format' => 'd M',
@@ -45,6 +46,32 @@ class LessonAdmin extends AbstractAdmin
             ->add('homework', null, [
                 'label'=>'Домашнее задание',
             ])
+        ;
+    }
+
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $now = new \DateTime();
+        $repository = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getRepository('ApplicationSonataUserBundle:GroupIteen');
+        $actualGroupList = $repository->findByActual();
+        $formMapper
+            ->with('Главное', array('class' => 'col-md-5'))->end()
+        ;
+        $formMapper
+            ->with('Главное')
+                ->add('date', 'date', [
+                    'widget' => 'choice',
+                    'label'=>'Дата урока',
+                    'format' => 'dd MMMM yyyy',
+                    'years' => range(2016, $now->format('Y')),
+                    'required' => true
+                ])
+                ->add('group.groupName', 'choice', [
+                    'choices' => $actualGroupList,
+                    'label'=>'Группа',
+                    'required' => true
+                ])
+            ->end()
         ;
     }
 

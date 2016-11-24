@@ -63,6 +63,7 @@ class GroupAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $now = new \DateTime();
         $formMapper
             ->with('Группа', array('class' => 'col-md-5'))->end()
             ->with('Предметы', array('class' => 'col-md-5'))->end()
@@ -71,6 +72,13 @@ class GroupAdmin extends AbstractAdmin
             ->with('Группа')
             ->add('groupName', 'text', ['label'=>'Название группы'])
             ->add('note', 'textarea', ['label'=>'Примечание'])
+            ->add('expirationDate', 'date', [
+                'widget' => 'choice',
+                'label'=>'Дата окончания обучения',
+                'format' => 'dd MMMM yyyy',
+                'years' => range(2000, $now->format('Y')),
+                'required' => false,
+            ])
             ->end()
             ->with('Предметы')
             ->add('subjects', 'sonata_type_model', [
