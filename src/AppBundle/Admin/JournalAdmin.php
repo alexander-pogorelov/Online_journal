@@ -18,6 +18,10 @@ class JournalAdmin extends AbstractAdmin
     protected $baseRouteName = 'journal-route-admin'; //admin_vendor_bundlename_adminclassname
     protected $baseRoutePattern = 'journal'; //unique-route-pattern
 
+    protected $datagridValues = [
+        '_sort_order' => 'DESC'
+    ];
+
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('delete');

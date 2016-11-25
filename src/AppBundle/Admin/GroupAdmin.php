@@ -22,6 +22,10 @@ class GroupAdmin extends AbstractAdmin
     protected $baseRouteName = 'group-route-admin'; //admin_vendor_bundlename_adminclassname
     protected $baseRoutePattern = 'group'; //unique-route-pattern
 
+    protected $datagridValues = [
+        '_sort_order' => 'DESC'
+    ];
+
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('showPupilsInGroup', $this->getRouterIdParameter().'/pupils');

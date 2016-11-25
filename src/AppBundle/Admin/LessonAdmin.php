@@ -9,9 +9,11 @@
 namespace AppBundle\Admin;
 
 
+use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 class LessonAdmin extends AbstractAdmin
@@ -52,24 +54,58 @@ class LessonAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $now = new \DateTime();
-        $repository = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getRepository('ApplicationSonataUserBundle:GroupIteen');
-        $actualGroupList = $repository->findByActual();
+        //$repository = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getRepository('ApplicationSonataUserBundle:GroupIteen');
+        //$actualGroupList = $repository->findByActual();
+
+        $lessonId = $this->getSubject()->getId();
+
+        $repository = $this->getConfigurationPool()->getContainer()->get('Doctrine')
+            ->getRepository('ApplicationSonataUserBundle:Lesson');
+        $currentSubjectId = $repository->find($lessonId)->getTeacherSubject()->getSubject()->getId();
+
         $formMapper
-            ->with('Главное', array('class' => 'col-md-5'))->end()
+            ->with('1', array('class' => 'col-md-5'))->end()
+            ->with('2', array('class' => 'col-md-5'))->end()
+
         ;
         $formMapper
-            ->with('Главное')
+            ->with('1')
+                ->add('group.groupName', null, [
+                    'label'=>'Группа',
+                    'read_only' => true,
+                    'disabled' => true,
+                ])
+                ->add('teacherSubject.subject', null, [
+                    'label'=>'Предмет',
+                    'read_only' => true,
+                    'disabled' => true,
+                ])
+                ->add('teacherSubject', EntityType::class, [
+                    'class' => 'ApplicationSonataUserBundle:TeacherSubject',
+                    'choice_label' => 'teacher',
+                    'query_builder' => function (EntityRepository $er) use ($currentSubjectId) {
+                        return $er->createQueryBuilder('ts')
+                            ->where('ts.subject = :currentSubjectId')
+                            ->setParameter('currentSubjectId', $currentSubjectId)
+                            ;
+                    },
+                    'label'=>'Преподаватель',
+                ])
+            ->end()
+            ->with('2')
                 ->add('date', 'date', [
                     'widget' => 'choice',
                     'label'=>'Дата урока',
                     'format' => 'dd MMMM yyyy',
                     'years' => range(2016, $now->format('Y')),
-                    'required' => true
+                    'required' => true,
                 ])
-                ->add('group.groupName', 'choice', [
-                    'choices' => $actualGroupList,
-                    'label'=>'Группа',
-                    'required' => true
+                ->add('topic', 'text', [
+                    'label'=>'Тема урока',
+                    'required' => true,
+                ])
+                ->add('homework', 'textarea', [
+                    'label'=>'Домашнее задание',
                 ])
             ->end()
         ;
