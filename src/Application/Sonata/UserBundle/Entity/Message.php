@@ -26,6 +26,10 @@ class Message
 
     protected $receiver;
 
+    protected $sender;
+
+    protected $groupIteen;
+
 
     public static $messageGroupArray = [
         'все'=> 0,
@@ -56,7 +60,8 @@ class Message
     {
         return implode(' ', [
             $this->getUsers(),
-            $this->getMessageGroupString()
+            $this->getMessageGroupString(),
+            $this->getGroupIteen()
         ]
         );
     }
@@ -179,6 +184,18 @@ class Message
     public function setMessageGroup($messageGroup)
     {
         $this->messageGroup = $messageGroup;
+
+        return $this;
+    }
+
+    public function getGroupIteen()
+    {
+        return $this->groupIteen;
+    }
+
+    public function setGroupIteen($groupIteen)
+    {
+        $this->groupIteen = $groupIteen;
 
         return $this;
     }

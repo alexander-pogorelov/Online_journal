@@ -48,7 +48,6 @@ class PupilAdmin extends AbstractAdmin
         $errorElement
             ->with('email')
                 ->assertEmail()
-                ->assertNotBlank()
             ->end()
             ->with('firstname')
                 ->assertNotBlank()
@@ -122,6 +121,7 @@ class PupilAdmin extends AbstractAdmin
                 ->add('firstname', 'text', ['label'=>'Имя'])
                 ->add('patronymic', 'text', [
                     'label'=>'Отчество',
+                    'required' => false
                 ])
                 ->add('dateOfBirth', 'date', [
                     'widget' => 'choice',
@@ -132,6 +132,7 @@ class PupilAdmin extends AbstractAdmin
                 ])
                 ->add('email', 'email', [
                     'label'=>'E-Mail',
+                    'required' => false
                 ])
             ->add('classNumber', 'choice', [
                 'choices' => $classNumberArray,

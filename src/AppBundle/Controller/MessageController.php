@@ -46,25 +46,36 @@ class MessageController extends Controller
         $this->admin->setSubject($object);
 
         /** @var $form \Symfony\Component\Form\Form */
-
         $form = $this->admin->getForm();
 
-        $fieldIndex = $form['messageGroup']->getData();
+        $fieldIndex = $form->get('messageGroup')->getData();
 
-        $repository = $this->getDoctrine()->getRepository('User');
+        /*switch ($fieldIndex){
+            case 1:
+                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserPupil')->findAll();
+                $repo = implode(', ', $repository);
+                $object->setReceivers($repo);
+                break;
+            case 2:
+                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserTeacher')->findAll();
+                $repo = implode(', ', $repository);
+                $object->setReceivers($repo);
+                break;
+            case 4:
+                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserMetodist')->findAll();
+                $repo = implode(', ', $repository);
+                $object->setReceivers($repo);
+                break;
+        }
 
-        $userMessage = $repository->findBy([
-            'user_type' => $fieldIndex
-        ]);
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserPupil')->findAll();
+        $repo = implode(', ', $repository);*/
+        $object->setReceivers($fieldIndex);
 
-        $message = new Entity\Message();
-        $message->setReceivers($userMessage);
 
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($message);
-
-        $em->flush();
+            /*$userMessage = $repository->findBy([
+                'user_type' => $fieldIndex
+            ]);*/
 
         $form->setData($object);
 
@@ -139,4 +150,5 @@ class MessageController extends Controller
             'object' => $object,
         ), null);
     }
+
 }

@@ -73,6 +73,12 @@ class ParentAdmin extends AbstractAdmin
             ->with('lastname')
                 ->assertNotBlank()
             ->end()
+            ->with('phone')
+                ->assertNotBlank()
+            ->end()
+            ->with('relationship')
+                ->assertNotBlank()
+            ->end()
         ;
     }
 
@@ -108,12 +114,13 @@ class ParentAdmin extends AbstractAdmin
                 ])
                 ->add('patronymic', 'text', [
                     'label'=>'Отчество',
+                    'required' => false
                 ])
                 ->add('relationship', 'choice', [
                     'choices' => UserParent::$relationshipArray,
                     'choices_as_values' => true,
                     'label'=>'Родство',
-                    'required' => false
+                    'required' => true
                 ])
 
             ->end()
@@ -122,7 +129,7 @@ class ParentAdmin extends AbstractAdmin
                 ->add('email', 'email')
                 ->add('phone', 'text', [
                     'label'=>'Телефон',
-                    'required' => false
+                    'required' => true
                 ])
             ->end()
         ;

@@ -8,6 +8,7 @@
 
 namespace AppBundle\Admin;
 
+use Application\Sonata\UserBundle\Entity\GroupIteen;
 use Application\Sonata\UserBundle\Entity\Message;
 use Application\Sonata\UserBundle\Entity\UserMessage;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -20,7 +21,6 @@ use Symfony\Component\Form\CallbackTransformer;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Route\RouteCollection;
-
 
 class MessageAdmin extends AbstractAdmin
 {
@@ -83,7 +83,15 @@ class MessageAdmin extends AbstractAdmin
                 'choices' => Message::$messageGroupArray,
                 'choices_as_values' => true,
                 'label'=>'Группы пользователей',
-                'required' => false
+                'required' => false,
+                //'multiple' => true
+            ])
+            ->add('groupIteen', 'entity', [
+                'label' => 'Учебные группы',
+                'multiple' => true,
+                'by_reference' => false,
+                'required' => false,
+                'class' => 'Application\Sonata\UserBundle\Entity\GroupIteen',
             ])
             ->add('topic', 'text', [
                 'label'=>'Тема',
@@ -93,6 +101,7 @@ class MessageAdmin extends AbstractAdmin
             ])
             ->end()
         ;
+
         $message = $this->getSubject();
 
         $formMapper
@@ -125,5 +134,43 @@ class MessageAdmin extends AbstractAdmin
                 }
             ))
         ;
+
+        $formMapper
+            ->get('groupIteen')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($groupIteenAsString) {
+                    if (!$groupIteenAsString) {
+                        return null;
+                    }
+                    return explode(', ', $groupIteenAsString);
+                },
+                function ($groupIteenAsArray) {
+                    $groupArray = array_map(function (GroupIteen $groupIteen) {
+                        return $groupIteen->getGroupName();
+                    }, $groupIteenAsArray->toArray()
+                    );
+                    return implode(', ', $groupArray);
+                }
+            ))
+        ;
+
+        /*$formMapper
+            ->get('messageGroup')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($groupIteenAsString) {
+                    if (!$groupIteenAsString) {
+                        return null;
+                    }
+                    return explode(', ', $groupIteenAsString);
+                },
+                function ($messageGroupAsArray) {
+                    $groupArray = array_map(function (Message $message) {
+                        return $message->getMessageGroup();
+                    }, $messageGroupAsArray
+                    );
+                    return implode(', ', $groupArray);
+                }
+            ))
+        ;*/
     }
 }
