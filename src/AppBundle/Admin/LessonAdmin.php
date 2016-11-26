@@ -57,11 +57,17 @@ class LessonAdmin extends AbstractAdmin
         //$repository = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getRepository('ApplicationSonataUserBundle:GroupIteen');
         //$actualGroupList = $repository->findByActual();
 
-        $lessonId = $this->getSubject()->getId();
+        if ($this->getSubject()->getId()) {
 
-        $repository = $this->getConfigurationPool()->getContainer()->get('Doctrine')
-            ->getRepository('ApplicationSonataUserBundle:Lesson');
-        $currentSubjectId = $repository->find($lessonId)->getTeacherSubject()->getSubject()->getId();
+            $lessonId = $this->getSubject()->getId();
+
+            $repository = $this->getConfigurationPool()->getContainer()->get('Doctrine')
+                ->getRepository('ApplicationSonataUserBundle:Lesson');
+            $currentSubjectId = $repository->find($lessonId)->getTeacherSubject()->getSubject()->getId();
+        } else {
+            //TODO: заменить на реальный ID, передаваемый в форму
+            $currentSubjectId = 1;
+        }
 
         $formMapper
             ->with('1', array('class' => 'col-md-5'))->end()
