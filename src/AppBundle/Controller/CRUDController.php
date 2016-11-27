@@ -17,7 +17,7 @@ class CRUDController extends Controller
         echo $groupId;
         echo "<br>";
         echo $subjectId;
-        exit;
+        //exit;
     }
 
     public function showPupilsInGroupAction($id = null)
