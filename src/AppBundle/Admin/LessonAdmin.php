@@ -13,7 +13,9 @@ use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Routing\Route;
 
 
 class LessonAdmin extends AbstractAdmin
@@ -24,6 +26,11 @@ class LessonAdmin extends AbstractAdmin
     protected $datagridValues = [
         '_sort_order' => 'DESC'
     ];
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('createLesson', 'group/{groupId}/subject/{subjectId}/create');
+    }
 
     protected function configureListFields(ListMapper $listMapper)
     {

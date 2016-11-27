@@ -12,6 +12,14 @@ use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
 class CRUDController extends Controller
 {
+    public function createLessonAction($groupId, $subjectId)
+    {
+        echo $groupId;
+        echo "<br>";
+        echo $subjectId;
+        exit;
+    }
+
     public function showPupilsInGroupAction($id = null)
     {
         $request = $this->getRequest();
