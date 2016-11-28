@@ -9,7 +9,6 @@
 namespace AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
-use Application\Sonata\UserBundle\Entity;
 
 class MessageController extends Controller
 {
@@ -48,35 +47,6 @@ class MessageController extends Controller
         /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
 
-        $fieldIndex = $form->get('messageGroup')->getData();
-
-        /*switch ($fieldIndex){
-            case 1:
-                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserPupil')->findAll();
-                $repo = implode(', ', $repository);
-                $object->setReceivers($repo);
-                break;
-            case 2:
-                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserTeacher')->findAll();
-                $repo = implode(', ', $repository);
-                $object->setReceivers($repo);
-                break;
-            case 4:
-                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserMetodist')->findAll();
-                $repo = implode(', ', $repository);
-                $object->setReceivers($repo);
-                break;
-        }
-
-        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserPupil')->findAll();
-        $repo = implode(', ', $repository);*/
-        $object->setReceivers($fieldIndex);
-
-
-            /*$userMessage = $repository->findBy([
-                'user_type' => $fieldIndex
-            ]);*/
-
         $form->setData($object);
 
         $form->handleRequest($request);
@@ -87,6 +57,18 @@ class MessageController extends Controller
                 $this->admin->preValidate($object);
             }
             $isFormValid = $form->isValid();
+
+            $choice = $form['messageGroup']->getData();
+
+            $choiceToArray = explode(', ', $choice);
+
+            if(in_array(1, $choiceToArray)){
+                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserMetodist')
+                    ->findAll();
+                foreach ($repository as $user){
+                    $object->addUserMessage($user);
+                }
+            }
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {

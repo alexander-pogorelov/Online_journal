@@ -36,7 +36,7 @@ class MessageAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('receivers', 'text', [
+            ->add('receivers', 'text', [
                 'label'=>'Кому'
             ])
             ->add('topic', 'text', [
@@ -84,7 +84,7 @@ class MessageAdmin extends AbstractAdmin
                 'choices_as_values' => true,
                 'label'=>'Группы пользователей',
                 'required' => false,
-                //'multiple' => true
+                'multiple' => true
             ])
             ->add('groupIteen', 'entity', [
                 'label' => 'Учебные группы',
@@ -154,23 +154,19 @@ class MessageAdmin extends AbstractAdmin
             ))
         ;
 
-        /*$formMapper
+        $formMapper
             ->get('messageGroup')
             ->addModelTransformer(new CallbackTransformer(
-                function ($groupIteenAsString) {
-                    if (!$groupIteenAsString) {
+                function ($messageGroupAsString) {
+                    if (!$messageGroupAsString) {
                         return null;
                     }
-                    return explode(', ', $groupIteenAsString);
+                    return explode(', ', $$messageGroupAsString);
                 },
                 function ($messageGroupAsArray) {
-                    $groupArray = array_map(function (Message $message) {
-                        return $message->getMessageGroup();
-                    }, $messageGroupAsArray
-                    );
-                    return implode(', ', $groupArray);
+                    return implode(', ', $messageGroupAsArray);
                 }
             ))
-        ;*/
+        ;
     }
 }

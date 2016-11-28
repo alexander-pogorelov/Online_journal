@@ -24,8 +24,6 @@ class Message
 
     protected $messageGroup;
 
-    protected $receiver;
-
     protected $sender;
 
     protected $groupIteen;
@@ -33,9 +31,9 @@ class Message
 
     public static $messageGroupArray = [
         'все'=> 0,
-        'методисты'=> 4,
+        'методисты' => 1,
         'преподаватели'=> 2,
-        'учащиеся' => 1,
+        'учащиеся' => 3,
     ];
 
 
@@ -48,7 +46,12 @@ class Message
     }
     public function getMessageGroupString()
     {
-        return array_search($this->messageGroup , self::$messageGroupArray, true);
+        $array = explode(', ', $this->messageGroup);
+        $result = [];
+        foreach ($array as $key => $value){
+            $result[] = array_search($value, self::$messageGroupArray);
+        }
+        return implode(', ', $result);
     }
 
     public function __construct()
@@ -64,13 +67,6 @@ class Message
             $this->getGroupIteen()
         ]
         );
-    }
-
-    public function setReceivers($receiver)
-    {
-        $this->receiver = $receiver;
-
-        return $this;
     }
 
     /**
@@ -164,7 +160,7 @@ class Message
     {
         return $this->userMessage;
     }
-
+	
     public function getUsers()
     {
         $usersArray = array_map(function (UserMessage $userMessage) {
