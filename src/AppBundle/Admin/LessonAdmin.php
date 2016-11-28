@@ -83,13 +83,13 @@ class LessonAdmin extends AbstractAdmin
         ;
         $formMapper
             ->with('1')
-                /*
+
                 ->add('group.groupName', null, [
                     'label'=>'Группа',
                     'read_only' => true,
                     'disabled' => true,
                 ])
-                */
+
                 /*
                 ->add('teacherSubject.subject', null, [
                     'label'=>'Предмет',

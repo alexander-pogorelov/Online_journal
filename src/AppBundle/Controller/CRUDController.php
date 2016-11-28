@@ -18,6 +18,10 @@ class CRUDController extends Controller
         //echo "<br>";
         //echo $subjectId;
         //exit;
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:GroupIteen');
+        $currentGroup = $repository->find($groupId);
+
+
         $request = $this->getRequest();
         // the key used to lookup the template
         $templateKey = 'edit';
@@ -40,6 +44,7 @@ class CRUDController extends Controller
         }
 
         $object = $this->admin->getNewInstance();
+        $object->setGroup($currentGroup);
 
         $preResponse = $this->preCreate($request, $object);
         if ($preResponse !== null) {
