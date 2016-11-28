@@ -64,6 +64,9 @@ class LessonAdmin extends AbstractAdmin
         //$repository = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getRepository('ApplicationSonataUserBundle:GroupIteen');
         //$actualGroupList = $repository->findByActual();
 
+        $currentSubjectId = $this->getSubject()->getTeacherSubject()->getSubject()->getId();
+        //dump($currentSubjectId);
+        /*
         if ($this->getSubject()->getId()) {
 
             $lessonId = $this->getSubject()->getId();
@@ -73,31 +76,32 @@ class LessonAdmin extends AbstractAdmin
             $currentSubjectId = $repository->find($lessonId)->getTeacherSubject()->getSubject()->getId();
         } else {
             //TODO: заменить на реальный ID, передаваемый в форму
-            $currentSubjectId = 1;
+            //$currentSubjectId = $this->getSubject()->getTeacherSubject()->getSubject()->getId();
+            //dump($currentSubjectId);
+            //$currentSubjectId = 1;
         }
-
+        */
         $formMapper
             ->with('1', array('class' => 'col-md-5'))->end()
             ->with('2', array('class' => 'col-md-5'))->end()
 
         ;
+
+
+        //dump($data);
+
         $formMapper
             ->with('1')
-
                 ->add('group.groupName', null, [
                     'label'=>'Группа',
                     'read_only' => true,
                     'disabled' => true,
                 ])
-
-
                 ->add('teacherSubject.subject', null, [
                     'label'=>'Предмет',
                     'read_only' => true,
                     'disabled' => true,
                 ])
-
-                /*
                 ->add('teacherSubject', EntityType::class, [
                     'class' => 'ApplicationSonataUserBundle:TeacherSubject',
                     'choice_label' => 'teacher',
@@ -109,7 +113,6 @@ class LessonAdmin extends AbstractAdmin
                     },
                     'label'=>'Преподаватель',
                 ])
-                */
             ->end()
             ->with('2')
                 ->add('date', 'date', [

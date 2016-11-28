@@ -14,16 +14,19 @@ class CRUDController extends Controller
 {
     public function createLessonAction($groupId, $subjectId)
     {
-        //echo $groupId;
-        //echo "<br>";
-        //echo $subjectId;
-        //exit;
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:GroupIteen');
+        if (!$repository->find($groupId)) {
+            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $groupId));
+        }
         $currentGroup = $repository->find($groupId);
+
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Subject');
+        if (!$repository->find($subjectId)) {
+            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $subjectId));
+        }
+
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:TeacherSubject');
         $defaultTeacherSubject = $repository->findBySubjectByMaxId($subjectId);
-        dump($defaultTeacherSubject);
-
 
         $request = $this->getRequest();
         // the key used to lookup the template
