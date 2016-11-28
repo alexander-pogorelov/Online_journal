@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Application\Sonata\UserBundle\Entity\TeacherSubject" table="teacher_subject">
+    <entity name="Application\Sonata\UserBundle\Entity\TeacherSubject" table="teacher_subject" repository-class="Application\Sonata\UserBundle\Repository\TeacherSubjectRepository">
         <unique-constraints>
             <unique-constraint columns="teacher_id,subject_id" />
         </unique-constraints>
