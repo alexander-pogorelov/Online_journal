@@ -20,6 +20,9 @@ class CRUDController extends Controller
         //exit;
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:GroupIteen');
         $currentGroup = $repository->find($groupId);
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:TeacherSubject');
+        $defaultTeacherSubject = $repository->findBySubjectByMaxId($subjectId);
+        dump($defaultTeacherSubject);
 
 
         $request = $this->getRequest();
@@ -45,6 +48,7 @@ class CRUDController extends Controller
 
         $object = $this->admin->getNewInstance();
         $object->setGroup($currentGroup);
+        $object->setTeacherSubject($defaultTeacherSubject);
 
         $preResponse = $this->preCreate($request, $object);
         if ($preResponse !== null) {

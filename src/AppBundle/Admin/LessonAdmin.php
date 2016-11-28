@@ -90,13 +90,14 @@ class LessonAdmin extends AbstractAdmin
                     'disabled' => true,
                 ])
 
-                /*
+
                 ->add('teacherSubject.subject', null, [
                     'label'=>'Предмет',
                     'read_only' => true,
                     'disabled' => true,
                 ])
-                */
+
+                /*
                 ->add('teacherSubject', EntityType::class, [
                     'class' => 'ApplicationSonataUserBundle:TeacherSubject',
                     'choice_label' => 'teacher',
@@ -108,6 +109,7 @@ class LessonAdmin extends AbstractAdmin
                     },
                     'label'=>'Преподаватель',
                 ])
+                */
             ->end()
             ->with('2')
                 ->add('date', 'date', [

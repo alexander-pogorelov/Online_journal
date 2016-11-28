@@ -40,8 +40,9 @@ class TeacherSubjectRepository extends EntityRepository
         $query2 = $this->getEntityManager()->createQuery($query1)
             ->setMaxResults(1)
         ;
+        $result = $query2->getResult();
 
-        return $query2->getResult();
+        return $result[0];
     }
 
 }
