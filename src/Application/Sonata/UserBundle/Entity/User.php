@@ -38,9 +38,6 @@ abstract class User extends BaseUser
      */
     protected $comment;
 
-    /**
-     * @Assert\NotBlank()
-     */
     protected $address;
 
     protected $userMessage;

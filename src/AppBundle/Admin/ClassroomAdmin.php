@@ -39,7 +39,10 @@ class ClassroomAdmin extends AbstractAdmin
     {
         $formClassroom
             ->with('Добавить аудитории',['class' => 'col-md-6'])
-                ->add('number',null, ['label'=>'Номер аудитории'])
+                ->add('number', 'integer', [
+                    'label'=>'Номер аудитории',
+                    'attr' => array('min' => 1)
+                ])
                 ->add('capacity',null, ['label'=>'Вместимость'])
                 ->add('description',null, [
                     'label'=>'Описание',
