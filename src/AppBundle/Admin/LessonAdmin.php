@@ -33,6 +33,23 @@ class LessonAdmin extends AbstractAdmin
         $collection->add('createLesson', 'group/{groupId}/subject/{subjectId}/create');
     }
 
+    public function getDashboardActions()
+    {
+        $actions = parent::getDashboardActions();
+        unset($actions['create']);
+        return $actions;
+    }
+
+    public function getActionButtons($action, $object = null)
+    {
+        $list = parent::getActionButtons($action, $object);
+        if (isset($list['create'])) {
+            unset($list['create']);
+        }
+
+        return $list;
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
