@@ -30,7 +30,7 @@ class CRUDController extends Controller
 
         $request = $this->getRequest();
         // the key used to lookup the template
-        $templateKey = 'edit';
+        $templateKey = 'createLesson';
 
         $this->admin->checkAccess('create');
 
@@ -129,9 +129,11 @@ class CRUDController extends Controller
         $this->get('twig')->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')->renderer->setTheme($view, $this->admin->getFormTheme());
 
         return $this->render($this->admin->getTemplate($templateKey), array(
-            'action' => 'create',
+            'action' => 'createLesson',
             'form' => $view,
             'object' => $object,
+            'groupId' => $groupId,
+            'subjectId' => $subjectId
         ), null);
     }
 
