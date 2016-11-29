@@ -24,6 +24,7 @@ class LessonAdmin extends AbstractAdmin
     protected $baseRoutePattern = 'lesson'; //unique-route-pattern
 
     protected $datagridValues = [
+        '_sort_by' => 'date',
         '_sort_order' => 'DESC'
     ];
 
@@ -65,35 +66,14 @@ class LessonAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $now = new \DateTime();
-        //$repository = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getRepository('ApplicationSonataUserBundle:GroupIteen');
-        //$actualGroupList = $repository->findByActual();
 
         $currentSubjectId = $this->getSubject()->getTeacherSubject()->getSubject()->getId();
-        //dump($currentSubjectId);
-        /*
-        if ($this->getSubject()->getId()) {
 
-            $lessonId = $this->getSubject()->getId();
-
-            $repository = $this->getConfigurationPool()->getContainer()->get('Doctrine')
-                ->getRepository('ApplicationSonataUserBundle:Lesson');
-            $currentSubjectId = $repository->find($lessonId)->getTeacherSubject()->getSubject()->getId();
-        } else {
-            //TODO: заменить на реальный ID, передаваемый в форму
-            //$currentSubjectId = $this->getSubject()->getTeacherSubject()->getSubject()->getId();
-            //dump($currentSubjectId);
-            //$currentSubjectId = 1;
-        }
-        */
         $formMapper
             ->with('1', array('class' => 'col-md-5'))->end()
             ->with('2', array('class' => 'col-md-5'))->end()
 
         ;
-
-
-        //dump($data);
-
         $formMapper
             ->with('1')
                 ->add('group.groupName', null, [

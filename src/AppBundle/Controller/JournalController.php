@@ -1,21 +1,18 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Alex_PL
- * Date: 02.11.2016
- * Time: 17:37
+ * User: Alexander Pogorelov
+ * Date: 29.11.2016
+ * Time: 23:03
  */
 
 namespace AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
-class CRUDController extends Controller
+
+class JournalController extends Controller
 {
-
-
-
-
     public function showAction($id = null)
     {
         $request = $this->getRequest();
@@ -70,5 +67,4 @@ class CRUDController extends Controller
             'lessonsList' => $lessonsList,
         ], null);
     }
-
 }
