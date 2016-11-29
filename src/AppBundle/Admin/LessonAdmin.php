@@ -35,6 +35,10 @@ class LessonAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('id', null, [
+                'label'=>'№',
+                'row_align' => 'center'
+            ])
             ->addIdentifier('date', 'date', [
                 'label'=>'Дата',
                 'row_align' => 'center',
