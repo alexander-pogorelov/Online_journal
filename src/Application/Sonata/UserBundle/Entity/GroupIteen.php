@@ -23,7 +23,7 @@ class GroupIteen
 
     private $subjects;
 
-    private $createdAt;
+    private $expirationDate;
 
     public function __construct()
     {
@@ -169,4 +169,34 @@ class GroupIteen
         return $this->subjects;
     }
 
+    /**
+     * @var \DateTime
+     */
+    private $createdAt;
+
+
+
+    /**
+     * Set expirationDate
+     *
+     * @param \DateTime $expirationDate
+     *
+     * @return GroupIteen
+     */
+    public function setExpirationDate($expirationDate)
+    {
+        $this->expirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get expirationDate
+     *
+     * @return \DateTime
+     */
+    public function getExpirationDate()
+    {
+        return $this->expirationDate;
+    }
 }
