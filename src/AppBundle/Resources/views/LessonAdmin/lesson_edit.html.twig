@@ -2,5 +2,8 @@
 
 {% block form %}
     {{ block('parentForm') }}
-    <p>Что еще</p>
+    <p>Песочница</p>
+    {{ form_start(journalForm) }}
+    {{ form_widget(journalForm) }}
+    {{ form_end(journalForm) }}
 {% endblock %}

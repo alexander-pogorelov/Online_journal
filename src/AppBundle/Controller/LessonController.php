@@ -25,6 +25,18 @@ class LessonController extends Controller
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
+        $currentGroup = $object->getGroup();
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+        $currentPupilGroups = $repository->findBy([
+            'group' => $currentGroup
+        ]);
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Journal');
+        $currentJournals = $repository->findBy([
+            'lesson' => $id
+        ]);
+
+
+
         $this->admin->checkAccess('edit', $object);
 
         $preResponse = $this->preEdit($request, $object);
@@ -38,6 +50,31 @@ class LessonController extends Controller
         $form = $this->admin->getForm();
         $form->setData($object);
         $form->handleRequest($request);
+
+        $journalFormBuilder = $this->createFormBuilder($currentJournals);
+        //foreach ($currentJournals as $currentJournal) {
+            $journalFormBuilder
+                ->add('pupilGroup')
+                ->add('assessment')
+                ->add('remark')
+                //->setData($currentJournal)
+                //->handleRequest($request)
+            ;
+        //}
+        $journalForm = $journalFormBuilder->getForm();
+
+        $journalForm->setData($currentJournals);
+        $journalForm->handleRequest($request);
+        dump($journalForm);
+
+        /*
+        foreach ($currentPupilGroups as $pga) {
+            $form->addField
+        }
+        */
+
+
+
 
         if ($form->isSubmitted()) {
             //TODO: remove this check for 4.0
@@ -103,6 +140,7 @@ class LessonController extends Controller
         }
 
         $view = $form->createView();
+        $viewJournalForm = $journalForm->createView();
 
         // set the theme for the current Admin Form
         $this->get('twig')->getExtension('form')->renderer->setTheme($view, $this->admin->getFormTheme());
@@ -111,6 +149,8 @@ class LessonController extends Controller
             'action' => 'edit',
             'form' => $view,
             'object' => $object,
+            'journalForm' => $viewJournalForm,
+
         ), null);
     }
 
