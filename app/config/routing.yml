@@ -1,3 +1,7 @@
+ajax_group:
+    path: /admin/my-post/{id}
+    defaults: { _controller: AppBundle:ViewSchedule:listMom }
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
