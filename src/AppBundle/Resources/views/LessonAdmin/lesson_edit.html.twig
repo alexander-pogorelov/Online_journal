@@ -1,0 +1,11 @@
+{% extends 'AppBundle:CRUD:base_edit.html.twig' %}
+
+{% block sonata_form_action_url %}
+    {{ admin.generateUrl('createLesson', {
+        'id': admin.id(object),
+        'uniqid': admin.uniqid,
+        'subclass': app.request.get('subclass'),
+        'groupId': groupId,
+        'subjectId': subjectId
+    }) }}
+{% endblock %}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Application\Sonata\UserBundle\Entity\Lesson" table="lesson" repository-class="Application\Sonata\UserBundle\Repository\LessonRepository">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+        <field name="topic" column="topic" type="string" length="255" nullable="true" unique="false" />
+        <field name="homework" column="homework" type="string" length="255" nullable="true" unique="false" />
+        <field name="date" column="date" type="date" nullable="false"/>
+        <many-to-one field="teacherSubject" target-entity="Application\Sonata\UserBundle\Entity\TeacherSubject">
+            <join-columns>
+                <join-column name="teacher_subject_id" referenced-column-name="id" nullable="false"/>
+            </join-columns>
+        </many-to-one>
+        <many-to-one field="group" target-entity="Application\Sonata\UserBundle\Entity\GroupIteen">
+            <join-columns>
+                <join-column name="group_id" referenced-column-name="id" nullable="false"/>
+            </join-columns>
+        </many-to-one>
+        <many-to-one field="dateTimeClassroom" target-entity="Application\Sonata\UserBundle\Entity\DateTimeClassroom">
+            <join-columns>
+                <join-column name="date_time_classroom_id" referenced-column-name="id" nullable="true"/>
+            </join-columns>
+        </many-to-one>
+
+    </entity>
+</doctrine-mapping>

@@ -1,0 +1,9 @@
+<a class="btn btn-sm btn-default" href="
+    {% if object.getFirstSubjectId %}
+        {{ path('journal-route-admin_subject_show', {
+            'id': object.id,
+            'childId': object.getFirstSubjectId
+        }) }}
+    {% endif %}
+    ">Открыть
+</a>

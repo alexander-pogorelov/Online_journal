@@ -15,6 +15,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\CallbackTransformer;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 
 class PupilAdmin extends AbstractAdmin
@@ -34,6 +36,36 @@ class PupilAdmin extends AbstractAdmin
         $object->setEmail($name.'@example.com');
         $object->setEnabled(false);
         $object->setRealRoles(['ROLE_PUPIL']);
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('export');
+    }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        $errorElement
+            ->with('email')
+                ->assertEmail()
+                ->assertNotBlank()
+            ->end()
+            ->with('firstname')
+                ->assertNotBlank()
+            ->end()
+            ->with('lastname')
+                ->assertNotBlank()
+            ->end()
+            ->with('address')
+                ->assertNotBlank()
+            ->end()
+            ->with('parents')
+                ->assertNotBlank()
+            ->end()
+            ->with('pupilGroupAssociation')
+                ->assertNotBlank()
+            ->end()
+        ;
     }
 
 
@@ -90,7 +122,6 @@ class PupilAdmin extends AbstractAdmin
                 ->add('firstname', 'text', ['label'=>'Имя'])
                 ->add('patronymic', 'text', [
                     'label'=>'Отчество',
-                    'required' => false
                 ])
                 ->add('dateOfBirth', 'date', [
                     'widget' => 'choice',
@@ -99,19 +130,21 @@ class PupilAdmin extends AbstractAdmin
                     //'choice_translation_domain' => false,
                     'years' => range(1900, $now->format('Y')),
                 ])
-                ->add('email', 'text', [
+                ->add('email', 'email', [
                     'label'=>'E-Mail',
-                    'required' => false
                 ])
             ->add('classNumber', 'choice', [
                 'choices' => $classNumberArray,
                 'choices_as_values' => true,
                 'label'=>'Класс',
-                'required' => false
+                'required' => true
             ])
                 ->add('phone', 'text', [
                     'label'=>'Телефон',
                     'required' => false
+                ])
+                ->add('address', 'text', [
+                    'label'=>'Адрес'
                 ])
                 ->add('comment', 'textarea', [
                     'label'=>'Комментарий',

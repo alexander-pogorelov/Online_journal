@@ -16,6 +16,8 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 
 class MetodistAdmin extends AbstractAdmin
@@ -26,15 +28,16 @@ class MetodistAdmin extends AbstractAdmin
 
     public function create($object)
     {
-		$container = $this->getConfigurationPool()->getContainer();
+        $container = $this->getConfigurationPool()->getContainer();
         $tokenGenerator = $container->get('fos_user.util.token_generator');
         $password = substr($tokenGenerator->generateToken(), 0, 8);
 
         $object->setPlainPassword($password);
+        $object->setUsername($object->getEmail());
 
         parent::create($object);
-		
-		$templating = $container->get('templating');
+
+        $templating = $container->get('templating');
         $message = \Swift_Message::newInstance()
             ->setSubject('Данные для авторизации')
             ->setFrom('testiteen@gmail.com')
@@ -54,6 +57,30 @@ class MetodistAdmin extends AbstractAdmin
     {
         $object->setRealRoles(['ROLE_METODIST']);
         $object->setEnabled(true);
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('export');
+    }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        $errorElement
+            ->with('email')
+                ->assertEmail()
+                ->assertNotBlank()
+            ->end()
+            ->with('firstname')
+                ->assertNotBlank()
+            ->end()
+            ->with('lastname')
+                ->assertNotBlank()
+            ->end()
+            ->with('address')
+                ->assertNotBlank()
+            ->end()
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -85,8 +112,10 @@ class MetodistAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filterMapper)
     {
         $filterMapper
-            ->add('lastname', null, [
-                'label'=>'Фамилия'
+            ->add('full_name', 'doctrine_orm_callback', [
+                'label'=>'Ф.И.О. Методиста',
+                'callback' => 'AppBundle\Admin\Filters\GeneralFilters::getFullNameFilter',
+                'field_type' => 'text'
             ])
             ->add('speciality', null, [
                 'label'=>'Специальность'
@@ -127,14 +156,14 @@ class MetodistAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Bio', array('class' => 'col-md-6'))->end()
-            ->with('Work', array('class' => 'col-md-6'))->end()
+            ->with('Личные данные', array('class' => 'col-md-6'))->end()
+            ->with('Дополнительная информация', array('class' => 'col-md-6'))->end()
         ;
 
         $now = new \DateTime();
 
         $formMapper
-            ->with('Bio')
+            ->with('Личные данные')
             ->add('lastname', 'text', ['label'=>'Фамилия'])
             ->add('firstname', 'text', ['label'=>'Имя'])
             ->add('patronymic', 'text', ['label'=>'Отчество'])
@@ -148,16 +177,13 @@ class MetodistAdmin extends AbstractAdmin
             ->add('phone', 'text', ['label'=>'Телефон'])
             ->add('address', 'text', ['label'=>'Адрес'])
             ->end()
-            ->with('Work')
-            ->add('username')
-            ->add('email')
+            ->with('Дополнительная информация')
+            ->add('email', 'email')
             ->add('workDays', 'text', [
                 'label'=>'Дни работы',
-                'required' => false
             ])
             ->add('workHours', 'text', [
                 'label'=>'Часы работы',
-                'required' => false
             ])
             ->add('comment', TextareaType::class, [
                 'label'=>'Примечание',
