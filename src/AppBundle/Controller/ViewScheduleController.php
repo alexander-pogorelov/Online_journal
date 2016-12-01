@@ -16,9 +16,6 @@ class ViewScheduleController extends CoreController
     public  function listMomAction($id){
         $em = $this->getDoctrine()->getManager();
         $subjects = $em->getRepository('ApplicationSonataUserBundle:GroupIteen')->find($id);
-        //die($subjects);
-        //$vil = $subjects->getSubjects()->getValues();
-        //$vil = $em->getRepository('ApplicationSonataUserBundle:Subject')->findOneBy(array('id'=>$id));
         if ($subjects){
             $vill = $subjects->getSubjects()->getValues();
             die($vill);
@@ -39,17 +36,6 @@ class ViewScheduleController extends CoreController
         $teachers = $em->getRepository('ApplicationSonataUserBundle:UserTeacher')->findAll();
         $classrooms = $em->getRepository('ApplicationSonataUserBundle:Classroom')->findAll();
         $name = 'Расписание';
-
-       // $query = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Subject');
-        //$query = $this->getDoctrine()->getEntityManager();
-        /* $asd = $query->getRepository('ApplicationSonataUserBundle:DateTimeClassroom')->createQueryBuilder('p')
-            ->where('p.weekday > :weekday')
-            ->setParameter('weekday','1')
-            ->getQuery();
-        $q1 = $asd->getResult(); */
-        dump($groups);
-        //die('skjdvfndl;vfjasn'); вывод строки
-
 
        return $this->render('AppBundle:ViewScheduleAdmin:view_schedule_list.html.twig', array(
                     'name'  => $name,
