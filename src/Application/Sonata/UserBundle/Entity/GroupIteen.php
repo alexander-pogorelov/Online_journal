@@ -13,12 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class GroupIteen
 {
-    public function __construct()
-    {
-        $this->pupilGroupAssociation = new ArrayCollection();
-        $this->subjects = new ArrayCollection();
-    }
-
     private $id;
 
     private $groupName;
@@ -28,6 +22,39 @@ class GroupIteen
     protected $pupilGroupAssociation;
 
     private $subjects;
+
+    private $expirationDate;
+
+    public function __construct()
+    {
+        $this->pupilGroupAssociation = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
+    }
+
+    public function getFirstSubjectId()
+    {
+        $firstSubject = $this->subjects->first();
+        if ($firstSubject) {
+            return $firstSubject->getId();
+        } else {
+            return false;
+        }
+    }
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
 
     public function getPupilsAmount()
     {
@@ -142,4 +169,34 @@ class GroupIteen
         return $this->subjects;
     }
 
+    /**
+     * @var \DateTime
+     */
+    private $createdAt;
+
+
+
+    /**
+     * Set expirationDate
+     *
+     * @param \DateTime $expirationDate
+     *
+     * @return GroupIteen
+     */
+    public function setExpirationDate($expirationDate)
+    {
+        $this->expirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get expirationDate
+     *
+     * @return \DateTime
+     */
+    public function getExpirationDate()
+    {
+        return $this->expirationDate;
+    }
 }

@@ -63,6 +63,8 @@ class MessageController extends Controller
             $receivers = [];
             $groupIteenToArray = [];
 
+            $sender = $this->get('security.token_storage')->getToken()->getUser();
+
             $messageGroup = $form['messageGroup']->getData();
             $groupIteen = $form['groupIteen']->getData();
 
@@ -148,6 +150,7 @@ class MessageController extends Controller
 
             $object->setGroupIteen($groupNameString);
             $object->setReceiver($receiversString);
+            $object->setSender($sender);
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {

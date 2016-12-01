@@ -1,16 +1,17 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Alex_PL
- * Date: 02.11.2016
- * Time: 17:37
+ * User: Alexander Pogorelov
+ * Date: 29.11.2016
+ * Time: 22:51
  */
 
 namespace AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
-class CRUDController extends Controller
+
+class GroupController extends Controller
 {
     public function showPupilsInGroupAction($id = null)
     {
@@ -51,5 +52,4 @@ class CRUDController extends Controller
             'elements' => $this->admin->getShow(),
         ]);
     }
-
 }

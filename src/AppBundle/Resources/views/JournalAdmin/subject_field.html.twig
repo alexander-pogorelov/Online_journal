@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% for subject in object.subjects %}
+        <a href="{{ path('journal-route-admin_subject_show', {
+            'id': object.id,
+            'childId': subject.id
+        }) }}">{{ subject.name }}</a>
+        {% if not loop.last %}
+            <span>,&nbsp</span>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

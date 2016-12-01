@@ -32,7 +32,7 @@ services:
         arguments:
             - null
             - Application\Sonata\UserBundle\Entity\GroupIteen
-            - AppBundle:CRUD
+            - AppBundle:Group
         tags:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Группы' }
     app.admin.journal:
@@ -40,6 +40,18 @@ services:
         arguments:
             - null
             - Application\Sonata\UserBundle\Entity\GroupIteen
-            - AppBundle:CRUD
+            - AppBundle:Journal
         tags:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Журналы' }
+        calls:
+            - [addChild, ['@admin.subject']]
+    app.admin.lesson:
+        class: AppBundle\Admin\LessonAdmin
+        arguments:
+            - null
+            - Application\Sonata\UserBundle\Entity\Lesson
+            - AppBundle:Lesson
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Уроки' }
+        calls:
+            - [ setTemplate, [createLesson, AppBundle:LessonAdmin:lesson_edit.html.twig] ]

@@ -18,12 +18,15 @@ class JournalAdmin extends AbstractAdmin
     protected $baseRouteName = 'journal-route-admin'; //admin_vendor_bundlename_adminclassname
     protected $baseRoutePattern = 'journal'; //unique-route-pattern
 
+    protected $datagridValues = [
+        '_sort_order' => 'DESC'
+    ];
+
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('delete');
         $collection->remove('create');
         $collection->remove('export');
-        //$collection->add('showGroupJournal', $this->getRouterIdParameter().'/show');
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -36,9 +39,7 @@ class JournalAdmin extends AbstractAdmin
                 ]+ $headerAttr)
             ->add('subjects', null, [
                     'label'=>'Предметы',
-                ]+ $headerAttr)
-            ->add('_teacher_array_', null, [
-                    'label'=>'Преподаватели',
+                    'template' =>'AppBundle:JournalAdmin:subject_field.html.twig'
                 ]+ $headerAttr)
             ->add('_action', null, [
                     'label'=>'Перейти к журналу',

@@ -85,6 +85,18 @@ class Message
         return $this;
     }
 
+    public function getSender()
+    {
+        return $this->sender;
+    }
+
+    public function setSender($sender)
+    {
+        $this->sender = $sender;
+
+        return $this;
+    }
+
     /**
      * Set topic
      *
