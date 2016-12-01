@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 class ClassroomAdmin extends AbstractAdmin
 {
@@ -23,6 +24,22 @@ class ClassroomAdmin extends AbstractAdmin
     {
         $collection->remove('export');
     }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        $errorElement
+            ->with('number')
+                ->assertNotBlank()
+            ->end()
+            ->with('capacity')
+                ->assertNotBlank()
+            ->end()
+            ->with('description')
+                ->assertNotBlank()
+            ->end()
+        ;
+    }
+
     // Создание списка аудиторий из базы данных
     protected function configureListFields(ListMapper $listClassroom)
     {
@@ -43,10 +60,12 @@ class ClassroomAdmin extends AbstractAdmin
                     'label'=>'Номер аудитории',
                     'attr' => array('min' => 1)
                 ])
-                ->add('capacity',null, ['label'=>'Вместимость'])
+                ->add('capacity',null, [
+                    'label'=>'Вместимость',
+                    'attr' => array('min' => 1)
+                ])
                 ->add('description',null, [
                     'label'=>'Описание',
-                    'required' => false
                 ])
             ->end();
     }

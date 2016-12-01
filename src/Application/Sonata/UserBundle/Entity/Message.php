@@ -28,12 +28,14 @@ class Message
 
     protected $groupIteen;
 
+    protected $receiver;
+
 
     public static $messageGroupArray = [
-        'все'=> 0,
-        'методисты' => 1,
-        'преподаватели'=> 2,
-        'учащиеся' => 3,
+        'все'=> 1,
+        'методисты' => 2,
+        'преподаватели'=> 3,
+        'учащиеся' => 4,
     ];
 
 
@@ -61,12 +63,26 @@ class Message
 
     public function getReceivers()
     {
-        return implode(' ', [
-            $this->getUsers(),
-            $this->getMessageGroupString(),
-            $this->getGroupIteen()
-        ]
-        );
+        $receiversArray = [$this->getReceiver(), $this->getMessageGroupString(), $this->getGroupIteen()];
+        $receiversString = [];
+        foreach ($receiversArray as $receiver){
+            if(!empty($receiver)){
+                $receiversString[] = $receiver;
+            }
+        }
+        return implode(', ', $receiversString);
+    }
+
+    public function getReceiver()
+    {
+        return $this->receiver;
+    }
+
+    public function setReceiver($receiver)
+    {
+        $this->receiver = $receiver;
+
+        return $this;
     }
 
     /**

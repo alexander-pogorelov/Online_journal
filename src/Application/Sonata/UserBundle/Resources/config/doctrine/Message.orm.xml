@@ -14,6 +14,7 @@
         <field name="message" type="text" nullable="true" unique="false" />
         <field name="messageGroup" type="string" nullable="true" unique="false" />
         <field name="groupIteen" type="string" length="255" nullable="true" unique="false" />
+        <field name="receiver" type="text" length="255" nullable="true" unique="false" />
 
         <many-to-one field="sender" target-entity="Application\Sonata\UserBundle\Entity\User">
             <join-column name="sender_id" referenced-column-name="id" />

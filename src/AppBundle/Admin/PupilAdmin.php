@@ -128,7 +128,7 @@ class PupilAdmin extends AbstractAdmin
                     'label'=>'Дата, месяц, год рождения',
                     'format' => 'dd MMMM yyyy',
                     //'choice_translation_domain' => false,
-                    'years' => range(1900, $now->format('Y')),
+                    'years' => range(1990, $now->format('Y')),
                 ])
                 ->add('email', 'email', [
                     'label'=>'E-Mail',

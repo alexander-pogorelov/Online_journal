@@ -21,6 +21,8 @@ use Symfony\Component\Form\CallbackTransformer;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Validator\ErrorElement;
+
 
 class MessageAdmin extends AbstractAdmin
 {
@@ -31,6 +33,18 @@ class MessageAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('export');
+    }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        $errorElement
+            ->with('topic')
+                ->assertNotBlank()
+            ->end()
+            ->with('message')
+                ->assertNotBlank()
+            ->end()
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -146,7 +160,7 @@ class MessageAdmin extends AbstractAdmin
                 },
                 function ($groupIteenAsArray) {
                     $groupArray = array_map(function (GroupIteen $groupIteen) {
-                        return $groupIteen->getGroupName();
+                        return $groupIteen->getId();
                     }, $groupIteenAsArray->toArray()
                     );
                     return implode(', ', $groupArray);
