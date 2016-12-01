@@ -36,7 +36,10 @@ class LessonAdmin extends AbstractAdmin
     public function getDashboardActions()
     {
         $actions = parent::getDashboardActions();
-        unset($actions['create']);
+        if (isset($actions['create'])) {
+            unset($actions['create']);
+        }
+
         return $actions;
     }
 

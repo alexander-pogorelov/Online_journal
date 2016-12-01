@@ -54,4 +54,5 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Уроки' }
         calls:
-            - [ setTemplate, [createLesson, AppBundle:LessonAdmin:lesson_edit.html.twig] ]
+            - [ setTemplate, [createLesson, AppBundle:LessonAdmin:lesson_create.html.twig] ]
+            - [ setTemplate, [edit, AppBundle:LessonAdmin:lesson_edit.html.twig] ]
