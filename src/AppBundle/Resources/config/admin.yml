@@ -37,15 +37,22 @@ services:
                 class: AppBundle\Admin\TimeIntervalAdmin
                 arguments: [~, Application\Sonata\UserBundle\Entity\TimeInterval, ~]
                 tags:
-                   - { name: sonata.admin, manager_type: orm, group: Интервалы времени , on_top: true, show_in_dashboard: true}
+                   - { name: sonata.admin, manager_type: orm, group: Интервалы времени , on_top: true, show_in_dashboard: false}
      admin.datetimeclassroom:
                 class: AppBundle\Admin\DateTimeClassroomAdmin
                 arguments: [~, Application\Sonata\UserBundle\Entity\DateTimeClassroom, ~]
                 tags:
                    - { name: sonata.admin, manager_type: orm, group: Дата занятия , on_top: true, show_in_dashboard: false}
-     app.admin.schedule:
+     admin.schedule:
                 class: AppBundle\Admin\ScheduleAdmin
-                arguments: [~, ~, AppBundle:Schedule]
+                arguments: [~, Application\Sonata\UserBundle\Entity\Schedule, AppBundle:Schedule]
                 tags:
-                    - { name: sonata.admin, manager_type: orm, group: Расписание, on_top: true, show_in_dashboard: true}
-
+                   - { name: sonata.admin, manager_type: orm, group: Расписание , on_top: true, show_in_dashboard: true}
+                calls:
+                  - [setTemplate, [list, AppBundle:ScheduleAdmin:schedule_list.html.twig]]
+                  - [setTemplate, [edit, AppBundle:ScheduleAdmin:schedule_edit.html.twig]]
+     admin.viewschedule:
+                class: AppBundle\Admin\ViewScheduleAdmin
+                arguments: [~, ~, AppBundle:ViewSchedule]
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: Таблица Расписания, on_top: true, show_in_dashboard: false}

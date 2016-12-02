@@ -1,3 +1,8 @@
+ajax_group:
+    path: /admin/my-post/{groupId}
+    defaults: { _controller: AppBundle:ViewSchedule:ajaxGroups }
+    options:
+      expose: true
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

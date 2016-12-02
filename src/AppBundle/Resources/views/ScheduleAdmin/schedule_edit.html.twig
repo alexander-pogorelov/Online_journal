@@ -1,0 +1,35 @@
+{% extends 'SonataAdminBundle:CRUD:edit.html.twig' %}
+
+{% block form %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            var primaryGroup = $('#{{ admin.uniqid }}_group');
+            primaryGroup.change(updateSubjects()); // Bind the function to updateSubjects
+            primaryGroup.change(); // Manual trigger to update Subjects in Document load.
+
+            function updateSubjects(){
+                return function () {
+                    var groupId = $('#{{ admin.uniqid }}_group option:selected').val();
+                    var primarySubjects = $('#{{ admin.uniqid }}_subject');
+                    primarySubjects.empty();
+                    primarySubjects.trigger('liszt:updated');
+
+                    var url = 'http://php01/web/app_dev.php/admin/my-post/'+groupId;
+                    $.post(url, { groupId: groupId }, function(data){
+                        primarySubjects.empty().append(data);
+                        primarySubjects.trigger('liszt:updated');
+                    },'text');
+
+                    primarySubjects.val('option:first').attr('selected', true);
+                };
+            }
+        });
+
+    </script>
+{% endblock %}
