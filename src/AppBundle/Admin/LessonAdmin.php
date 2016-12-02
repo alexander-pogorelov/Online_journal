@@ -89,6 +89,28 @@ class LessonAdmin extends AbstractAdmin
         $now = new \DateTime();
 
         $currentSubjectId = $this->getSubject()->getTeacherSubject()->getSubject()->getId();
+        $currentGroup = $this->getSubject()->getGroup();
+        $repository=$this->getConfigurationPool()->getContainer()->get('Doctrine')
+            ->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+        $currentPupilGroupAssociations = $repository->findBy([
+            'group' => $currentGroup
+        ]);
+
+        dump($currentPupilGroupAssociations);
+
+        $assessmentArray = [];
+        for ($i=10; $i>=5; $i--) {
+            $assessmentArray[$i.' баллов'] = $i;
+        }
+
+        for ($i=4; $i>=2; $i--) {
+            $assessmentArray[$i.' балла'] = $i;
+        }
+        $assessmentArray['1 балл'] = 1;
+        $assessmentArray['Отсутствует'] = -1;
+        //dump($assessmentArray);
+
+
         if ($this->getSubject()->getId()) {
             $id = $this->getSubject()->getId();
             $repository=$this->getConfigurationPool()->getContainer()->get('Doctrine')
@@ -96,19 +118,17 @@ class LessonAdmin extends AbstractAdmin
             $currentJournals = $repository->findBy([
                 'lesson' => $id
             ]);
-            dump($currentJournals);
+
         }
 
 
 
         $formMapper
-            ->with('1', array('class' => 'col-md-5'))->end()
-            ->with('2', array('class' => 'col-md-5'))->end()
-            ->with('3', array('class' => 'col-md-5'))->end()
-
+            ->with('Урок', array('class' => 'col-md-3'))->end()
+            ->with('Оценки', array('class' => 'col-md-6'))->end()
         ;
         $formMapper
-            ->with('1')
+            ->with('Урок')
                 ->add('group.groupName', null, [
                     'label'=>'Группа',
                     'read_only' => true,
@@ -130,8 +150,6 @@ class LessonAdmin extends AbstractAdmin
                     },
                     'label'=>'Преподаватель',
                 ])
-            ->end()
-            ->with('2')
                 ->add('date', 'date', [
                     'widget' => 'choice',
                     'label'=>'Дата урока',
@@ -146,17 +164,27 @@ class LessonAdmin extends AbstractAdmin
                 ->add('homework', 'textarea', [
                     'label'=>'Домашнее задание',
                 ])
-            ->end();
-        $formMapper
-            ->with('3');
-        foreach ($currentJournals as $currentJournal) {
-
-            //dump($currentJournal);
-            $formMapper->add($currentJournal->getId(), JournalType::class);
-        }
-        $formMapper
             ->end()
-        ;
+            ->with('Оценки');
+                foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
+
+                    $formMapper
+                        ->add('assessment'.$currentPupilGroupAssociation->getId(), 'choice', [
+                            'choices' => $assessmentArray,
+                            'choices_as_values' => true,
+                            'mapped' => false,
+                            'label' => $currentPupilGroupAssociation->getPupil(),
+                            'required' => false,
+                        ])
+                        ->add('remark'.$currentPupilGroupAssociation->getId(), 'text', [
+                            'mapped' => false,
+                            'label' => 'Замечание'
+                        ])
+
+                    ;
+                }
+        $formMapper
+            ->end();
     }
 
 }
