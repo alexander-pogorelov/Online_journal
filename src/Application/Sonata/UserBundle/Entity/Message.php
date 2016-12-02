@@ -38,6 +38,10 @@ class Message
         'учащиеся' => 4,
     ];
 
+    public function __construct()
+    {
+        $this->userMessage = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -46,6 +50,7 @@ class Message
     {
         return $this->messageGroup;
     }
+
     public function getMessageGroupString()
     {
         $array = explode(', ', $this->messageGroup);
@@ -54,11 +59,6 @@ class Message
             $result[] = array_search($value, self::$messageGroupArray);
         }
         return implode(', ', $result);
-    }
-
-    public function __construct()
-    {
-        $this->userMessage = new ArrayCollection();
     }
 
     public function getReceivers()

@@ -8,8 +8,10 @@
 
 namespace AppBundle\Controller;
 
+use Application\Sonata\UserBundle\Document\User;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Application\Sonata\UserBundle\Entity\UserMessage;
+use Application\Sonata\UserBundle\Entity;
 
 class MessageController extends Controller
 {
@@ -59,11 +61,12 @@ class MessageController extends Controller
             }
             $isFormValid = $form->isValid();
 
+            $sender = $this->get('security.token_storage')->getToken()->getUser();
+            $object->setSender($sender);
+
             $idUser = [];
             $receivers = [];
             $groupIteenToArray = [];
-
-            $sender = $this->get('security.token_storage')->getToken()->getUser();
 
             $messageGroup = $form['messageGroup']->getData();
             $groupIteen = $form['groupIteen']->getData();
@@ -150,7 +153,6 @@ class MessageController extends Controller
 
             $object->setGroupIteen($groupNameString);
             $object->setReceiver($receiversString);
-            $object->setSender($sender);
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {
