@@ -1,0 +1,170 @@
+{% extends 'AppBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/table.css') }}" type="text/css" media="all" />
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    {# put links to javascript libraries here if you need any #}
+	<script type="text/javascript">
+        function changeVisibility(viewId){
+            $('#tab1').hide();
+            $('#tab2').hide();
+            $('#tab3').hide();
+            $('#'+viewId).show();
+        }
+        $(document).ready(function(){
+            $('#groups_view').click(changeVisibility.bind(null, 'tab1'));
+            $('#teacher_view').click(changeVisibility.bind(null, 'tab2'));
+            $('#classroom_view').click(changeVisibility.bind(null, 'tab3'));
+        });
+    </script>
+{% endblock %}
+
+{%- block sonata_admin_content -%}
+        <h2>{{ name }}</h2>
+		<div class="tabsLink">
+			<input type="button" value="По группам" style="width:200px;" id="groups_view">
+			<input type="button" value="По преподавателям" style="width:200px;" id="teacher_view">
+			<input type="button" value="По аудиториям" style="width:200px;" id="classroom_view">
+            <a href="http://php01/web/app_dev.php/admin/sonata/user/datetimeclassroom/create">Добавить</a>
+            <br /> <br />
+		</div>
+
+    {# по группам #}
+ 	<div id="tab1" style="background: white; display:block;">	
+        <table rules=all border=2>
+            <tbody>
+            <tr>
+                <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
+                {% for group in groups %}
+                    <td  colspan=3 width=257>Группа № {{ group.groupName }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+             {% for group in groups %}
+                <td>Предмет</td>
+                <td>Ауд.</td>
+                <td>Преподаватель</td>
+             {% endfor %}
+            </tr>
+            {% for weekday in weekdays %}
+                {% for timeInterval in timeIntervals %}
+                    {% if loop.first %}
+                        <tr class="line_table">
+                            <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
+                            <td>{{ timeInterval }}</td>
+                            {% for group in groups %}
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                            {% endfor %}
+                        </tr>
+                    {% else %}
+                        <tr class="line_table">
+                           <td>{{ timeInterval }}</td>
+                            {% for group in groups %}
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+	</div>
+    {# по преподователям #}
+        <div id="tab2" style="background: white; display:none;">
+            <table rules=all border=2>
+                <tbody>
+                <tr>
+                    <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
+                    {% for teacher in teachers %}
+                        <td  colspan=3 width=257> Преподаватель: {{ teacher.fullName }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for teacher in teachers %}
+                        <td>Предмет</td>
+                        <td>Группа</td>
+                        <td>Ауд.</td>
+                    {% endfor %}
+                </tr>
+                {% for weekday in weekdays %}
+                    {% for timeInterval in timeIntervals %}
+                        {% if loop.first %}
+                            <tr class="line_table">
+                                <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
+                                <td>{{ timeInterval }}</td>
+                                {% for teacher in teachers %}
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                {% endfor %}
+                            </tr>
+                        {% else %}
+                            <tr class="line_table">
+                                <td>{{ timeInterval }}</td>
+                                {% for teacher in teachers %}
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {# по аудиториям #}
+        <div id="tab3" style="background: white; display:none;">
+        <table rules=all border=2>
+            <tbody>
+            <tr>
+                <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
+                {% for classroom in classrooms %}
+                    <td  colspan=3 width=257>Аудитория № {{ classroom.number }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for classroom in classrooms %}
+                    <td>Предмет</td>
+                    <td>Группа</td>
+                    <td>Преподаватель</td>
+                {% endfor %}
+            </tr>
+            {% for weekday in weekdays %}
+                {% for timeInterval in timeIntervals %}
+                    {% if loop.first %}
+                        <tr class="line_table">
+                            <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
+                            <td>{{ timeInterval }}</td>
+                            {% for classroom in classrooms %}
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                            {% endfor %}
+                        </tr>
+                    {% else %}
+                        <tr class="line_table">
+                            <td>{{ timeInterval }}</td>
+                            {% for classroom in classrooms %}
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                                <td class="cell_table"><br></td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+{%- endblock sonata_admin_content -%}

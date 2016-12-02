@@ -39,7 +39,7 @@ services:
         class: AppBundle\Admin\JournalAdmin
         arguments:
             - null
-            - Application\Sonata\UserBundle\Entity\GroupIteen
+            - null
             - AppBundle:Journal
         tags:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Журналы' }
