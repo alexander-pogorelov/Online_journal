@@ -37,6 +37,9 @@ class SubjectAdmin extends AbstractAdmin
             ->add('name', 'text', [
                 'label'=>'Предмет',
             ])
+            ->add('reduction', 'text', [
+                'label'=>'Сокращение',
+            ])
             ->add('specialization', 'text', [
                 'label'=>'Специализация',
             ])
@@ -51,6 +54,9 @@ class SubjectAdmin extends AbstractAdmin
         $filterMapper
             ->add('abbreviation', null, [
                 'label'=>'Аббревиатура'
+            ])
+            ->add('reduction', null, [
+                'label'=>'Сокращение',
             ])
             ->add('name', null, [
                 'label'=>'Предмет'
@@ -74,6 +80,9 @@ class SubjectAdmin extends AbstractAdmin
             ->with('Предмет')
             ->add('abbreviation', 'text', [
                 'label'=>'Аббревиатура',
+            ])
+            ->add('reduction', 'text', [
+                'label'=>'Сокращение',
             ])
             ->add('name', 'text', [
                 'label'=>'Предмет',

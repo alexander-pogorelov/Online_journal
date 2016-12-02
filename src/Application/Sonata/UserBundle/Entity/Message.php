@@ -24,14 +24,24 @@ class Message
 
     protected $messageGroup;
 
+    protected $sender;
+
+    protected $groupIteen;
+
+    protected $receiver;
+
 
     public static $messageGroupArray = [
-        'все'=> 0,
-        'методисты'=> 4,
-        'преподаватели'=> 2,
-        'учащиеся' => 1,
+        'все'=> 1,
+        'методисты' => 2,
+        'преподаватели'=> 3,
+        'учащиеся' => 4,
     ];
 
+    public function __construct()
+    {
+        $this->userMessage = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -40,23 +50,51 @@ class Message
     {
         return $this->messageGroup;
     }
+
     public function getMessageGroupString()
     {
-        return array_search($this->messageGroup , self::$messageGroupArray, true);
-    }
-
-    public function __construct()
-    {
-        $this->userMessage = new ArrayCollection();
+        $array = explode(', ', $this->messageGroup);
+        $result = [];
+        foreach ($array as $key => $value){
+            $result[] = array_search($value, self::$messageGroupArray);
+        }
+        return implode(', ', $result);
     }
 
     public function getReceivers()
     {
-        return implode(' ', [
-            $this->getUsers(),
-            $this->getMessageGroupString()
-        ]
-        );
+        $receiversArray = [$this->getReceiver(), $this->getMessageGroupString(), $this->getGroupIteen()];
+        $receiversString = [];
+        foreach ($receiversArray as $receiver){
+            if(!empty($receiver)){
+                $receiversString[] = $receiver;
+            }
+        }
+        return implode(', ', $receiversString);
+    }
+
+    public function getReceiver()
+    {
+        return $this->receiver;
+    }
+
+    public function setReceiver($receiver)
+    {
+        $this->receiver = $receiver;
+
+        return $this;
+    }
+
+    public function getSender()
+    {
+        return $this->sender;
+    }
+
+    public function setSender($sender)
+    {
+        $this->sender = $sender;
+
+        return $this;
     }
 
     /**
@@ -150,7 +188,7 @@ class Message
     {
         return $this->userMessage;
     }
-
+	
     public function getUsers()
     {
         $usersArray = array_map(function (UserMessage $userMessage) {
@@ -170,6 +208,18 @@ class Message
     public function setMessageGroup($messageGroup)
     {
         $this->messageGroup = $messageGroup;
+
+        return $this;
+    }
+
+    public function getGroupIteen()
+    {
+        return $this->groupIteen;
+    }
+
+    public function setGroupIteen($groupIteen)
+    {
+        $this->groupIteen = $groupIteen;
 
         return $this;
     }

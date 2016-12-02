@@ -38,6 +38,10 @@
                 <source>Message List</source>
                 <target>Сообщения</target>
             </trans-unit>
+            <trans-unit id="Message_Create">
+                <source>Message Create</source>
+                <target>Создание</target>
+            </trans-unit>
             <trans-unit id="Classroom_List">
                 <source>Classroom List</source>
                 <target>Аудитории</target>

@@ -8,7 +8,9 @@
 
 namespace AppBundle\Controller;
 
+use Application\Sonata\UserBundle\Document\User;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Application\Sonata\UserBundle\Entity\UserMessage;
 use Application\Sonata\UserBundle\Entity;
 
 class MessageController extends Controller
@@ -46,16 +48,7 @@ class MessageController extends Controller
         $this->admin->setSubject($object);
 
         /** @var $form \Symfony\Component\Form\Form */
-
         $form = $this->admin->getForm();
-
-        $fieldIndex = $form['messageGroup']->getData();
-
-        $repository = $this->getDoctrine()->getRepository('User');
-
-        $userMessage = $repository->findBy([
-            'user_type' => $fieldIndex
-        ]);
 
         $form->setData($object);
 
@@ -67,6 +60,99 @@ class MessageController extends Controller
                 $this->admin->preValidate($object);
             }
             $isFormValid = $form->isValid();
+
+            $sender = $this->get('security.token_storage')->getToken()->getUser();
+            $object->setSender($sender);
+
+            $idUser = [];
+            $receivers = [];
+            $groupIteenToArray = [];
+
+            $messageGroup = $form['messageGroup']->getData();
+            $groupIteen = $form['groupIteen']->getData();
+
+            $messageGroupToArray = explode(', ', $messageGroup);
+
+            if(!empty($groupIteen)){
+                $groupIteenToArray = explode(', ', $groupIteen);
+            }
+
+            foreach ($form['userMessage']->getData() as $userMessage){
+                $user = $userMessage->getUser();
+                $receivers[] = $user;
+                $idUser[] = $user->getId();
+            }
+
+            if(in_array(1, $messageGroupToArray)){
+                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:User')->findAll();
+                foreach ($repository as $user) {
+                    if (!in_array($user->getId(), $idUser)) {
+                        $userMessage = new UserMessage($user, $object);
+                        $object->addUserMessage($userMessage);
+                        $idUser[] = $user->getId();
+                    }
+                }
+            }
+            if(in_array(2, $messageGroupToArray)){
+                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserMetodist')->findAll();
+                foreach ($repository as $user) {
+                    if (!in_array($user->getId(), $idUser)) {
+                        $userMessage = new UserMessage($user, $object);
+                        $object->addUserMessage($userMessage);
+                        $idUser[] = $user->getId();
+                    }
+                }
+            }
+            if(in_array(3, $messageGroupToArray)){
+                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserTeacher')->findAll();
+                foreach ($repository as $user) {
+                    if (!in_array($user->getId(), $idUser)) {
+                        $userMessage = new UserMessage($user, $object);
+                        $object->addUserMessage($userMessage);
+                        $idUser[] = $user->getId();
+                    }
+                }
+            }
+            if(in_array(4, $messageGroupToArray)){
+                $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserPupil')->findAll();
+                foreach ($repository as $user) {
+                    if (!in_array($user->getId(), $idUser)) {
+                        $userMessage = new UserMessage($user, $object);
+                        $object->addUserMessage($userMessage);
+                        $idUser[] = $user->getId();
+                    }
+                }
+            }
+
+            $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+
+                foreach($groupIteenToArray as $groupId) {
+                    $group = $repository->findBy(['group' => $groupId]);
+                    foreach ($group as $pga) {
+                        $pupil = $pga->getPupil();
+                        if (!in_array($pupil->getId(), $idUser)) {
+                            $userMessage = new UserMessage($pupil, $object);
+                            $object->addUserMessage($userMessage);
+                            $idUser[] = $pupil->getId();
+                        }
+                    }
+                }
+
+            $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:GroupIteen');
+            $groupName = [];
+
+            if(!empty($groupIteenToArray)) {
+                foreach ($groupIteenToArray as $groupId) {
+                    $group = $repository->findOneBy(['id' => $groupId]);
+                    $groupName[] = $group->getGroupName();
+                }
+            }
+
+            $groupNameString = implode(', ', $groupName);
+            $receiversString = implode(', ', $receivers);
+
+            $object->setGroupIteen($groupNameString);
+            $object->setReceiver($receiversString);
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {
@@ -130,4 +216,5 @@ class MessageController extends Controller
             'object' => $object,
         ), null);
     }
+
 }
