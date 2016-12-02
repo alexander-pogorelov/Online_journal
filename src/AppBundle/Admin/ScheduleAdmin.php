@@ -2,28 +2,18 @@
 
 namespace AppBundle\Admin;
 
-use Application\Sonata\UserBundle\Entity\GroupIteen;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 
 class ScheduleAdmin extends AbstractAdmin
+// Класс для создания списка расписания
 {
     protected $baseRoutePattern = 'schedule';
     protected $baseRouteName = 'schedule-route-admin';
 
-   /* protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->clearExcept(array('list'));
-    } */
 
-    // Класс для создания списка интервалов времени
 
     public function configureListFields(ListMapper $listMapper)
     {
@@ -40,15 +30,14 @@ class ScheduleAdmin extends AbstractAdmin
     // Создание формы для добавления и редактирования
     protected function configureFormFields(FormMapper $formSchedule)
     {
-        $admin = $this;
-        $days = [
+        $weekdays = [
             'Воскресенье' , 'Понедельник' ,
             'Вторник' , 'Среда' ,
             'Четверг' , 'Пятница' , 'Суббота'
         ];
         $formSchedule
             ->with('Добавить/Редактировать дату занятий',['class' => 'col-md-7'])
-            ->add('weekday','choice', array('label' => 'День недели', 'required' => false, 'expanded' => false, 'multiple' => false, 'choices' => $days))
+            ->add('weekday','choice', array('label' => 'День недели', 'required' => false, 'expanded' => false, 'multiple' => false, 'choices' => $weekdays))
             ->add('timeinterval',null, ['label'=>'Время занятий'])
             ->add('group',null, array(
                 'attr' => ['class' => 'group'],

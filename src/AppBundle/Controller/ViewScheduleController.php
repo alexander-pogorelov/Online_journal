@@ -2,29 +2,27 @@
 
 namespace AppBundle\Controller;
 
-use Application\Sonata\UserBundle\ApplicationSonataUserBundle;
 use Application\Sonata\UserBundle\Entity\GroupIteen;
 use Application\Sonata\UserBundle\Entity\UserTeacher;
 use Application\Sonata\UserBundle\Entity\Classroom;
 use Sonata\AdminBundle\Controller\CoreController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ViewScheduleController extends CoreController
 {
-    public  function listMomAction($id){
+    public  function ajaxGroupsAction($groupId){
+        $html = '';
         $em = $this->getDoctrine()->getManager();
-        $subjects = $em->getRepository('ApplicationSonataUserBundle:GroupIteen')->find($id);
+
+        $group = $em->getRepository('ApplicationSonataUserBundle:GroupIteen')->find($groupId);
+        $subjects  =$group->getSubjects();
         if ($subjects){
-            $vill = $subjects->getSubjects()->getValues();
-            die($vill);
-        } else {
-            $vill = null;
+            foreach($subjects as $sub){
+                $html .= '<option value="'.$sub->getId().'" >'.$sub->getName().'</option>';
+            }
         }
 
-        $responce = new JsonResponse();
-        return $responce->setData($vill);
+        return new Response($html, 200);
     }
     public function listAction()
     {
