@@ -56,3 +56,7 @@ services:
         calls:
             - [ setTemplate, [createLesson, AppBundle:LessonAdmin:lesson_create.html.twig] ]
             - [ setTemplate, [edit, AppBundle:LessonAdmin:lesson_edit.html.twig] ]
+    app.admin.lesson.form:
+        class: AppBundle\Form\JournalType
+        tags:
+            - { name: form.type}

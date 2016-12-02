@@ -9,6 +9,7 @@
 namespace AppBundle\Admin;
 
 
+use AppBundle\Form\JournalType;
 use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -88,10 +89,22 @@ class LessonAdmin extends AbstractAdmin
         $now = new \DateTime();
 
         $currentSubjectId = $this->getSubject()->getTeacherSubject()->getSubject()->getId();
+        if ($this->getSubject()->getId()) {
+            $id = $this->getSubject()->getId();
+            $repository=$this->getConfigurationPool()->getContainer()->get('Doctrine')
+                ->getRepository('ApplicationSonataUserBundle:Journal');
+            $currentJournals = $repository->findBy([
+                'lesson' => $id
+            ]);
+            dump($currentJournals);
+        }
+
+
 
         $formMapper
             ->with('1', array('class' => 'col-md-5'))->end()
             ->with('2', array('class' => 'col-md-5'))->end()
+            ->with('3', array('class' => 'col-md-5'))->end()
 
         ;
         $formMapper
@@ -133,6 +146,15 @@ class LessonAdmin extends AbstractAdmin
                 ->add('homework', 'textarea', [
                     'label'=>'Домашнее задание',
                 ])
+            ->end();
+        $formMapper
+            ->with('3');
+        foreach ($currentJournals as $currentJournal) {
+
+            //dump($currentJournal);
+            $formMapper->add($currentJournal->getId(), JournalType::class);
+        }
+        $formMapper
             ->end()
         ;
     }
