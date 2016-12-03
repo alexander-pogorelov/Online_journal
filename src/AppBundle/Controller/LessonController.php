@@ -51,30 +51,6 @@ class LessonController extends Controller
         $form->setData($object);
         $form->handleRequest($request);
 
-        $journalFormBuilder = $this->createFormBuilder($currentJournals);
-        //foreach ($currentJournals as $currentJournal) {
-            $journalFormBuilder
-                ->add('pupilGroup')
-                ->add('assessment')
-                ->add('remark')
-                //->setData($currentJournal)
-                //->handleRequest($request)
-            ;
-        //}
-        $journalForm = $journalFormBuilder->getForm();
-
-        $journalForm->setData($currentJournals);
-        $journalForm->handleRequest($request);
-        dump($journalForm);
-
-        /*
-        foreach ($currentPupilGroups as $pga) {
-            $form->addField
-        }
-        */
-
-
-
 
         if ($form->isSubmitted()) {
             //TODO: remove this check for 4.0
@@ -140,7 +116,6 @@ class LessonController extends Controller
         }
 
         $view = $form->createView();
-        $viewJournalForm = $journalForm->createView();
 
         // set the theme for the current Admin Form
         $this->get('twig')->getExtension('form')->renderer->setTheme($view, $this->admin->getFormTheme());
@@ -149,8 +124,6 @@ class LessonController extends Controller
             'action' => 'edit',
             'form' => $view,
             'object' => $object,
-            'journalForm' => $viewJournalForm,
-
         ), null);
     }
 

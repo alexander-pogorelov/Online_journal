@@ -9,14 +9,14 @@
 namespace AppBundle\Admin;
 
 
-use AppBundle\Form\JournalType;
 use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Routing\Route;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 
 
 class LessonAdmin extends AbstractAdmin
@@ -108,7 +108,7 @@ class LessonAdmin extends AbstractAdmin
         }
         $assessmentArray['1 балл'] = 1;
         $assessmentArray['Отсутствует'] = -1;
-        //dump($assessmentArray);
+
 
 
         if ($this->getSubject()->getId()) {
@@ -118,14 +118,14 @@ class LessonAdmin extends AbstractAdmin
             $currentJournals = $repository->findBy([
                 'lesson' => $id
             ]);
-
+            dump($currentJournals);
         }
 
 
 
         $formMapper
-            ->with('Урок', array('class' => 'col-md-3'))->end()
-            ->with('Оценки', array('class' => 'col-md-6'))->end()
+            ->with('Урок', array('class' => 'col-md-4'))->end()
+            ->with('Оценки', array('class' => 'col-md-8'))->end()
         ;
         $formMapper
             ->with('Урок')
@@ -165,23 +165,56 @@ class LessonAdmin extends AbstractAdmin
                     'label'=>'Домашнее задание',
                 ])
             ->end()
+
             ->with('Оценки');
+
+                $assessment = '';
+                $remark = '';
                 foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
 
+                    if ($this->isCurrentRoute('edit')) {
+                        foreach ($currentJournals as $currentJournal) {
+                            // ищем оценки и замечания у ученика
+                            if (($currentPupilGroupAssociation->getId()) === ($currentJournal->getPupilGroup()->getId())) {
+                                $assessment = $currentJournal->getAssessment();
+                                $remark = $currentJournal->getRemark();
+                                break;
+                            } else {
+                                $assessment = '';
+                                $remark = '';
+                            }
+                        }
+                    }
+
                     $formMapper
-                        ->add('assessment'.$currentPupilGroupAssociation->getId(), 'choice', [
+                        ->add('pga'.$currentPupilGroupAssociation->getId(),'text',[
+                            'read_only' => true,
+                            'mapped' => false,
+                            'data' => $currentPupilGroupAssociation->getPupil(),
+                            'label' =>'Ученик',
+                            'required' => false,
+
+                        ])
+                    ;
+                    $formMapper->add('assessment'.$currentPupilGroupAssociation->getId(), ChoiceType::class, [
                             'choices' => $assessmentArray,
                             'choices_as_values' => true,
+                            'attr' => ['maxlength' => 10],
                             'mapped' => false,
-                            'label' => $currentPupilGroupAssociation->getPupil(),
+                            'label' => 'Оценка/присутствие',
                             'required' => false,
+                            'data' => $assessment
                         ])
+                    ;
+                    $formMapper
                         ->add('remark'.$currentPupilGroupAssociation->getId(), 'text', [
                             'mapped' => false,
-                            'label' => 'Замечание'
+                            'required' => false,
+                            'label' => 'Замечание',
+                            'data' => $remark
                         ])
-
                     ;
+
                 }
         $formMapper
             ->end();
