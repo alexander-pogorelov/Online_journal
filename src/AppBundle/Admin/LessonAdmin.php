@@ -96,8 +96,7 @@ class LessonAdmin extends AbstractAdmin
             'group' => $currentGroup
         ]);
 
-        dump($currentPupilGroupAssociations);
-
+        //TODO: перенести массив оценок в сущность урока?
         $assessmentArray = [];
         for ($i=10; $i>=5; $i--) {
             $assessmentArray[$i.' баллов'] = $i;
@@ -118,7 +117,6 @@ class LessonAdmin extends AbstractAdmin
             $currentJournals = $repository->findBy([
                 'lesson' => $id
             ]);
-            dump($currentJournals);
         }
 
 

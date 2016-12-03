@@ -8,10 +8,13 @@
 
 namespace AppBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\Journal;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
 class LessonController extends Controller
 {
+
+
     public function editAction($id = null)
     {
         $request = $this->getRequest();
@@ -25,17 +28,24 @@ class LessonController extends Controller
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
+        ////////////////////////////////////////////////////////////
         $currentGroup = $object->getGroup();
+        // Извлекаем Учеников-Группы
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
-        $currentPupilGroups = $repository->findBy([
+        $currentPupilGroupAssociations = $repository->findBy([
             'group' => $currentGroup
         ]);
+        // Извлекаем журналы урока
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Journal');
         $currentJournals = $repository->findBy([
             'lesson' => $id
         ]);
-
-
+        // Создаем ассоциативный массив журналов урока с ключом ID Ученик-Группа
+        $currentJournalsArrayWithPgaIdKey =[];
+        foreach ($currentJournals as $currentJournal) {
+            $currentJournalsArrayWithPgaIdKey[$currentJournal->getPupilGroup()->getId()] = $currentJournal;
+        }
+        /////////////////////////////////////////////////////
 
         $this->admin->checkAccess('edit', $object);
 
@@ -63,6 +73,40 @@ class LessonController extends Controller
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 try {
                     $object = $this->admin->update($object);
+
+                    ////////////////////////////////////////////////////////////////
+                    $em = $this->getDoctrine()->getManager();
+                    // обновление объектов журнала и (или) создание новых
+                    // проходим по всем ученикам группы
+                    foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
+                        $pgaId = $currentPupilGroupAssociation->getId();
+                        $assessmentId = 'assessment' . $pgaId;
+                        $remarkId = 'remark' . $pgaId;
+                        // если поля оценки или замечания непустые
+                        if ($form->get($assessmentId)->getData() || $form->get($remarkId)->getData()) {
+                            // если есть объект журнала
+                            if (array_key_exists($pgaId, $currentJournalsArrayWithPgaIdKey)) {
+                                // получаем объект журнала
+                                $currentJournal = $currentJournalsArrayWithPgaIdKey[$pgaId];
+                            } else {
+                                // иначе создаем новый объект журнала
+                                $currentJournal = New Journal();
+                                // добавляем Ученика-Группу и Урок
+                                $currentJournal->setPupilGroup($currentPupilGroupAssociation);
+                                $currentJournal->setLesson($object);
+                            }
+                            // Добавляем в журнал оценку и замечание
+                            $currentJournal->setAssessment($form->get($assessmentId)->getData());
+                            $currentJournal->setRemark($form->get($remarkId)->getData());
+                            $em->persist($currentJournal);
+                        } else { // если оценка и замечание удалены, удаляем запись в журнале
+                            if (array_key_exists($pgaId, $currentJournalsArrayWithPgaIdKey)) {
+                                $em->remove($currentJournalsArrayWithPgaIdKey[$pgaId]);
+                            }
+                        }
+                    }
+                    $em->flush();
+                    ////////////////////////////////////////////////////////////////////
 
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson(array(
