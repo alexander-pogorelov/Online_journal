@@ -122,8 +122,8 @@ class LessonAdmin extends AbstractAdmin
 
 
         $formMapper
-            ->with('Урок', array('class' => 'col-md-4'))->end()
-            ->with('Оценки', array('class' => 'col-md-8'))->end()
+            ->with('Урок', array('class' => 'col-md-5'))->end()
+            ->with('Оценки', array('class' => 'col-md-7'))->end()
         ;
         $formMapper
             ->with('Урок')
@@ -154,6 +154,7 @@ class LessonAdmin extends AbstractAdmin
                     'format' => 'dd MMMM yyyy',
                     'years' => range(2016, $now->format('Y')),
                     'required' => true,
+                    'data' => $now,
                 ])
                 ->add('topic', 'text', [
                     'label'=>'Тема урока',
@@ -161,6 +162,7 @@ class LessonAdmin extends AbstractAdmin
                 ])
                 ->add('homework', 'textarea', [
                     'label'=>'Домашнее задание',
+                    'required' => false,
                 ])
             ->end()
 
