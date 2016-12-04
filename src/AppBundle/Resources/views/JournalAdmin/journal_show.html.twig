@@ -44,7 +44,7 @@
                                 </th>
                                 {# Вывод проведенных уроков по предмету в заголовке таблицы журнала #}
                                 {% for currentLesson in lessonsList %}
-                                    <th style="text-align:center">
+                                    <th title="{{ currentLesson.topic }}" style="text-align:center">
                                         {{ currentLesson.date|date("d/m") }}
                                     </th>
                                 {% endfor %}
@@ -66,11 +66,17 @@
                                     {# Проверяем совпадение ID урока предмета с ID урока в коллекции журналов #}
                                     {% for journal in pga.journal %}
                                         {% if journal.lesson.id == currentLesson.id %}
-                                            <td style="text-align:center">
+                                            <td title="{{ journal.remark }}" style="text-align:center">
                                                 {% if journal.assessment == constant('Application\\Sonata\\UserBundle\\Entity\\Journal::IS_ABSENT') %}
                                                     н
+                                                    {% if journal.remark %}
+                                                        <span style="color:red">*</span>
+                                                    {% endif %}
                                                 {% else %}
                                                     {{ journal.assessment }}
+                                                    {% if journal.remark %}
+                                                        <span style="color:red">*</span>
+                                                    {% endif %}
                                                 {% endif %}
                                             </td>
                                             {% set flag = true %}
