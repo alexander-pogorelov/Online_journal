@@ -29,7 +29,7 @@ class TeacherSubjectRepository extends EntityRepository
         if ($result === []) {
             $repository = $this->getEntityManager()->getRepository('ApplicationSonataUserBundle:Subject');
             $currentSubject = $repository->find($subjectId);
-            throw New \Exception('Не найден преподаватель на предмет: '.$currentSubject->getName());
+            throw New \Exception('Не найден преподаватель на предмет: "'.$currentSubject->getName().'".');
         }
 
         return $result[0];

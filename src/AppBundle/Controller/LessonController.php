@@ -240,6 +240,38 @@ class LessonController extends Controller
                 try {
                     $object = $this->admin->create($object);
 
+                    ////////////////////////////////////////////////////////
+                    if ($object) {
+                        $currentGroup = $object->getGroup();
+                        // Извлекаем Учеников-Группы
+                        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+                        $currentPupilGroupAssociations = $repository->findBy([
+                            'group' => $currentGroup
+                        ]);
+                        $em = $this->getDoctrine()->getManager();
+                        // создание новых объектов журнала
+                        // проходим по всем ученикам группы
+                        foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
+                            $pgaId = $currentPupilGroupAssociation->getId();
+                            $assessmentId = 'assessment' . $pgaId;
+                            $remarkId = 'remark' . $pgaId;
+                            // если поля оценки или замечания непустые
+                            if ($form->get($assessmentId)->getData() || $form->get($remarkId)->getData()) {
+                                // создаем новый объект журнала
+                                $currentJournal = New Journal();
+                                // добавляем Ученика-Группу и Урок
+                                $currentJournal->setPupilGroup($currentPupilGroupAssociation);
+                                $currentJournal->setLesson($object);
+                                // Добавляем в журнал оценку и замечание
+                                $currentJournal->setAssessment($form->get($assessmentId)->getData());
+                                $currentJournal->setRemark($form->get($remarkId)->getData());
+                                $em->persist($currentJournal);
+                            }
+                        }
+                        $em->flush();
+                    }
+                    ////////////////////////////////////////////////////////
+
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson(array(
                             'result' => 'ok',
