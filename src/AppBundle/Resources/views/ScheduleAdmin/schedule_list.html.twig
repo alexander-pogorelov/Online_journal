@@ -59,7 +59,7 @@
                             <td  rowspan={{ loop.length }} height=75>{{ weekdays[weekday] }}</td>
                             <td>{{ timeinterval }}</td>
                             {% for teacher in admin.datagrid.results %}
-                                {% if teacher.weekday == weekday and teacher.timeinterval == timeinterval %}
+                                {% if teacher.weekday == weekdays[weekday] and teacher.timeinterval == timeinterval %}
                                     <td class="cell_table">{{ teacher.subject }}</td>
                                     <td class="cell_table">{{ teacher.group }}</td>
                                     <td class="cell_table">{{ teacher.classroom }}</td>
@@ -74,7 +74,7 @@
                         <tr class="line_table">
                             <td>{{ timeinterval }}</td>
                             {% for teacher in admin.datagrid.results %}
-                                {% if teacher.weekday == weekday and teacher.timeinterval == timeinterval %}
+                                {% if teacher.weekday == weekdays[weekday] and teacher.timeinterval == timeinterval %}
                                     <td class="cell_table">{{ teacher.subject }}</td>
                                     <td class="cell_table">{{ teacher.group }}</td>
                                     <td class="cell_table">{{ teacher.classroom }}</td>

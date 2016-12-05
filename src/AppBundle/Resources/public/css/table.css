@@ -10,3 +10,7 @@ td.cell_table:hover {
 tr.line_table:hover {
     background: rgba(49, 158, 32, 0.14);
 }
+
+td.cell_table {
+    padding: 5px;
+}
