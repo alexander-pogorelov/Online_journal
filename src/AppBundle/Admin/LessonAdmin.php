@@ -108,8 +108,6 @@ class LessonAdmin extends AbstractAdmin
         $assessmentArray['1 балл'] = 1;
         $assessmentArray['Отсутствует'] = -1;
 
-
-
         if ($this->getSubject()->getId()) {
             $id = $this->getSubject()->getId();
             $repository=$this->getConfigurationPool()->getContainer()->get('Doctrine')
@@ -118,8 +116,6 @@ class LessonAdmin extends AbstractAdmin
                 'lesson' => $id
             ]);
         }
-
-
 
         $formMapper
             ->with('Урок', array('class' => 'col-md-5'))->end()
@@ -168,10 +164,9 @@ class LessonAdmin extends AbstractAdmin
 
             ->with('Оценки');
 
-                $assessment = '';
-                $remark = '';
                 foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
-
+                    $assessment = '';
+                    $remark = '';
                     if ($this->isCurrentRoute('edit')) {
                         foreach ($currentJournals as $currentJournal) {
                             // ищем оценки и замечания у ученика
@@ -179,9 +174,6 @@ class LessonAdmin extends AbstractAdmin
                                 $assessment = $currentJournal->getAssessment();
                                 $remark = $currentJournal->getRemark();
                                 break;
-                            } else {
-                                $assessment = '';
-                                $remark = '';
                             }
                         }
                     }
@@ -199,7 +191,6 @@ class LessonAdmin extends AbstractAdmin
                     $formMapper->add('assessment'.$currentPupilGroupAssociation->getId(), ChoiceType::class, [
                             'choices' => $assessmentArray,
                             'choices_as_values' => true,
-                            'attr' => ['maxlength' => 10],
                             'mapped' => false,
                             'label' => 'Оценка/присутствие',
                             'required' => false,
@@ -214,7 +205,6 @@ class LessonAdmin extends AbstractAdmin
                             'data' => $remark
                         ])
                     ;
-
                 }
         $formMapper
             ->end();

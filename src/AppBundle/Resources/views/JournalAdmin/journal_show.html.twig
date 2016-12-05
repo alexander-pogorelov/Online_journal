@@ -45,7 +45,11 @@
                                 {# Вывод проведенных уроков по предмету в заголовке таблицы журнала #}
                                 {% for currentLesson in lessonsList %}
                                     <th title="{{ currentLesson.topic }}" style="text-align:center">
-                                        {{ currentLesson.date|date("d/m") }}
+                                        <a href="{{ path('lesson-route-admin_edit', {
+                                            'id': currentLesson.id
+                                        }) }}">
+                                            {{ currentLesson.date|date("d/m") }}
+                                        </a>
                                     </th>
                                 {% endfor %}
                             </tr>
