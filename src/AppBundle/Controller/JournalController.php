@@ -42,6 +42,9 @@ class JournalController extends Controller
         // Извлекаем список уроков группы по предмету, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Lesson');
         $lessonsList = $repository->findBySubjectAndGroup($subjectId, $groupId);
+        //dump($lessonsList);
+        $reverseLessonsList = array_reverse($lessonsList);
+        //dump($reverseLessonsList);
 
         // Извлекаем список всех журналов для учеников группы, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
