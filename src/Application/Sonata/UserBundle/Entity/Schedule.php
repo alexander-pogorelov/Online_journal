@@ -64,14 +64,14 @@ class Schedule
      */
     public function getWeekday()
     {
-        $weekdays = [
+       /* $weekdays = [
             'Воскресенье' , 'Понедельник' ,
             'Вторник' , 'Среда' ,
             'Четверг' , 'Пятница' , 'Суббота'
         ];
         if ($this->getId()){
             return $weekdays[$this->weekday];
-        }
+        } */
         return $this->weekday;
     }
 

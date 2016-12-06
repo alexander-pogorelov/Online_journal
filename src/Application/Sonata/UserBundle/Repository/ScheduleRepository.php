@@ -12,38 +12,50 @@ class ScheduleRepository extends \Doctrine\ORM\EntityRepository
 {
     public function getDistinctTeachers()
     {
-        $teachersArray = $this->getEntityManager()
-            ->createQuery("SELECT DISTINCT u.id, u.firstname, u.lastname, u.patronymic FROM ApplicationSonataUserBundle:Schedule a JOIN a.teacher u")
-            ->getResult();
-        $teachers = array_map(function ($teacher) {
-            $add["id"] = $teacher["id"];
-            $add["fullname"] = $teacher["lastname"].' '.$teacher["firstname"].' '.$teacher["patronymic"];
-            return $add;
-        }, $teachersArray);
-        return $teachers;
+        $teachers = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('u')
+            ->from($this->_entityName, 'u')
+            ->groupBy('u.teacher')
+            ->getQuery()->getResult();
+        $schedule = $this->findAll();
+         foreach ($teachers as $oneTeachers){
+             for( $weekday = 0 ; $weekday <= 6 ; $weekday++ ){
+                 foreach ($schedule as $lesson){
+                     $nameTeacherLesson = $lesson->getTeacher()->getFullname();
+                     $nameTeacher = $oneTeachers->getTeacher()->getFullname();
+                     $lessonTimeintervalId = $lesson->getTimeinterval()->getId();
+                     if (($nameTeacherLesson === $nameTeacher) and ($lesson->getWeekday() === $weekday ) ){
+                         $sortSchedule[$nameTeacher][$weekday][$lessonTimeintervalId] = $lesson;
+                     }
+                 }
+
+             }
+         }
+        return $sortSchedule;
     }
+
     public function getDistinctGroups()
     {
-        $groupsArray = $this->getEntityManager()
-            ->createQuery("SELECT DISTINCT u.id, u.groupName FROM ApplicationSonataUserBundle:Schedule a JOIN a.group u")
-            ->getResult();
-        $groups = array_map(function ($group) {
-            $add["id"] = $group["id"];
-            $add["number"] = $group["groupName"];
-            return $add;
-        }, $groupsArray);
+        $groups = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('u')
+            ->from('ApplicationSonataUserBundle:Schedule', 'u')
+            ->groupBy('u.group')
+            ->getQuery()->getResult();
+
         return $groups;
     }
+
     public function getDistinctClassrooms()
     {
-        $classroomsArray = $this->getEntityManager()
-            ->createQuery("SELECT DISTINCT u.id, u.number FROM ApplicationSonataUserBundle:Schedule a JOIN a.classroom u")
-            ->getResult();
-        $classrooms = array_map(function ($classroom) {
-            $add["id"] = $classroom["id"];
-            $add["number"] = 'а.'.$classroom["number"];
-            return $add;
-        }, $classroomsArray);
+        $classrooms =  $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('u')
+            ->from('ApplicationSonataUserBundle:Schedule', 'u')
+            ->groupBy('u.classroom')
+            ->getQuery()->getResult();
+
         return $classrooms;
     }
 }

@@ -41,28 +41,37 @@
             <tbody>
             <tr>
                 <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
-                {% for teacher in admin.datagrid.results %}
-                    <td  colspan=3 width=257> Преподаватель: {{ teacher.getTeacher.fullName }}</td>
+                {% for teacher in teachers|keys %}
+                    <td  colspan=3 width=257> Преподаватель: {{ teacher }}</td>
                 {% endfor %}
             </tr>
             <tr>
-                {% for teacher in admin.datagrid.results %}
+                {% for teacher in teachers %}
                     <td>Предмет</td>
                     <td>Группа</td>
                     <td>Ауд.</td>
                 {% endfor %}
             </tr>
             {% for weekday in weekdays|keys %}
-                {% for timeinterval in timeintervals %}
+                {% for timeinterval in timeintervals|keys %}
                     {% if loop.first %}
                         <tr class="line_table">
                             <td  rowspan={{ loop.length }} height=75>{{ weekdays[weekday] }}</td>
-                            <td>{{ timeinterval }}</td>
-                            {% for teacher in admin.datagrid.results %}
-                                {% if teacher.weekday == weekdays[weekday] and teacher.timeinterval == timeinterval %}
-                                    <td class="cell_table">{{ teacher.subject }}</td>
-                                    <td class="cell_table">{{ teacher.group }}</td>
-                                    <td class="cell_table">{{ teacher.classroom }}</td>
+                            <td>{{ timeintervals[timeinterval] }}</td>
+                            {% for teacher in teachers %}
+                                {% if teacher[weekday][timeintervals[timeinterval].id] is defined %}
+                                    {% for tttt in teacher[weekday]|keys %}
+                                        {% if tttt == timeintervals[timeinterval].id %}
+                                            <td class="cell_table">{{ teacher[weekday][tttt].subject }}</td>
+                                            <td class="cell_table">{{ teacher[weekday][tttt].group }}</td>
+                                            <td class="cell_table">{{ teacher[weekday][tttt].classroom }}</td>
+                                        {% endif %}
+                                        {% else %}
+                                            <td class="cell_table"><br></td>
+                                            <td class="cell_table"><br></td>
+                                            <td class="cell_table"><br></td>
+
+                                    {% endfor %}
                                 {% else %}
                                     <td class="cell_table"><br></td>
                                     <td class="cell_table"><br></td>
@@ -72,12 +81,20 @@
                         </tr>
                     {% else %}
                         <tr class="line_table">
-                            <td>{{ timeinterval }}</td>
-                            {% for teacher in admin.datagrid.results %}
-                                {% if teacher.weekday == weekdays[weekday] and teacher.timeinterval == timeinterval %}
-                                    <td class="cell_table">{{ teacher.subject }}</td>
-                                    <td class="cell_table">{{ teacher.group }}</td>
-                                    <td class="cell_table">{{ teacher.classroom }}</td>
+                            <td>{{ timeintervals[timeinterval] }}</td>
+                            {% for teacher in teachers %}
+                                {% if teacher[weekday][timeintervals[timeinterval].id] is defined %}
+                                    {% for tttt in teacher[weekday]|keys %}
+                                        {% if tttt == timeintervals[timeinterval].id %}
+                                            <td class="cell_table">{{ teacher[weekday][tttt].subject }}</td>
+                                            <td class="cell_table">{{ teacher[weekday][tttt].group }}</td>
+                                            <td class="cell_table">{{ teacher[weekday][tttt].classroom }}</td>
+                                        {% endif %}
+                                        {% else %}
+                                            <td class="cell_table"><br></td>
+                                            <td class="cell_table"><br></td>
+                                            <td class="cell_table"><br></td>
+                                    {% endfor %}
                                 {% else %}
                                     <td class="cell_table"><br></td>
                                     <td class="cell_table"><br></td>
