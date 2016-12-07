@@ -42,6 +42,11 @@ class JournalController extends Controller
         // Извлекаем список уроков группы по предмету, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Lesson');
         $lessonsList = $repository->findBySubjectAndGroup($subjectId, $groupId);
+        //dump($lessonsList);
+
+        // Извлекаем все журналы группы по текущему предмету
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Journal');
+        $journalsByGroupAndBySubject = $repository->findAllByGroupAndBySubject($groupId, $subjectId);
 
         // Переставляем уроки в обратном порядке для вывода списка последних уроков
         $reverseLessonsList = array_reverse($lessonsList);
@@ -49,6 +54,33 @@ class JournalController extends Controller
         // Извлекаем список всех журналов для учеников группы, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
         $journalsData = $repository->findAllJournals($groupId);
+
+        $pgaLessonsCounter = [];
+        $pgaIsAbsentCounter = [];
+        $pgaAssessmentAmount =[];
+
+        foreach ($journalsData as $pga) {
+            $lessonsCounter = 0;
+            $isAbsentCounter = 0;
+            $assessmentAmount = 0;
+            foreach ($journalsByGroupAndBySubject as $journal) {
+                if ($pga->getId() === $journal->getPupilGroup()->getId()) {
+                    if ($journal->getAssessment() === -1) {
+                        $isAbsentCounter++;
+                    } else {
+                        $lessonsCounter++;
+                        $assessmentAmount += $journal->getAssessment();
+                    }
+                }
+            }
+            $pgaLessonsCounter[$pga->getId()] = $lessonsCounter;
+            $pgaIsAbsentCounter[$pga->getId()] = $isAbsentCounter;
+            $pgaAssessmentAmount[$pga->getId()] = $assessmentAmount;
+        }
+
+        dump($pgaLessonsCounter);
+        dump($pgaIsAbsentCounter);
+        dump($pgaAssessmentAmount);
 
         $this->admin->checkAccess('show', $objectSubject);
 
