@@ -107,4 +107,40 @@
             </div>
         </div>
     </div>
+    {% block list_table_2 %}
+        <div class="col-xs-12 col-md-12">
+            <div class="box box-primary">
+                <div class="box-body" id="lesson_overflow">
+                    <table class="table table-bordered table-striped sonata-ba-list">
+                        {% block table_header_2 %}
+                            <thead>
+                            <tr class="sonata-ba-list-field-header">
+                                <th style="text-align:center; width: 10%">Дата</th>
+                                <th style="text-align:center; width: 40%">Тема урока</th>
+                                <th style="text-align:center; width: 50%">Домашнее задание</th>
+                            </tr>
+                            </thead>
+                        {% endblock %}
+                        {% block table_body_2 %}
+                            <tbody>
+                            {% for reverseLesson in reverseLessonsList %}
+                                <tr>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ reverseLesson.date|date("d.m.Y") }}
+                                    </td>
+                                    <td>
+                                        {{ reverseLesson.topic }}
+                                    </td>
+                                    <td>
+                                        {{ reverseLesson.homework }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        {% endblock %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
 {% endblock %}

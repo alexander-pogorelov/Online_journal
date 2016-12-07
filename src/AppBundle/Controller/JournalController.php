@@ -42,9 +42,9 @@ class JournalController extends Controller
         // Извлекаем список уроков группы по предмету, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Lesson');
         $lessonsList = $repository->findBySubjectAndGroup($subjectId, $groupId);
-        //dump($lessonsList);
+
+        // Переставляем уроки в обратном порядке для вывода списка последних уроков
         $reverseLessonsList = array_reverse($lessonsList);
-        //dump($reverseLessonsList);
 
         // Извлекаем список всех журналов для учеников группы, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
@@ -68,6 +68,7 @@ class JournalController extends Controller
             'groupId' => $groupId,
             'journalsData' => $journalsData,
             'lessonsList' => $lessonsList,
+            'reverseLessonsList' => $reverseLessonsList,
         ], null);
     }
 }
