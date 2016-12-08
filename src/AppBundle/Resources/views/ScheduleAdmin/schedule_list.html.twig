@@ -1,4 +1,4 @@
-{% extends 'AppBundle::standard_layout.html.twig' %}
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -14,61 +14,74 @@
             $('#tab1').hide();
             $('#tab2').hide();
             $('#tab3').hide();
+            $('#tab4').hide();
             $('#'+viewId).show();
-        };
+        }
         $(document).ready(function(){
-            $('#groups_view').click(changeVisibility.bind(null, 'tab1'));
-            $('#teacher_view').click(changeVisibility.bind(null, 'tab2'));
+            $('#teacher_view').click(changeVisibility.bind(null, 'tab1'));
+            $('#groups_view').click(changeVisibility.bind(null, 'tab2'));
             $('#classroom_view').click(changeVisibility.bind(null, 'tab3'));
+            $('#tablica_view').click(changeVisibility.bind(null, 'tab4'));
         });
     </script>
 {% endblock %}
 
 {%- block sonata_admin_content -%}
-        <h2>{{ name }}</h2>
 		<div class="tabsLink">
-			<input type="button" value="По группам" style="width:200px;" id="groups_view">
-			<input type="button" value="По преподавателям" style="width:200px;" id="teacher_view">
+            <input type="button" value="По преподавателям" style="width:200px;" id="teacher_view">
+            <input type="button" value="По группам" style="width:200px;" id="groups_view">
 			<input type="button" value="По аудиториям" style="width:200px;" id="classroom_view">
+			<input type="button" value="Таблица" style="width:200px;" id="tablica_view">
             <br /> <br />
 		</div>
-
-    {# по группам #}
- 	<div id="tab1" style="background: white; display:block;">	
+    {# по преподователям #}
+ 	<div id="tab1" style="background: white; display:block;">
         <table rules=all border=2>
             <tbody>
             <tr>
                 <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
-                {% for group in groups %}
-                    <td  colspan=3 width=257>Группа № {{ group.groupName }}</td>
+                {% for teacher in teachers %}
+                    <td  colspan=3 width=257> Преподаватель: {{ teacher.getTeacher.getFullName }}</td>
                 {% endfor %}
             </tr>
             <tr>
-             {% for group in groups %}
-                <td>Предмет</td>
-                <td>Ауд.</td>
-                <td>Преподаватель</td>
-             {% endfor %}
+                {% for teacher in teachers %}
+                    <td>Предмет</td>
+                    <td>Группа</td>
+                    <td>Ауд.</td>
+                {% endfor %}
             </tr>
             {% for weekday in weekdays %}
-                {% for timeInterval in timeIntervals %}
+                {% for timeinterval in timeintervals %}
                     {% if loop.first %}
                         <tr class="line_table">
                             <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
-                            <td>{{ timeInterval }}</td>
-                            {% for group in groups %}
-                                <td class="cell_table"><br></td>
-                                <td class="cell_table"><br></td>
-                                <td class="cell_table"><br></td>
+                            <td>{{ timeinterval }}</td>
+                            {% for teacher in teachers %}
+                                {% if scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id] is defined %}
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].subject }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].group }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].classroom }}</td>
+                                {% else %}
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                {% endif %}
                             {% endfor %}
                         </tr>
                     {% else %}
                         <tr class="line_table">
-                           <td>{{ timeInterval }}</td>
-                            {% for group in groups %}
-                                <td class="cell_table"><br></td>
-                                <td class="cell_table"><br></td>
-                                <td class="cell_table"><br></td>
+                            <td>{{ timeinterval }}</td>
+                            {% for teacher in teachers %}
+                                {% if scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id] is defined %}
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].subject }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].group }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].classroom }}</td>
+                                {% else %}
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                {% endif %}
                             {% endfor %}
                         </tr>
                     {% endif %}
@@ -76,60 +89,72 @@
             {% endfor %}
             </tbody>
         </table>
-	</div>
-    {# по преподователям #}
-        <div id="tab2" style="background: white; display:none;">
-            <table rules=all border=2>
-                <tbody>
-                <tr>
-                    <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
-                    {% for teacher in teachers %}
-                        <td  colspan=3 width=257> Преподаватель: {{ teacher.fullName }}</td>
-                    {% endfor %}
-                </tr>
-                <tr>
-                    {% for teacher in teachers %}
-                        <td>Предмет</td>
-                        <td>Группа</td>
-                        <td>Ауд.</td>
-                    {% endfor %}
-                </tr>
-                {% for weekday in weekdays %}
-                    {% for timeInterval in timeIntervals %}
+    </div>
+    {# по группам #}
+    <div id="tab2" style="background: white; display:none;">
+           <table rules=all border=2>
+              <tbody>
+              <tr>
+                  <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
+                  {% for group in groups %}
+                      <td  colspan=3 width=257>Группа № {{ group.getGroup.groupName }}</td>
+                  {% endfor %}
+              </tr>
+              <tr>
+                  {% for group in groups %}
+                      <td>Предмет</td>
+                      <td>Ауд.</td>
+                      <td>Преподаватель</td>
+                  {% endfor %}
+              </tr>
+              {% for weekday in weekdays %}
+                    {% for timeinterval in timeintervals %}
                         {% if loop.first %}
                             <tr class="line_table">
                                 <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
-                                <td>{{ timeInterval }}</td>
-                                {% for teacher in teachers %}
-                                    <td class="cell_table"><br></td>
-                                    <td class="cell_table"><br></td>
-                                    <td class="cell_table"><br></td>
+                                <td>{{ timeinterval }}</td>
+                                {% for group in groups %}
+                                    {% if scheduleKeysArray[weekday][timeinterval.id][group.group.groupName] is defined %}
+                                        <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][group.group.groupName].subject }}</td>
+                                        <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][group.group.groupName].classroom }}</td>
+                                        <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.getId][group.group.groupName].teacher }}</td>
+                                    {% else %}
+                                        <td class="cell_table"><br></td>
+                                        <td class="cell_table"><br></td>
+                                        <td class="cell_table"><br></td>
+                                    {% endif %}
                                 {% endfor %}
                             </tr>
                         {% else %}
                             <tr class="line_table">
-                                <td>{{ timeInterval }}</td>
-                                {% for teacher in teachers %}
-                                    <td class="cell_table"><br></td>
-                                    <td class="cell_table"><br></td>
-                                    <td class="cell_table"><br></td>
+                                <td>{{ timeinterval }}</td>
+                                {% for group in groups %}
+                                    {% if scheduleKeysArray[weekday][timeinterval.id][group.group.groupName] is defined %}
+                                        <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][group.group.groupName].subject }}</td>
+                                        <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][group.group.groupName].classroom }}</td>
+                                        <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.getId][group.group.groupName].teacher }}</td>
+                                    {% else %}
+                                        <td class="cell_table"><br></td>
+                                        <td class="cell_table"><br></td>
+                                        <td class="cell_table"><br></td>
+                                    {% endif %}
                                 {% endfor %}
                             </tr>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
 
+    </div>
     {# по аудиториям #}
-        <div id="tab3" style="background: white; display:none;">
+    <div id="tab3" style="background: white; display:none;">
         <table rules=all border=2>
             <tbody>
             <tr>
                 <td  colspan=2 rowspan=2 width=171 height=34>Время занятий</td>
                 {% for classroom in classrooms %}
-                    <td  colspan=3 width=257>Аудитория № {{ classroom.number }}</td>
+                    <td  colspan=3 width=257>Аудитория № {{ classroom.classroom.number }}</td>
                 {% endfor %}
             </tr>
             <tr>
@@ -140,24 +165,36 @@
                 {% endfor %}
             </tr>
             {% for weekday in weekdays %}
-                {% for timeInterval in timeIntervals %}
+                {% for timeinterval in timeintervals %}
                     {% if loop.first %}
                         <tr class="line_table">
                             <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
-                            <td>{{ timeInterval }}</td>
+                            <td>{{ timeinterval }}</td>
                             {% for classroom in classrooms %}
-                                <td class="cell_table"><br></td>
-                                <td class="cell_table"><br></td>
-                                <td class="cell_table"><br></td>
+                                {% if scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName] is defined %}
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].subject }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].group }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].teacher }}</td>
+                                {% else %}
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                {% endif %}
                             {% endfor %}
                         </tr>
                     {% else %}
                         <tr class="line_table">
-                            <td>{{ timeInterval }}</td>
+                            <td>{{ timeinterval }}</td>
                             {% for classroom in classrooms %}
-                                <td class="cell_table"><br></td>
-                                <td class="cell_table"><br></td>
-                                <td class="cell_table"><br></td>
+                                {% if scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName] is defined %}
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].subject }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].group }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].teacher }}</td>
+                                {% else %}
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                    <td class="cell_table"><br></td>
+                                {% endif %}
                             {% endfor %}
                         </tr>
                     {% endif %}
@@ -165,5 +202,11 @@
             {% endfor %}
             </tbody>
         </table>
-        </div>
+    </div>
+
+    <div id="tab4" style="background: white; display:none;">
+    {% block list_table %}
+        {{ parent() }}
+    {% endblock %}
+    </div>
 {%- endblock sonata_admin_content -%}

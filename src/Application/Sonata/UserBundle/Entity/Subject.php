@@ -24,14 +24,17 @@ class Subject
     /**
      * @Assert\NotBlank()
      */
-
     protected $abbreviation;
 
     /**
      * @Assert\NotBlank()
      */
-
     protected $specialization;
+
+    /**
+     * @Assert\NotBlank()
+     */
+    protected $reduction;
 
     protected $comment;
 
@@ -147,6 +150,18 @@ class Subject
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setReduction($reduction)
+    {
+        $this->reduction = $reduction;
+
+        return $this;
+    }
+
+    public function getReduction()
+    {
+        return $this->reduction;
     }
 
     /**

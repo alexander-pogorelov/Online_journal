@@ -3,8 +3,13 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
- * Classroom
+ *@UniqueEntity(
+ *     "number",
+ *     message="Аудитория с таким номером уже существует."
+ * )
  */
 class Classroom
 {
@@ -114,7 +119,12 @@ class Classroom
     public function __toString()
     {
         // TODO: Implement __toString() method.
-        return 'а.'.(string)$this->getNumber();
+        return $this->getName();
+    }
+
+    public function getName()
+    {
+        return 'а.'.(string)$this->getNumber() ;
     }
 
 }
