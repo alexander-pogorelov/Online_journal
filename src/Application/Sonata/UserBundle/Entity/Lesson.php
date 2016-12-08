@@ -21,8 +21,6 @@ class Lesson
 
     private $group;
 
-    private $dateTimeClassroom;
-
     private $date;
 
     /**
@@ -131,29 +129,6 @@ class Lesson
         return $this->group;
     }
 
-    /**
-     * Set dateTimeClassroom
-     *
-     * @param \Application\Sonata\UserBundle\Entity\DateTimeClassroom $dateTimeClassroom
-     *
-     * @return Lesson
-     */
-    public function setDateTimeClassroom(\Application\Sonata\UserBundle\Entity\DateTimeClassroom $dateTimeClassroom)
-    {
-        $this->dateTimeClassroom = $dateTimeClassroom;
-
-        return $this;
-    }
-
-    /**
-     * Get dateTimeClassroom
-     *
-     * @return \Application\Sonata\UserBundle\Entity\DateTimeClassroom
-     */
-    public function getDateTimeClassroom()
-    {
-        return $this->dateTimeClassroom;
-    }
 
     /**
      * Set date

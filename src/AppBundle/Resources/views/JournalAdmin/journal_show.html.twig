@@ -8,7 +8,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/app/css/journalscroll.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/journalscroll.css') }}" type="text/css" media="all"/>
 {% endblock %}
 
 {% block list_table %}
@@ -27,40 +27,57 @@
                 {# Вывод кнопок перключения предметов #}
                 {% for subject in subjectList %}
                     <a class="btn btn-sm btn-default" href="{{ path('journal-route-admin_subject_show', {
-                            'id': groupId,
-                            'childId': subject.id
-                        }) }}">
+                        'id': groupId,
+                        'childId': subject.id
+                    }) }}">
                         {{ subject.getName }}
                     </a>
                 {% endfor %}
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-md-12" >
-        <div class="box box-primary" >
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-primary">
             <div class="box-body" id="journal_overflow">
                 <table class="table table-bordered table-striped sonata-ba-list">
 
                     {% block table_header %}
                         <thead>
-                            <tr class="sonata-ba-list-field-header">
-                                <th class="sonata-ba-list-field-header-text">
-                                    Ф.И.О. учащегося
+                        <tr class="sonata-ba-list-field-header">
+                            <th rowspan="2" class="sonata-ba-list-field-header-text" style="vertical-align: middle;">
+                                Ф.И.О. учащегося
+                            </th>
+                            {# вывод месяцев #}
+                            {% for key,value in monthsData %}
+                                <th class="sonata-ba-list-field-header-text" style="text-align:center"
+                                    colspan="{{ value }}">{{ key }}</th>
+                            {% endfor %}
+                            <th rowspan="2" class="sonata-ba-list-field-header-text"
+                                style="vertical-align: middle; text-align:center">
+                                Ср. балл
+                            </th>
+                            <th rowspan="2" class="sonata-ba-list-field-header-text"
+                                style="vertical-align: middle; text-align:center">
+                                Кол-во оц-ок
+                            </th>
+                            <th rowspan="2" class="sonata-ba-list-field-header-text"
+                                style="vertical-align: middle; text-align:center">
+                                Кол-во проп-ков
+                            </th>
+                        </tr>
+                        <tr class="sonata-ba-list-field-header">
+                            {# Вывод проведенных уроков по предмету в заголовке таблицы журнала #}
+                            {% for currentLesson in lessonsList %}
+                                <th title="{{ currentLesson.topic }}" style="text-align:center">
+                                    <a href="{{ path('lesson-route-admin_edit', {
+                                        'id': currentLesson.id
+                                    }) }}">
+                                        {{ currentLesson.date|date("d") }}
+                                    </a>
                                 </th>
-                                {# Вывод проведенных уроков по предмету в заголовке таблицы журнала #}
-                                {% for currentLesson in lessonsList %}
-                                    <th title="{{ currentLesson.topic }}" style="text-align:center">
-                                        <a href="{{ path('lesson-route-admin_edit', {
-                                            'id': currentLesson.id
-                                        }) }}">
-                                            {{ currentLesson.date|date("d/m") }}
-                                        </a>
-                                    </th>
-                                {% endfor %}
-                                <th style="text-align:center">Ср. балл</th>
-                                <th style="text-align:center">Оц-нок</th>
-                                <th style="text-align:center">Проп-ков</th>
-                            </tr>
+                            {% endfor %}
+
+                        </tr>
                         </thead>
                     {% endblock %}
 
@@ -123,40 +140,40 @@
             </div>
         </div>
     </div>
-    {% block list_table_2 %}
-        <div class="col-xs-12 col-md-12">
-            <div class="box box-primary">
-                <div class="box-body" id="lesson_overflow">
-                    <table class="table table-bordered table-striped sonata-ba-list">
-                        {% block table_header_2 %}
-                            <thead>
-                            <tr class="sonata-ba-list-field-header">
-                                <th style="text-align:center; width: 10%">Дата</th>
-                                <th style="text-align:center; width: 40%">Тема урока</th>
-                                <th style="text-align:center; width: 50%">Домашнее задание</th>
+    {# {% block list_table_2 %} #}
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-primary">
+            <div class="box-body" id="lesson_overflow">
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    {% block table_header_2 %}
+                        <thead>
+                        <tr class="sonata-ba-list-field-header">
+                            <th style="text-align:center; width: 10%">Дата</th>
+                            <th style="text-align:center; width: 40%">Тема урока</th>
+                            <th style="text-align:center; width: 50%">Домашнее задание</th>
+                        </tr>
+                        </thead>
+                    {% endblock %}
+                    {% block table_body_2 %}
+                        <tbody>
+                        {% for reverseLesson in reverseLessonsList %}
+                            <tr>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ reverseLesson.date|date("d.m.Y") }}
+                                </td>
+                                <td>
+                                    {{ reverseLesson.topic }}
+                                </td>
+                                <td>
+                                    {{ reverseLesson.homework }}
+                                </td>
                             </tr>
-                            </thead>
-                        {% endblock %}
-                        {% block table_body_2 %}
-                            <tbody>
-                            {% for reverseLesson in reverseLessonsList %}
-                                <tr>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ reverseLesson.date|date("d.m.Y") }}
-                                    </td>
-                                    <td>
-                                        {{ reverseLesson.topic }}
-                                    </td>
-                                    <td>
-                                        {{ reverseLesson.homework }}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        {% endblock %}
-                    </table>
-                </div>
+                        {% endfor %}
+                        </tbody>
+                    {% endblock %}
+                </table>
             </div>
         </div>
-    {% endblock %}
+    </div>
+    {# {% endblock %} #}
 {% endblock %}
