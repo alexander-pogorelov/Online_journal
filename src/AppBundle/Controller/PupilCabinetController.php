@@ -56,7 +56,7 @@ class PupilCabinetController extends FOSRestController
         $users = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:UserMessage')->findBy(['user' => $id]);
 
         $view = $this->view($users, 200);
-        
+
         return $this->handleView($view);
     }
 }
