@@ -21,7 +21,7 @@ class ScheduleAdmin extends AbstractAdmin
             ->add('weekday',null, ['label'=>'День недели'])
             ->add('timeinterval',null, ['label'=>'Время занятий'])
             ->add('classroom',null, ['label'=>'Аудитория'])
-            ->add('group',null, ['label'=>'Группа'])
+            ->add('group',null, ['admin_code' => 'app.admin.group', 'label'=>'Группа'])
             ->add('subject',null, ['label'=>'Название предмета'])
             ->add('teacher',null, ['label'=>'Преподователь'])
         ;
@@ -37,24 +37,35 @@ class ScheduleAdmin extends AbstractAdmin
         ];
         $formSchedule
             ->with('Добавить/Редактировать дату занятий',['class' => 'col-md-7'])
-            ->add('weekday','choice', array('label' => 'День недели', 'required' => false, 'expanded' => false, 'multiple' => false, 'choices' => $weekdays))
-            ->add('timeinterval',null, ['label'=>'Время занятий'])
-            ->add('group',null, array(
-                'attr' => ['class' => 'group'],
-                'label' => 'Номер группы',
-                'required' => false
-                ))
-            ->add('classroom',null, array(
-                'label' => 'Аудитория'))
-            ->add('subject',null, array(
-                'label' => 'Название предмета',
-                'required' => false,
-                'attr' => ['class' => 'subject']
-                ))
-            ->add('teacher',null, array(
-                'label' => 'Ф.И.О. Преподавателя'))
+            ->add('weekday','choice',
+                    ['label' => 'День недели',
+                     'required' => false,
+                     'expanded' => false,
+                     'multiple' => false,
+                     'choices' => $weekdays]
+                )
+            ->add('timeinterval',null,
+                    ['label'=>'Время занятий'],
+                    ['admin_code' => 'admin.timeinterval']
+                )
+            ->add('group', null,
+                    ['label' => 'Номер группы'],
+                    ['admin_code' => 'app.admin.group']
+                )
+            ->add('classroom',null,
+                    ['label' => 'Аудитория'],
+                    ['admin_code' => 'admin.classroom']
+                )
+            ->add('subject',null,
+                    ['label' => 'Название предмета',
+                     'attr' => ['class' => 'subject']],
+                    ['admin_code' => 'admin.subject']
+                )
+            ->add('teacher',null,
+                ['label' => 'Ф.И.О. Преподавателя'],
+                ['admin_code' => 'admin.teacher']
+            )
 
             ->end();
     }
-
 }
