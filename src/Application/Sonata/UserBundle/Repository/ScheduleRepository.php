@@ -1,6 +1,7 @@
 <?php
 
 namespace Application\Sonata\UserBundle\Repository;
+use Application\Sonata\UserBundle\Entity\Schedule;
 
 /**
  * ClassroomRepository
@@ -10,6 +11,23 @@ namespace Application\Sonata\UserBundle\Repository;
  */
 class ScheduleRepository extends \Doctrine\ORM\EntityRepository
 {
+    //возвращает преобразованый массив данных расписания с тремя ключали для проверки при выводе расписания
+    public function scheduleKeysArray(){
+        $schedule = $this->findAll();
+        foreach ($schedule as $lesson){
+            $weekday = $lesson->getWeekday();
+            $timeinterval = $lesson->getTimeinterval()->getId();
+            $classroom = (string)$lesson->getClassroom();
+            $group = (string)$lesson->getGroup()->getGroupName();
+            $teacher = $lesson->getTeacher()->getId();
+            $sortScheduleKey[$weekday][$timeinterval][$teacher] = $lesson;
+            $sortScheduleKey[$weekday][$timeinterval][$group] = $lesson;
+            $sortScheduleKey[$weekday][$timeinterval][$classroom] = $lesson;
+            }
+        return $sortScheduleKey;
+
+    }
+
     public function getDistinctTeachers()
     {
         $teachers = $this->getEntityManager()
@@ -18,21 +36,8 @@ class ScheduleRepository extends \Doctrine\ORM\EntityRepository
             ->from($this->_entityName, 'u')
             ->groupBy('u.teacher')
             ->getQuery()->getResult();
-        $schedule = $this->findAll();
-         foreach ($teachers as $oneTeachers){
-             for( $weekday = 0 ; $weekday <= 6 ; $weekday++ ){
-                 foreach ($schedule as $lesson){
-                     $nameTeacherLesson = $lesson->getTeacher()->getFullname();
-                     $nameTeacher = $oneTeachers->getTeacher()->getFullname();
-                     $lessonTimeintervalId = $lesson->getTimeinterval()->getId();
-                     if (($nameTeacherLesson === $nameTeacher) and ($lesson->getWeekday() === $weekday ) ){
-                         $sortSchedule[$nameTeacher][$weekday][$lessonTimeintervalId] = $lesson;
-                     }
-                 }
 
-             }
-         }
-        return $sortSchedule;
+        return $teachers;
     }
 
     public function getDistinctGroups()

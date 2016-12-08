@@ -26,6 +26,8 @@ class ScheduleController extends Controller
             $timeIntervals = $em->getRepository('ApplicationSonataUserBundle:TimeInterval')->findAll();
             $parameters['timeintervals'] = $timeIntervals;
 
+            $parameters['scheduleKeysArray'] = $em->getRepository('ApplicationSonataUserBundle:Schedule')->scheduleKeysArray();
+
             $weekdays = [
                '1' => 'Понедельник' ,
                '2' => 'Вторник' ,
