@@ -34,19 +34,14 @@ class JournalController extends Controller
             throw $this->createNotFoundException(sprintf('unable to find the objectGroup with id : %s', $groupId));
         }
 
-        // Извлекаем список предметов группы
+        // Извлекаем список предметов группы для формирования кнопок перехода по предметам
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:GroupIteen');
         $currentGroup = $repository->find($groupId);
         $subjectList = $currentGroup->getSubjects();
 
-        // Извлекаем список уроков группы по предмету, используя кастомный репозиторий
+        // Извлекаем список уроков группы по текущему предмету, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Lesson');
         $lessonsList = $repository->findBySubjectAndGroup($subjectId, $groupId);
-        //dump($lessonsList);
-
-        // Извлекаем все журналы группы по текущему предмету
-        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Journal');
-        $journalsByGroupAndBySubject = $repository->findAllByGroupAndBySubject($groupId, $subjectId);
 
         // Переставляем уроки в обратном порядке для вывода списка последних уроков
         $reverseLessonsList = array_reverse($lessonsList);
@@ -54,33 +49,44 @@ class JournalController extends Controller
         // Извлекаем список всех журналов для учеников группы, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
         $journalsData = $repository->findAllJournals($groupId);
+        $currentPupilGroupAssociations = $repository->findBy([
+            'group' => $currentGroup
+        ]);
 
-        $pgaLessonsCounter = [];
-        $pgaIsAbsentCounter = [];
-        $pgaAssessmentAmount =[];
+        // Извлекаем все журналы группы по текущему предмету
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Journal');
+        $journalsByGroupAndBySubject = $repository->findAllByGroupAndBySubject($groupId, $subjectId);
 
-        foreach ($journalsData as $pga) {
-            $lessonsCounter = 0;
-            $isAbsentCounter = 0;
-            $assessmentAmount = 0;
-            foreach ($journalsByGroupAndBySubject as $journal) {
-                if ($pga->getId() === $journal->getPupilGroup()->getId()) {
-                    if ($journal->getAssessment() === -1) {
-                        $isAbsentCounter++;
-                    } else {
-                        $lessonsCounter++;
-                        $assessmentAmount += $journal->getAssessment();
-                    }
+        // Собираем статистику по журналам
+        $assessmentCounter = []; $isAbsentCounter = []; $assessmentAmount = [];
+        foreach ($currentPupilGroupAssociations as $pga) {
+            $assessmentCounter[$pga->getId()] = 0;
+            $isAbsentCounter[$pga->getId()] = 0;
+            $assessmentAmount[$pga->getId()] = 0;
+        }
+        foreach ($journalsByGroupAndBySubject as $journal) {
+            if ($journal->getAssessment() !== null) {
+                if ($journal->getAssessment() === -1) {
+                    $isAbsentCounter[$journal->getPupilGroup()->getId()]++;
+                } else {
+                    $assessmentCounter[$journal->getPupilGroup()->getId()]++;
+                    $assessmentAmount[$journal->getPupilGroup()->getId()] += $journal->getAssessment();
                 }
             }
-            $pgaLessonsCounter[$pga->getId()] = $lessonsCounter;
-            $pgaIsAbsentCounter[$pga->getId()] = $isAbsentCounter;
-            $pgaAssessmentAmount[$pga->getId()] = $assessmentAmount;
         }
-
-        dump($pgaLessonsCounter);
-        dump($pgaIsAbsentCounter);
-        dump($pgaAssessmentAmount);
+        $averageAssessment = [];
+        foreach ($currentPupilGroupAssociations as $pga) {
+            if ($assessmentCounter[$pga->getId()]) {
+            $averageAssessment[$pga->getId()] = $assessmentAmount[$pga->getId()]/$assessmentCounter[$pga->getId()];
+            } else {
+                $averageAssessment[$pga->getId()] = '';
+            }
+        }
+        $statisticalData = [
+            'averageAssessment' => $averageAssessment,
+            'assessmentCounter' => $assessmentCounter,
+            'isAbsentCounter' => $isAbsentCounter
+        ];
 
         $this->admin->checkAccess('show', $objectSubject);
 
@@ -101,6 +107,7 @@ class JournalController extends Controller
             'journalsData' => $journalsData,
             'lessonsList' => $lessonsList,
             'reverseLessonsList' => $reverseLessonsList,
+            'statisticalData' => $statisticalData,
         ], null);
     }
 }

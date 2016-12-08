@@ -57,6 +57,9 @@
                                         </a>
                                     </th>
                                 {% endfor %}
+                                <th style="text-align:center">Ср. балл</th>
+                                <th style="text-align:center">Оц-нок</th>
+                                <th style="text-align:center">Проп-ков</th>
                             </tr>
                         </thead>
                     {% endblock %}
@@ -98,6 +101,19 @@
                                         {% set flag = false %}
                                     {% endif %}
                                 {% endfor %}
+                                <td style="text-align:center">
+                                    {{ statisticalData['averageAssessment'][pga.id] }}
+                                </td>
+                                <td style="text-align:center">
+                                    {% if statisticalData['assessmentCounter'][pga.id] %}
+                                        {{ statisticalData['assessmentCounter'][pga.id] }}
+                                    {% endif %}
+                                </td>
+                                <td style="text-align:center">
+                                    {% if statisticalData['isAbsentCounter'][pga.id] %}
+                                        {{ statisticalData['isAbsentCounter'][pga.id] }}
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
