@@ -119,7 +119,12 @@ class Classroom
     public function __toString()
     {
         // TODO: Implement __toString() method.
-        return 'а.'.(string)$this->getNumber();
+        return $this->getName();
+    }
+
+    public function getName()
+    {
+        return 'а.'.(string)$this->getNumber() ;
     }
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Application\Sonata\UserBundle\Entity\Schedule" table="schedule">
+  <entity name="Application\Sonata\UserBundle\Entity\Schedule" table="schedule" repository-class="Application\Sonata\UserBundle\Repository\ScheduleRepository">
     <unique-constraints>
       <unique-constraint name="all_unique" columns="weekday,classroom_id,timeinterval_id,group_id,subject_id,teacher_id"/>
     </unique-constraints>
