@@ -8,10 +8,8 @@
 
 namespace AppBundle\Controller;
 
-use Application\Sonata\UserBundle\Document\User;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Application\Sonata\UserBundle\Entity\UserMessage;
-use Application\Sonata\UserBundle\Entity;
 
 class MessageController extends Controller
 {

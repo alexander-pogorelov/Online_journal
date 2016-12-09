@@ -19,7 +19,6 @@
                     var primarySubjects = $('#{{ admin.uniqid }}_subject');
                     primarySubjects.empty();
                     primarySubjects.trigger('liszt:updated');
-
                     var url = '/admin/my-post/'+groupId;
                     $.post(url, { groupId: groupId }, function(data){
                         primarySubjects.empty().append(data);

@@ -8,10 +8,171 @@
 
 namespace AppBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\Journal;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
 class LessonController extends Controller
 {
+
+
+    public function editAction($id = null)
+    {
+        $request = $this->getRequest();
+        // the key used to lookup the template
+        $templateKey = 'edit';
+
+        $id = $request->get($this->admin->getIdParameter());
+        $object = $this->admin->getObject($id);
+
+        if (!$object) {
+            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        ////////////////////////////////////////////////////////////
+        $currentGroup = $object->getGroup();
+        // Извлекаем Учеников-Группы
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+        $currentPupilGroupAssociations = $repository->findBy([
+            'group' => $currentGroup
+        ]);
+        // Извлекаем журналы урока
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Journal');
+        $currentJournals = $repository->findBy([
+            'lesson' => $id
+        ]);
+        // Создаем ассоциативный массив журналов урока с ключом ID Ученик-Группа
+        $currentJournalsArrayWithPgaIdKey =[];
+        foreach ($currentJournals as $currentJournal) {
+            $currentJournalsArrayWithPgaIdKey[$currentJournal->getPupilGroup()->getId()] = $currentJournal;
+        }
+        /////////////////////////////////////////////////////
+
+        $this->admin->checkAccess('edit', $object);
+
+        $preResponse = $this->preEdit($request, $object);
+        if ($preResponse !== null) {
+            return $preResponse;
+        }
+
+        $this->admin->setSubject($object);
+
+        /** @var $form Form */
+        $form = $this->admin->getForm();
+        $form->setData($object);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted()) {
+            //TODO: remove this check for 4.0
+            if (method_exists($this->admin, 'preValidate')) {
+                $this->admin->preValidate($object);
+            }
+            $isFormValid = $form->isValid();
+
+            // persist if the form was valid and if in preview mode the preview was approved
+            if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
+                try {
+                    $object = $this->admin->update($object);
+
+                    ////////////////////////////////////////////////////////////////
+                    $em = $this->getDoctrine()->getManager();
+                    // обновление объектов журнала и (или) создание новых
+                    // проходим по всем ученикам группы
+                    foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
+                        $pgaId = $currentPupilGroupAssociation->getId();
+                        $assessmentId = 'assessment' . $pgaId;
+                        $remarkId = 'remark' . $pgaId;
+                        // если поля оценки или замечания непустые
+                        if ($form->get($assessmentId)->getData() || $form->get($remarkId)->getData()) {
+                            // если есть объект журнала
+                            if (array_key_exists($pgaId, $currentJournalsArrayWithPgaIdKey)) {
+                                // получаем объект журнала
+                                $currentJournal = $currentJournalsArrayWithPgaIdKey[$pgaId];
+                            } else {
+                                // иначе создаем новый объект журнала
+                                $currentJournal = New Journal();
+                                // добавляем Ученика-Группу и Урок
+                                $currentJournal->setPupilGroup($currentPupilGroupAssociation);
+                                $currentJournal->setLesson($object);
+                            }
+                            // Добавляем в журнал оценку и замечание
+                            $currentJournal->setAssessment($form->get($assessmentId)->getData());
+                            $currentJournal->setRemark($form->get($remarkId)->getData());
+                            $em->persist($currentJournal);
+                        } else { // если оценка и замечание удалены, удаляем запись в журнале
+                            if (array_key_exists($pgaId, $currentJournalsArrayWithPgaIdKey)) {
+                                $em->remove($currentJournalsArrayWithPgaIdKey[$pgaId]);
+                            }
+                        }
+                    }
+                    $em->flush();
+                    ////////////////////////////////////////////////////////////////////
+
+                    if ($this->isXmlHttpRequest()) {
+                        return $this->renderJson(array(
+                            'result' => 'ok',
+                            'objectId' => $this->admin->getNormalizedIdentifier($object),
+                            'objectName' => $this->escapeHtml($this->admin->toString($object)),
+                        ), 200, array());
+                    }
+
+                    $this->addFlash(
+                        'sonata_flash_success',
+                        $this->trans(
+                            'flash_edit_success',
+                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
+                            'SonataAdminBundle'
+                        )
+                    );
+
+                    // redirect to edit mode
+                    return $this->redirectTo($object);
+                } catch (ModelManagerException $e) {
+                    $this->handleModelManagerException($e);
+
+                    $isFormValid = false;
+                } catch (LockException $e) {
+                    $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', array(
+                        '%name%' => $this->escapeHtml($this->admin->toString($object)),
+                        '%link_start%' => '<a href="'.$this->admin->generateObjectUrl('edit', $object).'">',
+                        '%link_end%' => '</a>',
+                    ), 'SonataAdminBundle'));
+                }
+            }
+
+            // show an error message if the form failed validation
+            if (!$isFormValid) {
+                if (!$this->isXmlHttpRequest()) {
+                    $this->addFlash(
+                        'sonata_flash_error',
+                        $this->trans(
+                            'flash_edit_error',
+                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
+                            'SonataAdminBundle'
+                        )
+                    );
+                }
+            } elseif ($this->isPreviewRequested()) {
+                // enable the preview template if the form was valid and preview was requested
+                $templateKey = 'preview';
+                $this->admin->getShow();
+            }
+        }
+
+        $view = $form->createView();
+
+        // set the theme for the current Admin Form
+        $this->get('twig')->getExtension('form')->renderer->setTheme($view, $this->admin->getFormTheme());
+
+        return $this->render($this->admin->getTemplate($templateKey), array(
+            'action' => 'edit',
+            'form' => $view,
+            'object' => $object,
+        ), null);
+    }
+
+
+
     public function createLessonAction($groupId, $subjectId)
     {
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:GroupIteen');
@@ -78,6 +239,38 @@ class LessonController extends Controller
 
                 try {
                     $object = $this->admin->create($object);
+
+                    ////////////////////////////////////////////////////////
+                    if ($object) {
+                        $currentGroup = $object->getGroup();
+                        // Извлекаем Учеников-Группы
+                        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+                        $currentPupilGroupAssociations = $repository->findBy([
+                            'group' => $currentGroup
+                        ]);
+                        $em = $this->getDoctrine()->getManager();
+                        // создание новых объектов журнала
+                        // проходим по всем ученикам группы
+                        foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
+                            $pgaId = $currentPupilGroupAssociation->getId();
+                            $assessmentId = 'assessment' . $pgaId;
+                            $remarkId = 'remark' . $pgaId;
+                            // если поля оценки или замечания непустые
+                            if ($form->get($assessmentId)->getData() || $form->get($remarkId)->getData()) {
+                                // создаем новый объект журнала
+                                $currentJournal = New Journal();
+                                // добавляем Ученика-Группу и Урок
+                                $currentJournal->setPupilGroup($currentPupilGroupAssociation);
+                                $currentJournal->setLesson($object);
+                                // Добавляем в журнал оценку и замечание
+                                $currentJournal->setAssessment($form->get($assessmentId)->getData());
+                                $currentJournal->setRemark($form->get($remarkId)->getData());
+                                $em->persist($currentJournal);
+                            }
+                        }
+                        $em->flush();
+                    }
+                    ////////////////////////////////////////////////////////
 
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson(array(

@@ -21,6 +21,7 @@ class LessonRepository extends EntityRepository
             ->where($qb->expr()->eq('ts.subject', $subjectId))
             ->andWhere($qb->expr()->isNotNull('l.topic')) // запрашиваем только проведенные уроки
             ->andWhere($qb->expr()->eq('l.group', $groupId))
+            ->orderBy('l.date')
             ->getQuery()
         ;
 

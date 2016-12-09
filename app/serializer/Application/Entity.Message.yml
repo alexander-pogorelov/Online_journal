@@ -1,0 +1,5 @@
+Application\Sonata\UserBundle\Entity:
+    exclusion_policy: ALL
+    properties:
+        message:
+            expose: true

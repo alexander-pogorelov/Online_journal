@@ -7,6 +7,11 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
+users:
+    type:     rest
+    resource: "@AppBundle/Controller/PupilCabinetController.php"
+    prefix:   /api
+
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
     prefix: /admin

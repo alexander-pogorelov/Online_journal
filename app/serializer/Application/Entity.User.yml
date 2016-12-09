@@ -1,0 +1,17 @@
+Sonata\UserBundle\Model\User:
+    exclusion_policy: ALL
+    group: user
+    properties:
+        patronymic:
+            expose: true
+
+FOS\UserBundle\Model\User:
+    exclusion_policy: ALL
+    group: user
+    properties:
+        id:
+            expose: true
+        username:
+            expose: true
+        email:
+            expose: true
