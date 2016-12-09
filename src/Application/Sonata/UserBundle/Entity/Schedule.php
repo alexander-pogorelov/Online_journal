@@ -65,9 +65,9 @@ class Schedule
     public function getWeekday()
     {
         $weekdays = [
-            'Воскресенье' , 'Понедельник' ,
-            'Вторник' , 'Среда' ,
-            'Четверг' , 'Пятница' , 'Суббота'
+            'ВС' , 'ПН' ,
+            'ВТ' , 'СР' ,
+            'ЧТ' , 'ПТ' , 'СБ'
         ];
         if ($this->getId()){
             return $weekdays[$this->weekday];

@@ -14,18 +14,20 @@ class ScheduleRepository extends \Doctrine\ORM\EntityRepository
     //возвращает преобразованый массив данных расписания с тремя ключали для проверки при выводе расписания
     public function scheduleKeysArray(){
         $schedule = $this->findAll();
-        foreach ($schedule as $lesson){
-            $weekday = $lesson->getWeekday();
-            $timeinterval = $lesson->getTimeinterval()->getId();
-            $classroom = (string)$lesson->getClassroom();
-            $group = (string)$lesson->getGroup()->getGroupName();
-            $teacher = $lesson->getTeacher()->getId();
-            $sortScheduleKey[$weekday][$timeinterval][$teacher] = $lesson;
-            $sortScheduleKey[$weekday][$timeinterval][$group] = $lesson;
-            $sortScheduleKey[$weekday][$timeinterval][$classroom] = $lesson;
-            }
-        return $sortScheduleKey;
+        if ($schedule){
+            foreach ($schedule as $lesson){
+                $weekday = $lesson->getWeekday();
+                $timeinterval = $lesson->getTimeinterval()->getId();
+                $classroom = (string)$lesson->getClassroom();
+                $group = (string)$lesson->getGroup()->getGroupName();
+                $teacher = $lesson->getTeacher()->getId();
+                $sortScheduleKey[$weekday][$timeinterval][$teacher] = $lesson;
+                $sortScheduleKey[$weekday][$timeinterval][$group] = $lesson;
+                $sortScheduleKey[$weekday][$timeinterval][$classroom] = $lesson;
+                }
+        } else $sortScheduleKey = array();
 
+        return $sortScheduleKey;
     }
 
     public function getDistinctTeachers()
