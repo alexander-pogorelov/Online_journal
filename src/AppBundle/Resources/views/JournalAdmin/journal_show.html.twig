@@ -119,7 +119,9 @@
                                     {% endif %}
                                 {% endfor %}
                                 <td style="text-align:center">
-                                    {{ statisticalData['averageAssessment'][pga.id] }}
+                                    {% if statisticalData['averageAssessment'][pga.id] %}
+                                        {{ statisticalData['averageAssessment'][pga.id]|number_format(1, ',', ' ') }}
+                                    {% endif %}
                                 </td>
                                 <td style="text-align:center">
                                     {% if statisticalData['assessmentCounter'][pga.id] %}
