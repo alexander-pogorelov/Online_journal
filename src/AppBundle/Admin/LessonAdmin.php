@@ -121,6 +121,11 @@ class LessonAdmin extends AbstractAdmin
             ->with('Урок', array('class' => 'col-md-5'))->end()
             ->with('Оценки', array('class' => 'col-md-7'))->end()
         ;
+        if ($this->isCurrentRoute('edit')) {
+            $currentDate = $this->getSubject()->getDate();
+        } else {
+            $currentDate = $now;
+        }
         $formMapper
             ->with('Урок')
                 ->add('group.groupName', null, [
@@ -150,7 +155,7 @@ class LessonAdmin extends AbstractAdmin
                     'format' => 'dd MMMM yyyy',
                     'years' => range(2016, $now->format('Y')),
                     'required' => true,
-                    'data' => $now,
+                    'data' => $currentDate,
                 ])
                 ->add('topic', 'text', [
                     'label'=>'Тема урока',
