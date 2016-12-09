@@ -15,7 +15,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Routing\Route;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 
 
 class LessonAdmin extends AbstractAdmin
@@ -36,7 +37,10 @@ class LessonAdmin extends AbstractAdmin
     public function getDashboardActions()
     {
         $actions = parent::getDashboardActions();
-        unset($actions['create']);
+        if (isset($actions['create'])) {
+            unset($actions['create']);
+        }
+
         return $actions;
     }
 
@@ -85,14 +89,40 @@ class LessonAdmin extends AbstractAdmin
         $now = new \DateTime();
 
         $currentSubjectId = $this->getSubject()->getTeacherSubject()->getSubject()->getId();
+        $currentGroup = $this->getSubject()->getGroup();
+        $repository=$this->getConfigurationPool()->getContainer()->get('Doctrine')
+            ->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+        $currentPupilGroupAssociations = $repository->findBy([
+            'group' => $currentGroup
+        ]);
+
+        //TODO: перенести массив оценок в сущность урока?
+        $assessmentArray = [];
+        for ($i=10; $i>=5; $i--) {
+            $assessmentArray[$i.' баллов'] = $i;
+        }
+
+        for ($i=4; $i>=2; $i--) {
+            $assessmentArray[$i.' балла'] = $i;
+        }
+        $assessmentArray['1 балл'] = 1;
+        $assessmentArray['Отсутствует'] = -1;
+
+        if ($this->getSubject()->getId()) {
+            $id = $this->getSubject()->getId();
+            $repository=$this->getConfigurationPool()->getContainer()->get('Doctrine')
+                ->getRepository('ApplicationSonataUserBundle:Journal');
+            $currentJournals = $repository->findBy([
+                'lesson' => $id
+            ]);
+        }
 
         $formMapper
-            ->with('1', array('class' => 'col-md-5'))->end()
-            ->with('2', array('class' => 'col-md-5'))->end()
-
+            ->with('Урок', array('class' => 'col-md-5'))->end()
+            ->with('Оценки', array('class' => 'col-md-7'))->end()
         ;
         $formMapper
-            ->with('1')
+            ->with('Урок')
                 ->add('group.groupName', null, [
                     'label'=>'Группа',
                     'read_only' => true,
@@ -114,14 +144,13 @@ class LessonAdmin extends AbstractAdmin
                     },
                     'label'=>'Преподаватель',
                 ])
-            ->end()
-            ->with('2')
                 ->add('date', 'date', [
                     'widget' => 'choice',
                     'label'=>'Дата урока',
                     'format' => 'dd MMMM yyyy',
                     'years' => range(2016, $now->format('Y')),
                     'required' => true,
+                    'data' => $now,
                 ])
                 ->add('topic', 'text', [
                     'label'=>'Тема урока',
@@ -129,9 +158,56 @@ class LessonAdmin extends AbstractAdmin
                 ])
                 ->add('homework', 'textarea', [
                     'label'=>'Домашнее задание',
+                    'required' => false,
                 ])
             ->end()
-        ;
+
+            ->with('Оценки');
+
+                foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
+                    $assessment = '';
+                    $remark = '';
+                    if ($this->isCurrentRoute('edit')) {
+                        foreach ($currentJournals as $currentJournal) {
+                            // ищем оценки и замечания у ученика
+                            if (($currentPupilGroupAssociation->getId()) === ($currentJournal->getPupilGroup()->getId())) {
+                                $assessment = $currentJournal->getAssessment();
+                                $remark = $currentJournal->getRemark();
+                                break;
+                            }
+                        }
+                    }
+
+                    $formMapper
+                        ->add('pga'.$currentPupilGroupAssociation->getId(),'text',[
+                            'read_only' => true,
+                            'mapped' => false,
+                            'data' => $currentPupilGroupAssociation->getPupil(),
+                            'label' =>'Ученик',
+                            'required' => false,
+
+                        ])
+                    ;
+                    $formMapper->add('assessment'.$currentPupilGroupAssociation->getId(), ChoiceType::class, [
+                            'choices' => $assessmentArray,
+                            'choices_as_values' => true,
+                            'mapped' => false,
+                            'label' => 'Оценка/присутствие',
+                            'required' => false,
+                            'data' => $assessment
+                        ])
+                    ;
+                    $formMapper
+                        ->add('remark'.$currentPupilGroupAssociation->getId(), 'text', [
+                            'mapped' => false,
+                            'required' => false,
+                            'label' => 'Замечание',
+                            'data' => $remark
+                        ])
+                    ;
+                }
+        $formMapper
+            ->end();
     }
 
 }

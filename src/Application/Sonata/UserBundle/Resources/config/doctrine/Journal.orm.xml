@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Application\Sonata\UserBundle\Entity\Journal" table="journal">
+    <entity name="Application\Sonata\UserBundle\Entity\Journal" table="journal" repository-class="Application\Sonata\UserBundle\Repository\JournalRepository">
         <unique-constraints>
             <unique-constraint columns="lesson_id,pupil_group_id"></unique-constraint>
         </unique-constraints>
