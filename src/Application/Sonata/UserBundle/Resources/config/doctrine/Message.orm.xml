@@ -25,6 +25,7 @@
                 <cascade-persist/>
             </cascade>
         </one-to-many>
+
     </entity>
 
 </doctrine-mapping>
