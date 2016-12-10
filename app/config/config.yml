@@ -111,6 +111,8 @@ fos_user:
     service:
         user_manager: sonata.user.orm.user_manager                      # If you're using doctrine orm (use sonata.user.mongodb.user_manager for mongodb)
 
+nelmio_api_doc: ~
+
 fos_rest:
     body_listener: true
     view:
@@ -134,11 +136,12 @@ jms_serializer:
         debug: "%kernel.debug%"
         file_cache:
             dir: "%kernel.cache_dir%/serializer"
-        directories:
-            FOSUserBundle:
-                namespace_prefix: "FOS\\UserBundle"
-                path: "%kernel.root_dir%/config/serializer/FosUserBundle"
-            Application:
-                namespace_prefix: "Application\\Sonata\\UserBundle"
-                path: "%kernel.root_dir%/config/serializer/Application"
+
         auto_detection: true
+        directories:
+            Application:
+                namespace_prefix: "Application\\Sonata"
+                path: "%kernel.cache_dir%/serializer/Application"
+            FOSUser:
+                namespace_prefix: "FOS\\UserBundle"
+                path: "%kernel.cache_dir%/serializer/FosUserBundle"

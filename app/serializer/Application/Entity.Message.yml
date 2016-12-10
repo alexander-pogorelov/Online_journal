@@ -1,4 +1,4 @@
-Application\Sonata\UserBundle\Entity:
+Application\Sonata\UserBundle\Entity\Message:
     exclusion_policy: ALL
     properties:
         message:
