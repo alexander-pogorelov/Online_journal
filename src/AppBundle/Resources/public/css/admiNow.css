@@ -78,3 +78,29 @@ background-color:#09f
 #u30 {
     white-space: nowrap;
 }
+
+.one-line {
+    float: left;
+    width: 100%;
+}
+
+.one-line .form-group {
+    float:left;
+    margin-right: 15px;
+    /*width: auto;*/
+}
+
+.pupil {
+    min-width: 300px;
+    float:left;
+}
+
+.assessment {
+    min-width: 150px;
+    float:left;
+}
+
+.remark {
+    min-width: 450px;
+    float:left;
+}

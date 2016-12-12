@@ -23,6 +23,21 @@ class Lesson
 
     private $date;
 
+    public static function getAssessmentList() {
+
+        $assessmentList = [];
+        for ($i=10; $i>=5; $i--) {
+            $assessmentList[$i.' баллов'] = $i;
+        }
+        for ($i=4; $i>=2; $i--) {
+            $assessmentList[$i.' балла'] = $i;
+        }
+        $assessmentList['1 балл'] = 1;
+        $assessmentList['Отсутствует'] = -1;
+
+        return $assessmentList;
+    }
+
     /**
      * Set topic
      *
