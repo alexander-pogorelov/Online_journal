@@ -16,6 +16,8 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class GroupAdmin extends AbstractAdmin
 {
@@ -52,9 +54,6 @@ class GroupAdmin extends AbstractAdmin
             ->add('subjects', null, [
                 'label'=>'Предметы',
             ]+ $headerAttr)
-            ->add('_teacher_array_', null, [
-                'label'=>'Преподаватели',
-            ]+ $headerAttr)
             ->add('_action', null, [
                 'label'=>'Список группы',
                 'row_align' => 'center',
@@ -75,7 +74,10 @@ class GroupAdmin extends AbstractAdmin
         $formMapper
             ->with('Группа')
             ->add('groupName', 'text', ['label'=>'Название группы'])
-            ->add('note', 'textarea', ['label'=>'Примечание'])
+            ->add('note', 'textarea', [
+                'label'=>'Примечание',
+                'required' => false,
+            ])
             ->add('expirationDate', 'date', [
                 'widget' => 'choice',
                 'label'=>'Дата окончания обучения',
@@ -88,6 +90,10 @@ class GroupAdmin extends AbstractAdmin
             ->add('subjects', 'sonata_type_model', [
                 'multiple' => true,
                 'by_reference' => false,
+                'label'=>'Предметы',
+                'constraints' => [
+                    new Assert\Callback([$this, 'validateSubject'])
+                ]
             ])
             ->end()
         ;
@@ -181,6 +187,15 @@ class GroupAdmin extends AbstractAdmin
         );
 
         return true;
+    }
+
+    public function validateSubject($subjectsCollection, ExecutionContextInterface $context){
+
+        if(!count($subjectsCollection)){
+            $errorMessage = 'Добавьте предметы для группы';
+            $context->buildViolation($errorMessage)
+                ->addViolation();
+        }
     }
 
 }
