@@ -9,13 +9,13 @@
 namespace AppBundle\Admin;
 
 
+use AppBundle\Form\JournalLessonType;
 use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 
@@ -96,18 +96,6 @@ class LessonAdmin extends AbstractAdmin
             'group' => $currentGroup
         ]);
 
-        //TODO: перенести массив оценок в сущность урока?
-        $assessmentArray = [];
-        for ($i=10; $i>=5; $i--) {
-            $assessmentArray[$i.' баллов'] = $i;
-        }
-
-        for ($i=4; $i>=2; $i--) {
-            $assessmentArray[$i.' балла'] = $i;
-        }
-        $assessmentArray['1 балл'] = 1;
-        $assessmentArray['Отсутствует'] = -1;
-
         if ($this->getSubject()->getId()) {
             $id = $this->getSubject()->getId();
             $repository=$this->getConfigurationPool()->getContainer()->get('Doctrine')
@@ -117,10 +105,18 @@ class LessonAdmin extends AbstractAdmin
             ]);
         }
 
+        if ($this->isCurrentRoute('edit')) {
+            $currentDate = $this->getSubject()->getDate();
+        } else {
+            $currentDate = $now;
+        }
+
         $formMapper
-            ->with('Урок', array('class' => 'col-md-5'))->end()
-            ->with('Оценки', array('class' => 'col-md-7'))->end()
+            ->with('Урок', array('class' => 'col-md-6'))->end()
+            ->with('Урок ', array('class' => 'col-md-6'))->end()
+            ->with('Оценки', array('class' => 'col-md-12'))->end()
         ;
+
         $formMapper
             ->with('Урок')
                 ->add('group.groupName', null, [
@@ -144,13 +140,18 @@ class LessonAdmin extends AbstractAdmin
                     },
                     'label'=>'Преподаватель',
                 ])
+            ->end()
+        ;
+
+        $formMapper
+            ->with('Урок ')
                 ->add('date', 'date', [
                     'widget' => 'choice',
                     'label'=>'Дата урока',
                     'format' => 'dd MMMM yyyy',
                     'years' => range(2016, $now->format('Y')),
                     'required' => true,
-                    'data' => $now,
+                    'data' => $currentDate,
                 ])
                 ->add('topic', 'text', [
                     'label'=>'Тема урока',
@@ -161,51 +162,36 @@ class LessonAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
+        ;
 
+        $formMapper
             ->with('Оценки');
-
-                foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
-                    $assessment = '';
-                    $remark = '';
-                    if ($this->isCurrentRoute('edit')) {
-                        foreach ($currentJournals as $currentJournal) {
-                            // ищем оценки и замечания у ученика
-                            if (($currentPupilGroupAssociation->getId()) === ($currentJournal->getPupilGroup()->getId())) {
-                                $assessment = $currentJournal->getAssessment();
-                                $remark = $currentJournal->getRemark();
-                                break;
-                            }
-                        }
+        foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
+            $assessment = '';
+            $remark = '';
+            if ($this->isCurrentRoute('edit')) {
+                foreach ($currentJournals as $currentJournal) {
+                    // ищем оценки и замечания у ученика
+                    if (($currentPupilGroupAssociation->getId()) === ($currentJournal->getPupilGroup()->getId())) {
+                        $assessment = $currentJournal->getAssessment();
+                        $remark = $currentJournal->getRemark();
+                        break;
                     }
-
-                    $formMapper
-                        ->add('pga'.$currentPupilGroupAssociation->getId(),'text',[
-                            'read_only' => true,
-                            'mapped' => false,
-                            'data' => $currentPupilGroupAssociation->getPupil(),
-                            'label' =>'Ученик',
-                            'required' => false,
-
-                        ])
-                    ;
-                    $formMapper->add('assessment'.$currentPupilGroupAssociation->getId(), ChoiceType::class, [
-                            'choices' => $assessmentArray,
-                            'choices_as_values' => true,
-                            'mapped' => false,
-                            'label' => 'Оценка/присутствие',
-                            'required' => false,
-                            'data' => $assessment
-                        ])
-                    ;
-                    $formMapper
-                        ->add('remark'.$currentPupilGroupAssociation->getId(), 'text', [
-                            'mapped' => false,
-                            'required' => false,
-                            'label' => 'Замечание',
-                            'data' => $remark
-                        ])
-                    ;
                 }
+            }
+            $formMapper
+                ->add(''.$currentPupilGroupAssociation->getId(), JournalLessonType::class, [
+                    'label' => false,
+                    'required' => false,
+                ])
+            ;
+            $formMapper
+                ->get($currentPupilGroupAssociation->getId())->get('pupil')->setData($currentPupilGroupAssociation->getPupil());
+            $formMapper
+                ->get($currentPupilGroupAssociation->getId())->get('assessment')->setData($assessment);
+            $formMapper
+                ->get($currentPupilGroupAssociation->getId())->get('remark')->setData($remark);
+        }
         $formMapper
             ->end();
     }

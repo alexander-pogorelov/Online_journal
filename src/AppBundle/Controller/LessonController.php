@@ -13,8 +13,6 @@ use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
 class LessonController extends Controller
 {
-
-
     public function editAction($id = null)
     {
         $request = $this->getRequest();
@@ -29,12 +27,10 @@ class LessonController extends Controller
         }
 
         ////////////////////////////////////////////////////////////
-        $currentGroup = $object->getGroup();
+
         // Извлекаем Учеников-Группы
-        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
-        $currentPupilGroupAssociations = $repository->findBy([
-            'group' => $currentGroup
-        ]);
+        $currentPupilGroupAssociations = $this->getCurrentPupilGroupAssociations($object);
+
         // Извлекаем журналы урока
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Journal');
         $currentJournals = $repository->findBy([
@@ -76,29 +72,25 @@ class LessonController extends Controller
 
                     ////////////////////////////////////////////////////////////////
                     $em = $this->getDoctrine()->getManager();
-                    // обновление объектов журнала и (или) создание новых
                     // проходим по всем ученикам группы
                     foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
+                        // получаем оценку и замечание из формы
                         $pgaId = $currentPupilGroupAssociation->getId();
-                        $assessmentId = 'assessment' . $pgaId;
-                        $remarkId = 'remark' . $pgaId;
+                        $pupilReport = $form->get($pgaId);
+                        $assessment = $pupilReport->get('assessment')->getData();
+                        $remark = $pupilReport->get('remark')->getData();
                         // если поля оценки или замечания непустые
-                        if ($form->get($assessmentId)->getData() || $form->get($remarkId)->getData()) {
+                        if ($assessment || $remark) {
                             // если есть объект журнала
                             if (array_key_exists($pgaId, $currentJournalsArrayWithPgaIdKey)) {
                                 // получаем объект журнала
                                 $currentJournal = $currentJournalsArrayWithPgaIdKey[$pgaId];
                             } else {
-                                // иначе создаем новый объект журнала
-                                $currentJournal = New Journal();
-                                // добавляем Ученика-Группу и Урок
-                                $currentJournal->setPupilGroup($currentPupilGroupAssociation);
-                                $currentJournal->setLesson($object);
+                                // иначе создаем новый объект журнала и добавляем Ученика-Группу и Урок
+                                $currentJournal = $this->createNewJournal($object, $currentPupilGroupAssociation);
                             }
                             // Добавляем в журнал оценку и замечание
-                            $currentJournal->setAssessment($form->get($assessmentId)->getData());
-                            $currentJournal->setRemark($form->get($remarkId)->getData());
-                            $em->persist($currentJournal);
+                            $this->updateCurrentJournal($em, $currentJournal, $assessment, $remark);
                         } else { // если оценка и замечание удалены, удаляем запись в журнале
                             if (array_key_exists($pgaId, $currentJournalsArrayWithPgaIdKey)) {
                                 $em->remove($currentJournalsArrayWithPgaIdKey[$pgaId]);
@@ -242,30 +234,22 @@ class LessonController extends Controller
 
                     ////////////////////////////////////////////////////////
                     if ($object) {
-                        $currentGroup = $object->getGroup();
                         // Извлекаем Учеников-Группы
-                        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
-                        $currentPupilGroupAssociations = $repository->findBy([
-                            'group' => $currentGroup
-                        ]);
+                        $currentPupilGroupAssociations = $this->getCurrentPupilGroupAssociations($object);
                         $em = $this->getDoctrine()->getManager();
-                        // создание новых объектов журнала
                         // проходим по всем ученикам группы
                         foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
+                            // получаем оценку и замечание из формы
                             $pgaId = $currentPupilGroupAssociation->getId();
-                            $assessmentId = 'assessment' . $pgaId;
-                            $remarkId = 'remark' . $pgaId;
-                            // если поля оценки или замечания непустые
-                            if ($form->get($assessmentId)->getData() || $form->get($remarkId)->getData()) {
-                                // создаем новый объект журнала
-                                $currentJournal = New Journal();
-                                // добавляем Ученика-Группу и Урок
-                                $currentJournal->setPupilGroup($currentPupilGroupAssociation);
-                                $currentJournal->setLesson($object);
+                            $pupilReport = $form->get($pgaId);
+                            $assessment = $pupilReport->get('assessment')->getData();
+                            $remark = $pupilReport->get('remark')->getData();
+                            // если есть оценка или замечание
+                            if ($assessment || $remark) {
+                                // создаем новый объект журнала и добавляем Ученика-Группу и Урок
+                                $currentJournal = $this->createNewJournal($object, $currentPupilGroupAssociation);
                                 // Добавляем в журнал оценку и замечание
-                                $currentJournal->setAssessment($form->get($assessmentId)->getData());
-                                $currentJournal->setRemark($form->get($remarkId)->getData());
-                                $em->persist($currentJournal);
+                                $this->updateCurrentJournal($em, $currentJournal, $assessment, $remark);
                             }
                         }
                         $em->flush();
@@ -329,4 +313,33 @@ class LessonController extends Controller
             'subjectId' => $subjectId
         ), null);
     }
+
+    private function getCurrentPupilGroupAssociations($object) {
+        $currentGroup = $object->getGroup();
+        // Извлекаем Учеников-Группы
+        $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+        $currentPupilGroupAssociations = $repository->findBy([
+            'group' => $currentGroup
+        ]);
+
+        return $currentPupilGroupAssociations;
+    }
+
+    private function createNewJournal($object, $currentPupilGroupAssociation) {
+        // создаем новый объект журнала
+        $currentJournal = New Journal();
+        // добавляем Ученика-Группу и Урок
+        $currentJournal->setPupilGroup($currentPupilGroupAssociation);
+        $currentJournal->setLesson($object);
+
+        return $currentJournal;
+    }
+
+    private function updateCurrentJournal($em, $currentJournal, $assessment, $remark) {
+        // Добавляем в журнал оценку и замечание
+        $currentJournal->setAssessment($assessment);
+        $currentJournal->setRemark($remark);
+        $em->persist($currentJournal);
+    }
+
 }
