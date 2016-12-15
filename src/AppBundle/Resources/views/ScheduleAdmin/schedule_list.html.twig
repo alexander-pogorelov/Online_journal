@@ -55,13 +55,13 @@
                 {% for timeinterval in timeintervals %}
                     {% if loop.first %}
                         <tr class="top_line">
-                            <td  rowspan={{ loop.length }}>{{ weekday }}</td>
+                            <td  rowspan={{ loop.length }}>{{ weekday['short'] }}</td>
                             <td class="head_table" width="80px">{{ timeinterval }}</td>
                             {% for teacher in teachers %}
-                                {% if scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id] is defined %}
-                                    <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].subject }}</td>
-                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].group }}</td>
-                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].classroom }}</td>
+                                {% if scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id] is defined %}
+                                    <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id].subject }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id].group }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id].classroom }}</td>
                                 {% else %}
                                     <td class="cell_table bottom_left"><br></td>
                                     <td class="cell_table"><br></td>
@@ -73,10 +73,10 @@
                         <tr>
                             <td class="head_table" width="80px">{{ timeinterval }}</td>
                             {% for teacher in teachers %}
-                                {% if scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id] is defined %}
-                                    <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].subject }}</td>
-                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].group }}</td>
-                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][teacher.getTeacher.id].classroom }}</td>
+                                {% if scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id] is defined %}
+                                    <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id].subject }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id].group }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id].classroom }}</td>
                                 {% else %}
                                     <td class="cell_table bottom_left"><br></td>
                                     <td class="cell_table"><br></td>
@@ -111,13 +111,13 @@
                     {% for timeinterval in timeintervals %}
                         {% if loop.first %}
                             <tr class="top_line">
-                                <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
+                                <td  rowspan={{ loop.length }} height=75>{{ weekday['short'] }}</td>
                                 <td class="head_table" width="80px">{{ timeinterval }}</td>
                                 {% for group in groups %}
-                                    {% if scheduleKeysArray[weekday][timeinterval.id][group.group.groupName] is defined %}
-                                        <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday][timeinterval.id][group.group.groupName].subject }}</td>
-                                        <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][group.group.groupName].classroom }}</td>
-                                        <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.getId][group.group.groupName].teacher }}</td>
+                                    {% if scheduleKeysArray[weekday['full']][timeinterval.id][group.group.groupName] is defined %}
+                                        <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][group.group.groupName].subject }}</td>
+                                        <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.id][group.group.groupName].classroom }}</td>
+                                        <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.getId][group.group.groupName].teacher }}</td>
                                     {% else %}
                                         <td class="cell_table bottom_left"><br></td>
                                         <td class="cell_table"><br></td>
@@ -129,10 +129,10 @@
                             <tr>
                                 <td class="head_table" width="80px">{{ timeinterval }}</td>
                                 {% for group in groups %}
-                                    {% if scheduleKeysArray[weekday][timeinterval.id][group.group.groupName] is defined %}
-                                        <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday][timeinterval.id][group.group.groupName].subject }}</td>
-                                        <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][group.group.groupName].classroom }}</td>
-                                        <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.getId][group.group.groupName].teacher }}</td>
+                                    {% if scheduleKeysArray[weekday['full']][timeinterval.id][group.group.groupName] is defined %}
+                                        <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][group.group.groupName].subject }}</td>
+                                        <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.id][group.group.groupName].classroom }}</td>
+                                        <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.getId][group.group.groupName].teacher }}</td>
                                     {% else %}
                                         <td class="cell_table bottom_left"><br></td>
                                         <td class="cell_table"><br></td>
@@ -168,13 +168,13 @@
                 {% for timeinterval in timeintervals %}
                     {% if loop.first %}
                         <tr class="top_line">
-                            <td  rowspan={{ loop.length }} height=75>{{ weekday }}</td>
+                            <td  rowspan={{ loop.length }} height=75>{{ weekday['short'] }}</td>
                             <td class="head_table" width="80px">{{ timeinterval }}</td>
                             {% for classroom in classrooms %}
-                                {% if scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName] is defined %}
-                                    <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].subject }}</td>
-                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].group }}</td>
-                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].teacher }}</td>
+                                {% if scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName] is defined %}
+                                    <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName].subject }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName].group }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName].teacher }}</td>
                                 {% else %}
                                     <td class="cell_table bottom_left"><br></td>
                                     <td class="cell_table"><br></td>
@@ -186,10 +186,10 @@
                         <tr>
                             <td class="head_table" width="80px">{{ timeinterval }}</td>
                             {% for classroom in classrooms %}
-                                {% if scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName] is defined %}
-                                    <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].subject }}</td>
-                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].group }}</td>
-                                    <td class="cell_table">{{ scheduleKeysArray[weekday][timeinterval.id][classroom.getClassroom.getName].teacher }}</td>
+                                {% if scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName] is defined %}
+                                    <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName].subject }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName].group }}</td>
+                                    <td class="cell_table">{{ scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName].teacher }}</td>
                                 {% else %}
                                     <td class="cell_table bottom_left"><br></td>
                                     <td class="cell_table"><br></td>

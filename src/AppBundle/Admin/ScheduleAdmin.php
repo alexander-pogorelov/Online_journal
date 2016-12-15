@@ -24,6 +24,12 @@ class ScheduleAdmin extends AbstractAdmin
             ->add('group',null, ['admin_code' => 'app.admin.group', 'label'=>'Группа'])
             ->add('subject',null, ['label'=>'Название предмета'])
             ->add('teacher',null, ['label'=>'Преподователь'])
+            ->add('_action', null, [ // Добавление команд в list
+                'label'=>'Действие',
+                'actions' => [
+                    'edit' => [], // команда редактировать
+                    'delete' => [], // команда удалить
+                ]])
         ;
     }
 
@@ -45,24 +51,24 @@ class ScheduleAdmin extends AbstractAdmin
                      'choices' => $weekdays]
                 )
             ->add('timeinterval',null,
-                    ['label'=>'Время занятий'],
+                    ['label'=>'Время занятий', 'required' => false],
                     ['admin_code' => 'admin.timeinterval']
                 )
             ->add('group', null,
-                    ['label' => 'Номер группы'],
+                    ['label' => 'Номер группы', 'required' => false],
                     ['admin_code' => 'app.admin.group']
                 )
             ->add('classroom',null,
-                    ['label' => 'Аудитория'],
+                    ['label' => 'Аудитория', 'required' => false],
                     ['admin_code' => 'admin.classroom']
                 )
             ->add('subject',null,
-                    ['label' => 'Название предмета',
+                    ['label' => 'Название предмета', 'required' => false,
                      'attr' => ['class' => 'subject']],
                     ['admin_code' => 'admin.subject']
                 )
             ->add('teacher',null,
-                ['label' => 'Ф.И.О. Преподавателя'],
+                ['label' => 'Ф.И.О. Преподавателя', 'required' => false],
                 ['admin_code' => 'admin.teacher']
             )
 
