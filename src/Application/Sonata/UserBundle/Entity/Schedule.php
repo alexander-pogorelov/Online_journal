@@ -78,6 +78,14 @@ class Schedule
      */
     public function getWeekday()
     {
+        if ($this->getId()){
+            return self::getWeekdays()[$this->weekday]['full'];
+        }
+        return $this->weekday;
+    }
+
+    public function getWeekdays()
+    {
         $weekdays = [
             '1' => ['short' => 'ПН', 'full' => 'Понедельник'],
             '2' => ['short' => 'ВТ', 'full' => 'Вторник'],
@@ -87,10 +95,7 @@ class Schedule
             '6' => ['short' => 'СБ', 'full' => 'Суббота'],
             '0' => ['short' => 'ВС', 'full' => 'Воскресенье'],
         ];
-        if ($this->getId()){
-            return $weekdays[$this->weekday]['full'];
-        }
-        return $this->weekday;
+        return $weekdays;
     }
 
     /**
