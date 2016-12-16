@@ -2,6 +2,8 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Schedule
  */
@@ -9,6 +11,8 @@ class Schedule
 {
     /**
      * @var integer
+     *
+     * @Assert\NotBlank(message="Заполните поле")
      */
     private $weekday;
 
@@ -19,26 +23,36 @@ class Schedule
 
     /**
      * @var \Application\Sonata\UserBundle\Entity\GroupIteen
+     *
+     * @Assert\NotBlank(message="Заполните поле")
      */
     private $group;
 
     /**
      * @var \Application\Sonata\UserBundle\Entity\User
+     *
+     * @Assert\NotBlank(message="Заполните поле")
      */
     private $teacher;
 
     /**
      * @var \Application\Sonata\UserBundle\Entity\Subject
+     *
+     * @Assert\NotBlank(message="Заполните поле")
      */
     private $subject;
 
     /**
      * @var \Application\Sonata\UserBundle\Entity\TimeInterval
+     *
+     * @Assert\NotBlank(message="Заполните поле")
      */
     private $timeinterval;
 
     /**
      * @var \Application\Sonata\UserBundle\Entity\Classroom
+     *
+     * @Assert\NotBlank(message="Заполните поле")
      */
     private $classroom;
 
@@ -64,15 +78,24 @@ class Schedule
      */
     public function getWeekday()
     {
-        $weekdays = [
-            'Воскресенье' , 'Понедельник' ,
-            'Вторник' , 'Среда' ,
-            'Четверг' , 'Пятница' , 'Суббота'
-        ];
         if ($this->getId()){
-            return $weekdays[$this->weekday];
+            return self::getWeekdays()[$this->weekday]['full'];
         }
         return $this->weekday;
+    }
+
+    public function getWeekdays()
+    {
+        $weekdays = [
+            '1' => ['short' => 'ПН', 'full' => 'Понедельник'],
+            '2' => ['short' => 'ВТ', 'full' => 'Вторник'],
+            '3' => ['short' => 'СР', 'full' => 'Среда'],
+            '4' => ['short' => 'ЧТ', 'full' => 'Четверг'],
+            '5' => ['short' => 'ПТ', 'full' => 'Пятница'],
+            '6' => ['short' => 'СБ', 'full' => 'Суббота'],
+            '0' => ['short' => 'ВС', 'full' => 'Воскресенье'],
+        ];
+        return $weekdays;
     }
 
     /**
