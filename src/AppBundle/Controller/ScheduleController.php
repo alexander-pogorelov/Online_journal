@@ -28,8 +28,7 @@ class ScheduleController extends Controller
 
             $parameters['scheduleKeysArray'] = $em->getRepository('ApplicationSonataUserBundle:Schedule')->scheduleKeysArray();
 
-            $weekdaysArray = new Schedule();
-            $weekdays = $weekdaysArray->getWeekdays();
+            $weekdays = Schedule::getWeekdays();
             $parameters['weekdays'] = $weekdays;
         }
 
