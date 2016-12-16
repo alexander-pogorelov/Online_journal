@@ -45,7 +45,9 @@
              </label>
              <input value = "Войти" type = "submit" id = "submitButton">
          </form>
+    {% block forgot_password %}
          <a href="{{ reset_route }}">Забыли пароль?</a>
+    {% endblock %}
 {% endblock %}
          {% endblock %}
      </section>
