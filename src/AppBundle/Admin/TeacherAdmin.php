@@ -8,20 +8,21 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Validator\Validator;
 use Application\Sonata\UserBundle\Entity\TeacherSubject;
-use Application\Sonata\UserBundle\Entity\UserTeacher;
+//use Application\Sonata\UserBundle\Entity\UserTeacher;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\CollectionType;
+//use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Tests\Extension\Core\Type\CollectionTypeTest;
+//use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+//use Symfony\Component\Form\Extension\Core\Type\TextType;
+//use Symfony\Component\Form\Tests\Extension\Core\Type\CollectionTypeTest;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\CoreBundle\Validator\ErrorElement;
@@ -74,10 +75,6 @@ class TeacherAdmin extends AbstractAdmin
     public function validate(ErrorElement $errorElement, $object)
     {
         $errorElement
-            ->with('email')
-                ->assertEmail()
-                ->assertNotBlank()
-            ->end()
             ->with('firstname')
                 ->assertNotBlank()
             ->end()
@@ -88,6 +85,22 @@ class TeacherAdmin extends AbstractAdmin
                 ->assertNotBlank()
             ->end()
         ;
+
+        if ($object->getEmail() === null) {
+            $errorElement
+                ->with('email')
+                ->addViolation('Заполните поле')
+                ->end()
+            ;
+        } else {
+            if (Validator::duplicateEmailValidator($object, $this->modelManager)) {
+                $errorElement
+                    ->with('email')
+                    ->addViolation('Пользователь с таким Email уже существует')
+                    ->end()
+                ;
+            }
+        }
     }
 
     protected function configureListFields(ListMapper $listMapper)

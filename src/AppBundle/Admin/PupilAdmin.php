@@ -60,12 +60,6 @@ class PupilAdmin extends AbstractAdmin
             ->with('address')
                 ->assertNotBlank()
             ->end()
-            ->with('parents')
-                ->assertNotBlank()
-            ->end()
-            ->with('pupilGroupAssociation')
-                ->assertNotBlank()
-            ->end()
         ;
     }
 
@@ -173,7 +167,10 @@ class PupilAdmin extends AbstractAdmin
                     'label' => 'Группы',
                     'multiple' => true,
                     'by_reference' => false,
-                    'class' => 'Application\Sonata\UserBundle\Entity\GroupIteen'
+                    'class' => 'Application\Sonata\UserBundle\Entity\GroupIteen',
+                    'constraints' => [
+                        new Assert\Callback([$this, 'validateGroup'])
+                    ]
                 ])
             ->end()
         ;
@@ -241,10 +238,19 @@ class PupilAdmin extends AbstractAdmin
         ;
     }
 
-    public function validateParent($parentsCollection, ExecutionContextInterface $context){
+    public function validateParent($parentsCollection, ExecutionContextInterface $context) {
 
         if(!count($parentsCollection)){
             $errorMessage = 'Добавьте родственников ученика';
+            $context->buildViolation($errorMessage)
+                ->addViolation();
+        }
+    }
+
+    public function validateGroup($groupsCollection, ExecutionContextInterface $context) {
+
+        if(!count($groupsCollection)){
+            $errorMessage = 'Добавьте ученика в группу';
             $context->buildViolation($errorMessage)
                 ->addViolation();
         }
