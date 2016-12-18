@@ -9,10 +9,26 @@
 namespace AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exception\ModelManagerException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 class JournalController extends Controller
 {
+    public function batchActionDelete(ProxyQueryInterface $query)
+    {
+        try {
+            return parent::batchActionDelete($query);
+
+        } catch (ModelManagerException $e) {
+
+            $this->addFlash('sonata_flash_error', 'Невозможно удалить объект или объекты, связанные с другими объектами.');
+
+            return new RedirectResponse($this->generateUrl('subject_list'));
+        }
+    }
+
     public function showAction($id = null)
     {
         $request = $this->getRequest();

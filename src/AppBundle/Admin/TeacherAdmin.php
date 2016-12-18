@@ -34,6 +34,10 @@ class TeacherAdmin extends AbstractAdmin
 
     protected $baseRoutePattern = 'teacher';
 
+    protected $datagridValues = [
+        '_sort_order' => 'DESC'
+    ];
+
     public function create($object)
     {
         $container = $this->getConfigurationPool()->getContainer();

@@ -22,6 +22,10 @@ class ParentAdmin extends AbstractAdmin
     protected $baseRouteName = 'parent-route-admin'; //admin_vendor_bundlename_adminclassname
     protected $baseRoutePattern = 'parent'; //unique-route-pattern
 
+    protected $datagridValues = [
+        '_sort_order' => 'DESC'
+    ];
+
     public function create($object)
     {
         $container = $this->getConfigurationPool()->getContainer();
