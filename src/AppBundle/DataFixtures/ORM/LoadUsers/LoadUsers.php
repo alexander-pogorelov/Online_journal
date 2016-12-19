@@ -30,7 +30,7 @@ class LoadUsers implements FixtureInterface
     {
         // TODO: Implement load() method.
 
-        $user3 = new UserParent();
+        $user3 = new UserMetodist();
         $user3->setFirstname('Иван');
         $user3->setLastname('Иванов');
         $user3->setUsername('Vanya');
