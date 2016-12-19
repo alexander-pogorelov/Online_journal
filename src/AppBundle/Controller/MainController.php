@@ -13,7 +13,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class UniController extends Controller
+class MainController extends Controller
 {
     public function batchActionDelete(ProxyQueryInterface $query)
     {

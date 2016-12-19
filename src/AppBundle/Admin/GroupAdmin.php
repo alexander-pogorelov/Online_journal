@@ -50,9 +50,9 @@ class GroupAdmin extends AbstractAdmin
             ;
         } else {
             // ищем в БД группу с таким же названием
-            $other = $this->modelManager->findOneBy($this->getClass(), array('groupName' => $object->getGroupName()));
+            $otherObject = $this->modelManager->findOneBy($this->getClass(), array('groupName' => $object->getGroupName()));
             // если такая группа найдена и это другая группа, чем текущая, выдаем ошибку валидации
-            if ($other !== null && $other !== $object) {
+            if ($otherObject !== null && $otherObject->getId() !== $object->getId()) {
                 $errorElement
                     ->with('groupName')
                     ->addViolation('Группа с таким именем уже существует')

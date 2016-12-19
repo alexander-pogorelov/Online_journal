@@ -4,7 +4,7 @@ services:
         arguments:
             - null
             - Application\Sonata\UserBundle\Entity\UserTeacher
-            - AppBundle:Uni
+            - AppBundle:Main
         tags:
             - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Преподаватели }
         calls:
@@ -38,7 +38,7 @@ services:
         arguments:
             - null
             - Application\Sonata\UserBundle\Entity\Classroom
-            - AppBundle:Uni
+            - AppBundle:Main
         tags:
             - { name: sonata.admin, manager_type: orm, group: Аудитории , on_top: true }
         calls:
@@ -49,7 +49,7 @@ services:
         arguments:
             - null
             - Application\Sonata\UserBundle\Entity\TimeInterval
-            - AppBundle:Uni
+            - AppBundle:Main
         tags:
             - { name: sonata.admin, manager_type: orm, group: Интервалы времени , on_top: true, show_in_dashboard: true}
 

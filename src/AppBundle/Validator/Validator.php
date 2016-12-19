@@ -22,7 +22,7 @@ class Validator
             $otherObject = $modelManager->findOneBy($UserClassWithEmail, array('email' => $object->getEmail()));
             if($otherObject) break;
         }
-        if ($otherObject !== null && $otherObject !== $object) {
+        if ($otherObject !== null && $otherObject->getId() !== $object->getId()) {
             return true;
         } else {
             return false;
