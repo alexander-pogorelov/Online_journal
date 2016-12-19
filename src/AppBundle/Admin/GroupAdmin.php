@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 class GroupAdmin extends AbstractAdmin
 {
@@ -37,6 +38,28 @@ class GroupAdmin extends AbstractAdmin
     public function prePersist($object)
     {
         $object->setCreatedAt(new \DateTime());
+    }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        if ($object->getGroupName() === null) {
+            $errorElement
+                ->with('groupName')
+                ->addViolation('Заполните поле')
+                ->end()
+            ;
+        } else {
+            // ищем в БД группу с таким же названием
+            $otherObject = $this->modelManager->findOneBy($this->getClass(), array('groupName' => $object->getGroupName()));
+            // если такая группа найдена и это другая группа, чем текущая, выдаем ошибку валидации
+            if ($otherObject !== null && $otherObject->getId() !== $object->getId()) {
+                $errorElement
+                    ->with('groupName')
+                    ->addViolation('Группа с таким именем уже существует')
+                    ->end()
+                ;
+            }
+        }
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -73,7 +96,9 @@ class GroupAdmin extends AbstractAdmin
         ;
         $formMapper
             ->with('Группа')
-            ->add('groupName', 'text', ['label'=>'Название группы'])
+            ->add('groupName', 'text', [
+                'label'=>'Название группы',
+            ])
             ->add('note', 'textarea', [
                 'label'=>'Примечание',
                 'required' => false,
@@ -82,7 +107,7 @@ class GroupAdmin extends AbstractAdmin
                 'widget' => 'choice',
                 'label'=>'Дата окончания обучения',
                 'format' => 'dd MMMM yyyy',
-                'years' => range(2000, $now->format('Y')),
+                'years' => range(($now->format('Y')-5), ($now->format('Y')+5)),
                 'required' => false,
             ])
             ->end()

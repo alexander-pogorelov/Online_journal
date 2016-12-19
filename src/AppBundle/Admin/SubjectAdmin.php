@@ -28,6 +28,10 @@ class SubjectAdmin extends AbstractAdmin
         $collection->remove('export');
     }
 
+    protected $datagridValues = [
+        '_sort_order' => 'DESC'
+    ];
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper

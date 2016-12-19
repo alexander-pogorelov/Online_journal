@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Admin;
+use AppBundle\Validator\Validator;
 use Application\Sonata\UserBundle\Entity\UserParent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -20,6 +21,10 @@ class ParentAdmin extends AbstractAdmin
 {
     protected $baseRouteName = 'parent-route-admin'; //admin_vendor_bundlename_adminclassname
     protected $baseRoutePattern = 'parent'; //unique-route-pattern
+
+    protected $datagridValues = [
+        '_sort_order' => 'DESC'
+    ];
 
     public function create($object)
     {
@@ -63,10 +68,6 @@ class ParentAdmin extends AbstractAdmin
     public function validate(ErrorElement $errorElement, $object)
     {
         $errorElement
-            ->with('email')
-                ->assertEmail()
-                ->assertNotBlank()
-            ->end()
             ->with('firstname')
                 ->assertNotBlank()
             ->end()
@@ -80,6 +81,23 @@ class ParentAdmin extends AbstractAdmin
                 ->assertNotBlank()
             ->end()
         ;
+
+        if ($object->getEmail() === null) {
+            $errorElement
+                ->with('email')
+                ->addViolation('Заполните поле')
+                ->end()
+            ;
+        } else {
+            if (Validator::duplicateEmailValidator($object, $this->modelManager)) {
+                $errorElement
+                    ->with('email')
+                    ->addViolation('Пользователь с таким Email уже существует')
+                    ->end()
+                ;
+            }
+        }
+
     }
 
     protected function configureListFields(ListMapper $listMapper) {

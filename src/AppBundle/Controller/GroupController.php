@@ -8,10 +8,8 @@
 
 namespace AppBundle\Controller;
 
-use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
-
-class GroupController extends Controller
+class GroupController extends MainController
 {
     public function showPupilsInGroupAction($id = null)
     {

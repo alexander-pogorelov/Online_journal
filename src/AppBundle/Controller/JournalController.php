@@ -8,10 +8,8 @@
 
 namespace AppBundle\Controller;
 
-use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
-
-class JournalController extends Controller
+class JournalController extends MainController
 {
     public function showAction($id = null)
     {
