@@ -17,12 +17,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormInterface;
 use AppBundle\Form\MessageType;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class PupilCabinetController extends FOSRestController
 {
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"user"})
+     * @ApiDoc(
+     *  description="Get list of uses"
+     * )
      */
     public function getUsersAction()
     {
@@ -37,6 +41,9 @@ class PupilCabinetController extends FOSRestController
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"user"})
+     * @ApiDoc(
+     *  description="Get one user"
+     * )
      */
     public function getUserAction($id)
     {
@@ -56,6 +63,9 @@ class PupilCabinetController extends FOSRestController
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"message"})
+     * @ApiDoc(
+     *  description="Get one message"
+     * )
      */
     public function getMessageAction($id)
     {
@@ -72,6 +82,9 @@ class PupilCabinetController extends FOSRestController
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"message"})
+     * @ApiDoc(
+     *  description="Update one message status"
+     * )
      */
     public function putMessageAction($id, Request $request)
     {
@@ -98,6 +111,9 @@ class PupilCabinetController extends FOSRestController
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"message"})
+     * @ApiDoc(
+     *  description="Update message status(many)"
+     * )
      */
     public function patchMessagesAction(Request $request)
     {
@@ -157,6 +173,9 @@ class PupilCabinetController extends FOSRestController
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"message"})
+     * @ApiDoc(
+     *  description="Deleting messages(many)"
+     * )
      */
     public function deleteMessagesAction(Request $request)
     {
@@ -200,6 +219,9 @@ class PupilCabinetController extends FOSRestController
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"message"})
+     * @ApiDoc(
+     *  description="Delete one message"
+     * )
      */
     public function deleteMessageAction($id)
     {
