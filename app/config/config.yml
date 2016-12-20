@@ -139,9 +139,9 @@ jms_serializer:
 
         auto_detection: true
         directories:
-            Application:
-                namespace_prefix: "Application\\Sonata"
-                path: "%kernel.cache_dir%/serializer/Application"
+            SonataUser:
+                namespace_prefix: "Sonata\\UserBundle"
+                path: "%kernel.root_dir%/serializer/SonataUserBundle"
             FOSUser:
                 namespace_prefix: "FOS\\UserBundle"
-                path: "%kernel.cache_dir%/serializer/FosUserBundle"
+                path: "%kernel.root_dir%/serializer/FosUserBundle"

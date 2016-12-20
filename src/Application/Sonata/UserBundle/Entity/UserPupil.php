@@ -10,8 +10,14 @@ namespace Application\Sonata\UserBundle\Entity;
 
 
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
+/**
+ * @ExclusionPolicy("all")
+ */
 class UserPupil extends User
 {
     public function __construct()

@@ -148,9 +148,11 @@ class MessageController extends Controller
 
             $groupNameString = implode(', ', $groupName);
             $receiversString = implode(', ', $receivers);
+            $now = time();
 
             $object->setGroupIteen($groupNameString);
             $object->setReceiver($receiversString);
+            $object->setDatetime($now);
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {
