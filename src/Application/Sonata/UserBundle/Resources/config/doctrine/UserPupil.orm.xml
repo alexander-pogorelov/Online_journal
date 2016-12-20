@@ -14,9 +14,6 @@
         </one-to-many>
 
         <many-to-many field="parents" target-entity="Application\Sonata\UserBundle\Entity\UserParent">
-            <cascade>
-                <cascade-all/>
-            </cascade>
             <join-table name="pupils_parents">
                 <join-columns>
                     <join-column name="pupil_id" referenced-column-name="id"/>

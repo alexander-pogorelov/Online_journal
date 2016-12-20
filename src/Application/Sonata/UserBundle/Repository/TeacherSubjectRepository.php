@@ -16,22 +16,6 @@ class TeacherSubjectRepository extends EntityRepository
 {
     public function findBySubjectByMaxId($subjectId)
     {
-        /*
-        ПОЧЕМУ ЭТО НЕ РАБОТАЕТ?
-        $qb = $this->createQueryBuilder('ts');
-        $qb2 = $qb->getEntityManager()->createQueryBuilder();
-        $subquery = $qb2
-            ->select($qb->expr()->max('ts.id'))
-            ->from('ApplicationSonataUserBundle:TeacherSubject', 'ts')
-            ->where($qb->expr()->eq('ts.subject', $subjectId))
-        ;
-        $query = $qb
-            ->where($qb->expr()->eq('ts.id', $subquery->getDQL()))
-            ->getQuery()
-        ;
-        return $query->getResult();
-        */
-
         $qb = $this->createQueryBuilder('ts');
         $query1 = $qb
             ->where($qb->expr()->eq('ts.subject', $subjectId))
@@ -41,6 +25,11 @@ class TeacherSubjectRepository extends EntityRepository
             ->setMaxResults(1)
         ;
         $result = $query2->getResult();
+
+        if ($result === []) {
+
+            return false;
+        }
 
         return $result[0];
     }

@@ -21,11 +21,6 @@
                 <join-column name="group_id" referenced-column-name="id" nullable="false"/>
             </join-columns>
         </many-to-one>
-        <many-to-one field="dateTimeClassroom" target-entity="Application\Sonata\UserBundle\Entity\DateTimeClassroom">
-            <join-columns>
-                <join-column name="date_time_classroom_id" referenced-column-name="id" nullable="true"/>
-            </join-columns>
-        </many-to-one>
 
     </entity>
 </doctrine-mapping>

@@ -9,13 +9,14 @@
 namespace AppBundle\Admin;
 
 
+use AppBundle\Form\JournalLessonType;
 use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Routing\Route;
+
 
 
 class LessonAdmin extends AbstractAdmin
@@ -36,7 +37,10 @@ class LessonAdmin extends AbstractAdmin
     public function getDashboardActions()
     {
         $actions = parent::getDashboardActions();
-        unset($actions['create']);
+        if (isset($actions['create'])) {
+            unset($actions['create']);
+        }
+
         return $actions;
     }
 
@@ -85,14 +89,36 @@ class LessonAdmin extends AbstractAdmin
         $now = new \DateTime();
 
         $currentSubjectId = $this->getSubject()->getTeacherSubject()->getSubject()->getId();
+        $currentGroup = $this->getSubject()->getGroup();
+        $repository=$this->getConfigurationPool()->getContainer()->get('Doctrine')
+            ->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation');
+        $currentPupilGroupAssociations = $repository->findBy([
+            'group' => $currentGroup
+        ]);
+
+        if ($this->getSubject()->getId()) {
+            $id = $this->getSubject()->getId();
+            $repository=$this->getConfigurationPool()->getContainer()->get('Doctrine')
+                ->getRepository('ApplicationSonataUserBundle:Journal');
+            $currentJournals = $repository->findBy([
+                'lesson' => $id
+            ]);
+        }
+
+        if ($this->isCurrentRoute('edit')) {
+            $currentDate = $this->getSubject()->getDate();
+        } else {
+            $currentDate = $now;
+        }
 
         $formMapper
-            ->with('1', array('class' => 'col-md-5'))->end()
-            ->with('2', array('class' => 'col-md-5'))->end()
-
+            ->with('Урок', array('class' => 'col-md-6'))->end()
+            ->with('Урок ', array('class' => 'col-md-6'))->end()
+            ->with('Оценки', array('class' => 'col-md-12'))->end()
         ;
+
         $formMapper
-            ->with('1')
+            ->with('Урок')
                 ->add('group.groupName', null, [
                     'label'=>'Группа',
                     'read_only' => true,
@@ -115,13 +141,17 @@ class LessonAdmin extends AbstractAdmin
                     'label'=>'Преподаватель',
                 ])
             ->end()
-            ->with('2')
+        ;
+
+        $formMapper
+            ->with('Урок ')
                 ->add('date', 'date', [
                     'widget' => 'choice',
                     'label'=>'Дата урока',
                     'format' => 'dd MMMM yyyy',
                     'years' => range(2016, $now->format('Y')),
                     'required' => true,
+                    'data' => $currentDate,
                 ])
                 ->add('topic', 'text', [
                     'label'=>'Тема урока',
@@ -129,9 +159,41 @@ class LessonAdmin extends AbstractAdmin
                 ])
                 ->add('homework', 'textarea', [
                     'label'=>'Домашнее задание',
+                    'required' => false,
                 ])
             ->end()
         ;
+
+        $formMapper
+            ->with('Оценки');
+        foreach ($currentPupilGroupAssociations as $currentPupilGroupAssociation) {
+            $assessment = '';
+            $remark = '';
+            if ($this->isCurrentRoute('edit')) {
+                foreach ($currentJournals as $currentJournal) {
+                    // ищем оценки и замечания у ученика
+                    if (($currentPupilGroupAssociation->getId()) === ($currentJournal->getPupilGroup()->getId())) {
+                        $assessment = $currentJournal->getAssessment();
+                        $remark = $currentJournal->getRemark();
+                        break;
+                    }
+                }
+            }
+            $formMapper
+                ->add(''.$currentPupilGroupAssociation->getId(), JournalLessonType::class, [
+                    'label' => false,
+                    'required' => false,
+                ])
+            ;
+            $formMapper
+                ->get($currentPupilGroupAssociation->getId())->get('pupil')->setData($currentPupilGroupAssociation->getPupil());
+            $formMapper
+                ->get($currentPupilGroupAssociation->getId())->get('assessment')->setData($assessment);
+            $formMapper
+                ->get($currentPupilGroupAssociation->getId())->get('remark')->setData($remark);
+        }
+        $formMapper
+            ->end();
     }
 
 }

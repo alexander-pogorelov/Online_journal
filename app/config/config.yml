@@ -75,12 +75,50 @@ sonata_admin:
     title_logo: bundles/app/images/logo_title.png
     security:
         handler: sonata.admin.security.handler.role
-
     templates:
         layout: AppBundle::standard_layout.html.twig
         edit: AppBundle:CRUD:base_edit.html.twig
     show_mosaic_button: false
-
+    dashboard:
+        groups:
+            pupil_group:
+                label: Учащиеся
+                items:
+                    - app.admin.pupil
+                    - app.admin.parent
+                    - app.admin.group
+                    - app.admin.journal
+                    - app.admin.lesson
+            employee_group:
+                label: Сотрудники
+                items:
+                    - admin.teacher
+                    - admin.metodist
+            subject_group:
+                on_top: true
+                label: Предметы
+                items:
+                    - admin.subject
+            message_group:
+                on_top: true
+                label: Сообщения
+                items:
+                    - admin.message
+            room_group:
+                on_top: true
+                label: Аудитории
+                items:
+                    - admin.classroom
+            time_group:
+                on_top: true
+                label: Интервалы времени
+                items:
+                    - admin.timeinterval
+            schedule_group:
+                on_top: true
+                label: Расписание
+                items:
+                    - admin.schedule
 sonata_user:
     security_acl: true
     manager_type: orm # can be orm or mongodb

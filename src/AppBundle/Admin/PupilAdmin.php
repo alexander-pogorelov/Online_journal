@@ -17,6 +17,8 @@ use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\CallbackTransformer;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\CoreBundle\Validator\ErrorElement;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 
 class PupilAdmin extends AbstractAdmin
@@ -26,6 +28,9 @@ class PupilAdmin extends AbstractAdmin
     protected $baseRouteName = 'pupil-route-admin'; //admin_vendor_bundlename_adminclassname
     protected $baseRoutePattern = 'pupil'; //unique-route-pattern
 
+    protected $datagridValues = [
+        '_sort_order' => 'DESC'
+    ];
 
     public function prePersist($object)
     {
@@ -56,12 +61,6 @@ class PupilAdmin extends AbstractAdmin
                 ->assertNotBlank()
             ->end()
             ->with('address')
-                ->assertNotBlank()
-            ->end()
-            ->with('parents')
-                ->assertNotBlank()
-            ->end()
-            ->with('pupilGroupAssociation')
                 ->assertNotBlank()
             ->end()
         ;
@@ -117,8 +116,14 @@ class PupilAdmin extends AbstractAdmin
         ;
         $formMapper
             ->with('Учащийся')
-                ->add('lastname', 'text', ['label'=>'Фамилия'])
-                ->add('firstname', 'text', ['label'=>'Имя'])
+                ->add('lastname', 'text', [
+                    'label'=>'Фамилия',
+                    'required' => true
+                ])
+                ->add('firstname', 'text', [
+                    'label'=>'Имя',
+                    'required' => true
+                ])
                 ->add('patronymic', 'text', [
                     'label'=>'Отчество',
                     'required' => false
@@ -129,10 +134,6 @@ class PupilAdmin extends AbstractAdmin
                     'format' => 'dd MMMM yyyy',
                     //'choice_translation_domain' => false,
                     'years' => range(1990, $now->format('Y')),
-                ])
-                ->add('email', 'email', [
-                    'label'=>'E-Mail',
-                    'required' => false
                 ])
             ->add('classNumber', 'choice', [
                 'choices' => $classNumberArray,
@@ -156,6 +157,11 @@ class PupilAdmin extends AbstractAdmin
                 ->add('parents', 'sonata_type_model', [
                     'multiple' => true,
                     'by_reference' => false,
+                    'required' => true,
+                    'label'=>'Родители',
+                    'constraints' => [
+                        new Assert\Callback([$this, 'validateParent'])
+                    ]
                 ])
             ->end()
             ->with('Группы')
@@ -164,7 +170,10 @@ class PupilAdmin extends AbstractAdmin
                     'label' => 'Группы',
                     'multiple' => true,
                     'by_reference' => false,
-                    'class' => 'Application\Sonata\UserBundle\Entity\GroupIteen'
+                    'class' => 'Application\Sonata\UserBundle\Entity\GroupIteen',
+                    'constraints' => [
+                        new Assert\Callback([$this, 'validateGroup'])
+                    ]
                 ])
             ->end()
         ;
@@ -226,13 +235,28 @@ class PupilAdmin extends AbstractAdmin
             ->add('phone', null, [
                 'label'=>'Телефон'
             ])
-            ->add('email', null, [
-                'label'=>'e-mail'
-            ])
             ->add('comment', null, [
                 'label'=>'Комментарий'
             ])
         ;
+    }
+
+    public function validateParent($parentsCollection, ExecutionContextInterface $context) {
+
+        if(!count($parentsCollection)){
+            $errorMessage = 'Добавьте родственников ученика';
+            $context->buildViolation($errorMessage)
+                ->addViolation();
+        }
+    }
+
+    public function validateGroup($groupsCollection, ExecutionContextInterface $context) {
+
+        if(!count($groupsCollection)){
+            $errorMessage = 'Добавьте ученика в группу';
+            $context->buildViolation($errorMessage)
+                ->addViolation();
+        }
     }
 
 }

@@ -19,14 +19,22 @@ services:
 #        - [ setTranslationDomain, [AppBundle]]
     app.admin.pupil:
         class: AppBundle\Admin\PupilAdmin
-        arguments: [~, Application\Sonata\UserBundle\Entity\UserPupil, ~]
+        arguments:
+            - null
+            - Application\Sonata\UserBundle\Entity\UserPupil
+            - AppBundle:Main
         tags:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Учащиеся' }
+
     app.admin.parent:
         class: AppBundle\Admin\ParentAdmin
-        arguments: [~, Application\Sonata\UserBundle\Entity\UserParent, ~]
+        arguments:
+            - null
+            - Application\Sonata\UserBundle\Entity\UserParent
+            - AppBundle:Main
         tags:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Родители' }
+
     app.admin.group:
         class: AppBundle\Admin\GroupAdmin
         arguments:
@@ -35,6 +43,7 @@ services:
             - AppBundle:Group
         tags:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Группы' }
+
     app.admin.journal:
         class: AppBundle\Admin\JournalAdmin
         arguments:
@@ -45,6 +54,7 @@ services:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Журналы' }
         calls:
             - [addChild, ['@admin.subject']]
+
     app.admin.lesson:
         class: AppBundle\Admin\LessonAdmin
         arguments:
@@ -54,4 +64,4 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: 'Учащиеся', label: 'Уроки' }
         calls:
-            - [ setTemplate, [createLesson, AppBundle:LessonAdmin:lesson_edit.html.twig] ]
+            - [ setTemplate, [createLesson, AppBundle:LessonAdmin:lesson_create.html.twig] ]

@@ -1,58 +1,69 @@
 services:
-     admin.teacher:
-          class: AppBundle\Admin\TeacherAdmin
-          arguments: [~, Application\Sonata\UserBundle\Entity\UserTeacher, ~]
-          tags:
-             - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Преподаватели }
-          calls:
-             - [ setTemplate, [list, AppBundle:TeacherAdmin:base_list.html.twig]]
-     admin.metodist:
-           class: AppBundle\Admin\MetodistAdmin
-           arguments: [~, Application\Sonata\UserBundle\Entity\UserMetodist, ~]
-           tags:
-              - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Методисты }
-           calls:
-              - [ setTemplate, [list, AppBundle:MetodistAdmin:base_list.html.twig]]
-     admin.subject:
-            class: AppBundle\Admin\SubjectAdmin
-            arguments:
-               - null
-               - Application\Sonata\UserBundle\Entity\Subject
-               - AppBundle:Journal
-            tags:
-               - { name: sonata.admin, manager_type: orm, group: Предметы, on_top: true }
-     admin.message:
-                 class: AppBundle\Admin\MessageAdmin
-                 arguments: [~, Application\Sonata\UserBundle\Entity\Message, AppBundle:Message]
-                 tags:
-                    - { name: sonata.admin, manager_type: orm, group: Сообщения, on_top: true }
-     admin.classroom:
-                class: AppBundle\Admin\ClassroomAdmin
-                arguments: [~, Application\Sonata\UserBundle\Entity\Classroom, ~]
-                tags:
-                   - { name: sonata.admin, manager_type: orm, group: Аудитории , on_top: true }
-                calls:
-                   - [ setTemplate, [list, AppBundle:ClassroomAdmin:classroom_list.html.twig]]
-     admin.timeinterval:
-                class: AppBundle\Admin\TimeIntervalAdmin
-                arguments: [~, Application\Sonata\UserBundle\Entity\TimeInterval, ~]
-                tags:
-                   - { name: sonata.admin, manager_type: orm, group: Интервалы времени , on_top: true, show_in_dashboard: true}
-     admin.datetimeclassroom:
-                class: AppBundle\Admin\DateTimeClassroomAdmin
-                arguments: [~, Application\Sonata\UserBundle\Entity\DateTimeClassroom, ~]
-                tags:
-                   - { name: sonata.admin, manager_type: orm, group: Дата занятия , on_top: true, show_in_dashboard: false}
-     admin.schedule:
-                class: AppBundle\Admin\ScheduleAdmin
-                arguments: [~, Application\Sonata\UserBundle\Entity\Schedule, AppBundle:Schedule]
-                tags:
-                   - { name: sonata.admin, manager_type: orm, group: Расписание , on_top: true, show_in_dashboard: true}
-                calls:
-                  - [setTemplate, [list, AppBundle:ScheduleAdmin:schedule_list.html.twig]]
-                  - [setTemplate, [edit, AppBundle:ScheduleAdmin:schedule_edit.html.twig]]
-     admin.viewschedule:
-                class: AppBundle\Admin\ViewScheduleAdmin
-                arguments: [~, ~, AppBundle:ViewSchedule]
-                tags:
-                    - { name: sonata.admin, manager_type: orm, group: Таблица Расписания, on_top: true, show_in_dashboard: false}
+    admin.teacher:
+        class: AppBundle\Admin\TeacherAdmin
+        arguments:
+            - null
+            - Application\Sonata\UserBundle\Entity\UserTeacher
+            - AppBundle:Main
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Преподаватели }
+        calls:
+            - [ setTemplate, [list, AppBundle:TeacherAdmin:base_list.html.twig]]
+
+    admin.metodist:
+        class: AppBundle\Admin\MetodistAdmin
+        arguments: [~, Application\Sonata\UserBundle\Entity\UserMetodist, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Сотрудники, label: Методисты }
+        calls:
+            - [ setTemplate, [list, AppBundle:MetodistAdmin:base_list.html.twig]]
+
+    admin.subject:
+        class: AppBundle\Admin\SubjectAdmin
+        arguments:
+            - null
+            - Application\Sonata\UserBundle\Entity\Subject
+            - AppBundle:Journal
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Предметы, on_top: true }
+
+    admin.message:
+        class: AppBundle\Admin\MessageAdmin
+        arguments: [~, Application\Sonata\UserBundle\Entity\Message, AppBundle:Message]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Сообщения, on_top: true }
+
+    admin.classroom:
+        class: AppBundle\Admin\ClassroomAdmin
+        arguments:
+            - null
+            - Application\Sonata\UserBundle\Entity\Classroom
+            - AppBundle:Main
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Аудитории , on_top: true }
+        calls:
+            - [ setTemplate, [list, AppBundle:ClassroomAdmin:classroom_list.html.twig]]
+
+    admin.timeinterval:
+        class: AppBundle\Admin\TimeIntervalAdmin
+        arguments:
+            - null
+            - Application\Sonata\UserBundle\Entity\TimeInterval
+            - AppBundle:Main
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Интервалы времени , on_top: true, show_in_dashboard: true}
+
+    admin.schedule:
+        class: AppBundle\Admin\ScheduleAdmin
+        arguments: [~, Application\Sonata\UserBundle\Entity\Schedule, AppBundle:Schedule]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Расписание , on_top: true, show_in_dashboard: true}
+        calls:
+            - [setTemplate, [list, AppBundle:ScheduleAdmin:schedule_list.html.twig]]
+            - [setTemplate, [edit, AppBundle:ScheduleAdmin:schedule_edit.html.twig]]
+
+    admin.viewschedule:
+        class: AppBundle\Admin\ViewScheduleAdmin
+        arguments: [~, ~, AppBundle:ViewSchedule]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Таблица Расписания, on_top: true, show_in_dashboard: false}

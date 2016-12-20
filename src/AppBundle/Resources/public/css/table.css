@@ -1,5 +1,6 @@
 td{
     text-align: center;
+	padding: 5px;
 }
 
 td.cell_table:hover {
@@ -11,6 +12,20 @@ tr.line_table:hover {
     background: rgba(49, 158, 32, 0.14);
 }
 
+tr.top_line{
+	border-top: 2px solid black;
+}
+
 td.cell_table {
     padding: 5px;
+}
+td.cell_table.bottom_left {
+border-left: 2px solid black;
+}
+td.head_table {
+    padding: 2px;
+	background: #E5F6FD;
+}
+td.head_table.bottom_left {
+border-left: 2px solid black;
 }
