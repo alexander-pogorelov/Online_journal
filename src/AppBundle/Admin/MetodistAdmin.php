@@ -8,7 +8,7 @@
 
 namespace AppBundle\Admin;
 
-
+use AppBundle\Validator\Validator;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -67,10 +67,6 @@ class MetodistAdmin extends AbstractAdmin
     public function validate(ErrorElement $errorElement, $object)
     {
         $errorElement
-            ->with('email')
-                ->assertEmail()
-                ->assertNotBlank()
-            ->end()
             ->with('firstname')
                 ->assertNotBlank()
             ->end()
@@ -81,6 +77,21 @@ class MetodistAdmin extends AbstractAdmin
                 ->assertNotBlank()
             ->end()
         ;
+        if ($object->getEmail() === null) {
+            $errorElement
+                ->with('email')
+                ->addViolation('Заполните поле')
+                ->end()
+            ;
+        } else {
+            if (Validator::duplicateEmailValidator($object, $this->modelManager)) {
+                $errorElement
+                    ->with('email')
+                    ->addViolation('Пользователь с таким Email уже существует')
+                    ->end()
+                ;
+            }
+        }
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -101,7 +112,9 @@ class MetodistAdmin extends AbstractAdmin
             ])
             ->add('dateOfBirth', null, [
                 'label'=>'Дата рождения',
-                'format' => 'd M Y'
+                'pattern' => 'dd MMM yy',
+                'row_align' => 'center',
+                'header_style' => 'width: 9%; text-align: center',
             ])
             ->add('comment', null, [
                 'label'=>'Примечание'

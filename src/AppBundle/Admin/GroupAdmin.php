@@ -16,6 +16,9 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 class GroupAdmin extends AbstractAdmin
 {
@@ -37,6 +40,28 @@ class GroupAdmin extends AbstractAdmin
         $object->setCreatedAt(new \DateTime());
     }
 
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        if ($object->getGroupName() === null) {
+            $errorElement
+                ->with('groupName')
+                ->addViolation('Заполните поле')
+                ->end()
+            ;
+        } else {
+            // ищем в БД группу с таким же названием
+            $otherObject = $this->modelManager->findOneBy($this->getClass(), array('groupName' => $object->getGroupName()));
+            // если такая группа найдена и это другая группа, чем текущая, выдаем ошибку валидации
+            if ($otherObject !== null && $otherObject->getId() !== $object->getId()) {
+                $errorElement
+                    ->with('groupName')
+                    ->addViolation('Группа с таким именем уже существует')
+                    ->end()
+                ;
+            }
+        }
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $headerAttr = ['header_style' => 'text-align: center'];
@@ -51,9 +76,6 @@ class GroupAdmin extends AbstractAdmin
             ]+ $headerAttr)
             ->add('subjects', null, [
                 'label'=>'Предметы',
-            ]+ $headerAttr)
-            ->add('_teacher_array_', null, [
-                'label'=>'Преподаватели',
             ]+ $headerAttr)
             ->add('_action', null, [
                 'label'=>'Список группы',
@@ -74,13 +96,18 @@ class GroupAdmin extends AbstractAdmin
         ;
         $formMapper
             ->with('Группа')
-            ->add('groupName', 'text', ['label'=>'Название группы'])
-            ->add('note', 'textarea', ['label'=>'Примечание'])
+            ->add('groupName', 'text', [
+                'label'=>'Название группы',
+            ])
+            ->add('note', 'textarea', [
+                'label'=>'Примечание',
+                'required' => false,
+            ])
             ->add('expirationDate', 'date', [
                 'widget' => 'choice',
                 'label'=>'Дата окончания обучения',
                 'format' => 'dd MMMM yyyy',
-                'years' => range(2000, $now->format('Y')),
+                'years' => range(($now->format('Y')-5), ($now->format('Y')+5)),
                 'required' => false,
             ])
             ->end()
@@ -88,6 +115,10 @@ class GroupAdmin extends AbstractAdmin
             ->add('subjects', 'sonata_type_model', [
                 'multiple' => true,
                 'by_reference' => false,
+                'label'=>'Предметы',
+                'constraints' => [
+                    new Assert\Callback([$this, 'validateSubject'])
+                ]
             ])
             ->end()
         ;
@@ -181,6 +212,15 @@ class GroupAdmin extends AbstractAdmin
         );
 
         return true;
+    }
+
+    public function validateSubject($subjectsCollection, ExecutionContextInterface $context){
+
+        if(!count($subjectsCollection)){
+            $errorMessage = 'Добавьте предметы для группы';
+            $context->buildViolation($errorMessage)
+                ->addViolation();
+        }
     }
 
 }

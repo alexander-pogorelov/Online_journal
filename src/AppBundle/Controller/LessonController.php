@@ -9,9 +9,10 @@
 namespace AppBundle\Controller;
 
 use Application\Sonata\UserBundle\Entity\Journal;
-use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Sonata\AdminBundle\Exception\ModelManagerException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class LessonController extends Controller
+class LessonController extends MainController
 {
     public function editAction($id = null)
     {
@@ -181,6 +182,18 @@ class LessonController extends Controller
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:TeacherSubject');
         $defaultTeacherSubject = $repository->findBySubjectByMaxId($subjectId);
 
+        // Если предмет не связан с преподавателем - выдаем сообщение об ошибке
+        if (!$defaultTeacherSubject) {
+
+            $this->addFlash('sonata_flash_error', 'Невозможно создать урок. На предмет не назначен преподаватель.');
+
+            return new RedirectResponse($this->generateUrl('journal-route-admin_subject_show', [
+                'id' => $groupId,
+                'childId' => $subjectId
+            ]));
+        }
+
+
         $request = $this->getRequest();
         // the key used to lookup the template
         $templateKey = 'createLesson';
@@ -310,7 +323,7 @@ class LessonController extends Controller
             'form' => $view,
             'object' => $object,
             'groupId' => $groupId,
-            'subjectId' => $subjectId
+            'subjectId' => $subjectId,
         ), null);
     }
 
