@@ -16,7 +16,7 @@ class ScheduleRepository extends \Doctrine\ORM\EntityRepository
         $schedule = $this->findAll();
         if ($schedule){
             foreach ($schedule as $lesson){
-                $weekday = $lesson->getWeekday();
+                $weekday = $lesson->getTitleWeekday();
                 $timeinterval = $lesson->getTimeinterval()->getId();
                 $classroom = (string)$lesson->getClassroom();
                 $group = (string)$lesson->getGroup()->getGroupName();
