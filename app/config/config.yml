@@ -139,6 +139,15 @@ sonata_block:
         sonata.user.block.account: # used to display menu option (login option)
         sonata.block.service.text: # used to if you plan to use Sonata user routes
 
+sonata_intl:
+    timezone:
+        locales:
+            ru: Europe/Minsk
+        detectors:
+            - sonata.intl.timezone_detector.user
+            - sonata.intl.timezone_detector.locale
+        default: Europe/Minsk
+
 fos_user:
     db_driver:      orm # can be orm or odm
     firewall_name:  main
