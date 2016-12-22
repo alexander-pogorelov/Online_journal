@@ -25,7 +25,8 @@ class PupilCabinetController extends FOSRestController
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"user"})
      * @ApiDoc(
-     *  description="Get list of uses"
+     *  description="Get list of uses",
+     *  output="Application\Sonata\UserBundle\Entity\User"
      * )
      */
     public function getUsersAction()
@@ -42,7 +43,16 @@ class PupilCabinetController extends FOSRestController
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"user"})
      * @ApiDoc(
-     *  description="Get one user"
+     *  description="Get one user",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="user id"
+     *     }
+     *  },
+     *  output="Application\Sonata\UserBundle\Entity\User"
      * )
      */
     public function getUserAction($id)
@@ -62,9 +72,50 @@ class PupilCabinetController extends FOSRestController
     /**
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
+     * @View(serializerGroups={"schedule"})
+     * @ApiDoc(
+     *  description="Get schedule",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="group id"
+     *     }
+     *  },
+     *  output="Application\Sonata\UserBundle\Entity\Schedule"
+     * )
+     */
+    public function getScheduleAction($id)
+    {
+        $schedule = $this->getDoctrine()
+            ->getRepository('ApplicationSonataUserBundle:Schedule')
+            ->findBy(['group' => $id]);
+
+        if (!$schedule) {
+            throw new NotFoundHttpException('Schedule not found');
+        }
+
+        $view = $this->view($schedule, 200);
+
+        return $this->handleView($view);
+    }
+
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"message"})
      * @ApiDoc(
-     *  description="Get one message"
+     *  description="Get one message",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="message id"
+     *     }
+     *  },
+     *  output="Application\Sonata\UserBundle\Entity\UserMessage"
      * )
      */
     public function getMessageAction($id)
@@ -83,7 +134,22 @@ class PupilCabinetController extends FOSRestController
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"message"})
      * @ApiDoc(
-     *  description="Update one message status"
+     *  description="Update one message status",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="message id"
+     *     },
+     *     {
+     *         "name"="status",
+     *         "dataType"="boolean",
+     *         "requirement"="\d+",
+     *         "description"="array with message status: 1(read) or 0 (not read)"
+     *     }
+     *  },
+     *  output="Application\Sonata\UserBundle\Entity\UserMessage"
      * )
      */
     public function putMessageAction($id, Request $request)
@@ -112,7 +178,22 @@ class PupilCabinetController extends FOSRestController
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"message"})
      * @ApiDoc(
-     *  description="Update message status(many)"
+     *  description="Update message status(many)",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="array with message id"
+     *     },
+     *     {
+     *         "name"="status",
+     *         "dataType"="boolean",
+     *         "requirement"="\d+",
+     *         "description"="array with message status: 1(read) or 0 (not read)"
+     *     }
+     *  },
+     *  output="Application\Sonata\UserBundle\Entity\UserMessage"
      * )
      */
     public function patchMessagesAction(Request $request)
@@ -174,7 +255,15 @@ class PupilCabinetController extends FOSRestController
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"message"})
      * @ApiDoc(
-     *  description="Deleting messages(many)"
+     *  description="Deleting messages(many)",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="array with message id"
+     *     }
+     *  }
      * )
      */
     public function deleteMessagesAction(Request $request)
@@ -220,7 +309,15 @@ class PupilCabinetController extends FOSRestController
      * @return \Symfony\Component\HttpFoundation\Response
      * @View(serializerGroups={"message"})
      * @ApiDoc(
-     *  description="Delete one message"
+     *  description="Delete one message",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="message id"
+     *     }
+     *  }
      * )
      */
     public function deleteMessageAction($id)

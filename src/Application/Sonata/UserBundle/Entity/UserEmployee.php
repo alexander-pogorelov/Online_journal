@@ -9,8 +9,12 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
-
+/**
+ * @ExclusionPolicy("all")
+ */
 class UserEmployee extends User
 {
     /**

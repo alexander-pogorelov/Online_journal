@@ -3,9 +3,12 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Schedule
+ * @ExclusionPolicy("all")
  */
 class Schedule
 {
@@ -13,6 +16,7 @@ class Schedule
      * @var integer
      *
      * @Assert\NotBlank(message="Заполните поле")
+     * @Expose()
      */
     private $weekday;
 
@@ -32,6 +36,7 @@ class Schedule
      * @var \Application\Sonata\UserBundle\Entity\User
      *
      * @Assert\NotBlank(message="Заполните поле")
+     * @Expose()
      */
     private $teacher;
 
@@ -39,6 +44,7 @@ class Schedule
      * @var \Application\Sonata\UserBundle\Entity\Subject
      *
      * @Assert\NotBlank(message="Заполните поле")
+     * @Expose()
      */
     private $subject;
 
@@ -46,6 +52,7 @@ class Schedule
      * @var \Application\Sonata\UserBundle\Entity\TimeInterval
      *
      * @Assert\NotBlank(message="Заполните поле")
+     * @Expose()
      */
     private $timeinterval;
 
@@ -53,6 +60,7 @@ class Schedule
      * @var \Application\Sonata\UserBundle\Entity\Classroom
      *
      * @Assert\NotBlank(message="Заполните поле")
+     * @Expose()
      */
     private $classroom;
 

@@ -8,7 +8,12 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
+/**
+ * @ExclusionPolicy("all")
+ */
 class TeacherSubject
 {
     private $id;

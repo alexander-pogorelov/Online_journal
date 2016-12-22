@@ -2,8 +2,12 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+
 /**
  * TimeInterval
+ * @ExclusionPolicy("all")
  */
 class TimeInterval
 {
@@ -14,11 +18,13 @@ class TimeInterval
 
     /**
      * @var \DateTime
+     * @Expose()
      */
     private $startTime;
 
     /**
      * @var \DateTime
+     * @Expose()
      */
     private $endTime;
 
