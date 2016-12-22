@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 
 
@@ -54,6 +55,15 @@ class LessonAdmin extends AbstractAdmin
         return $list;
     }
 
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        $errorElement
+            ->with('topic')
+                ->assertNotBlank()
+            ->end()
+        ;
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -63,8 +73,9 @@ class LessonAdmin extends AbstractAdmin
             ])
             ->addIdentifier('date', 'date', [
                 'label'=>'Дата',
-                'row_align' => 'center',
-                'format' => 'd M',
+                'pattern' => 'dd MMM yy',
+                'header_style' => 'width: 9%; text-align: center',
+                'row_align' => 'center'
             ])
             ->add('group.groupName', null, [
                 'label'=>'Группа',

@@ -24,7 +24,18 @@ class Journal
     private $remark; // комментарий к оценке
 
 
+    public static function getMonthsColspanData($lessonsList) {
 
+        $monthBriefString = 'Янв. Фев. Март Апр. Май Июнь Июль Авг. Сен. Окт. Нояб. Дек.';
+        $monthBriefArray = explode(" ", $monthBriefString);
+        // получаем массив названий месяцев для всех уроков
+        $monthsFromLesson = array_map(function ($lessonsList) use($monthBriefArray) {
+            return $monthBriefArray[$lessonsList->getDate()->format('m')-1];
+        }, $lessonsList);
+        // массив данных: ключ - номер месяца, значение - кол-во повторений
+        $monthsColspanData = array_count_values($monthsFromLesson);
+        return $monthsColspanData;
+    }
     /**
      * Get id
      *

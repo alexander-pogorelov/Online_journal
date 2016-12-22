@@ -51,9 +51,6 @@ class PupilAdmin extends AbstractAdmin
     public function validate(ErrorElement $errorElement, $object)
     {
         $errorElement
-            ->with('email')
-                ->assertEmail()
-            ->end()
             ->with('firstname')
                 ->assertNotBlank()
             ->end()
@@ -76,9 +73,13 @@ class PupilAdmin extends AbstractAdmin
             ->add('groupsIteen', 'text', ['label'=>'Группа']+ $headerAttr)
             ->add('dateOfBirth', 'date', [
                 'label'=>'Дата рождения',
-                'format' => 'd-m-Y'
-            ]+ $headerAttr)
-            ->add('phone', 'text', ['label'=>'Телефон']+ $headerAttr)
+                'pattern' => 'dd MMM yy',
+                'row_align' => 'center',
+                'header_style' => 'width: 9%; text-align: center',
+            ])
+            ->add('phone', 'text', [
+                'label'=>'Телефон'
+                ]+ $headerAttr)
             ->add('classNumberString', null, [
                 'label'=>'Класс',
                 'row_align' => 'center'

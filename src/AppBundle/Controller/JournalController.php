@@ -9,6 +9,8 @@
 namespace AppBundle\Controller;
 
 
+use Application\Sonata\UserBundle\Entity\Journal;
+
 class JournalController extends MainController
 {
     public function showAction($id = null)
@@ -40,14 +42,8 @@ class JournalController extends MainController
         // Извлекаем список уроков группы по текущему предмету, используя кастомный репозиторий
         $repository = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Lesson');
         $lessonsList = $repository->findBySubjectAndGroup($subjectId, $groupId);
-        //dump($lessonsList);
-
-        // массив месяцев уроков
-        $monthsArray = array_map(function ($lessonsList) {
-            return $lessonsList->getDate()->format('M');
-        }, $lessonsList);
-        // массив данных: ключ - номер месяца, значение - кол-во повторений
-        $monthsData = array_count_values($monthsArray);
+        // получаем данные для вывода месяцев уроков
+        $monthsColspanData = Journal::getMonthsColspanData($lessonsList);
 
         // Переставляем уроки в обратном порядке для вывода списка последних уроков
         $reverseLessonsList = array_reverse($lessonsList);
@@ -114,7 +110,7 @@ class JournalController extends MainController
             'lessonsList' => $lessonsList,
             'reverseLessonsList' => $reverseLessonsList,
             'statisticalData' => $statisticalData,
-            'monthsData' => $monthsData,
+            'monthsColspanData' => $monthsColspanData,
         ], null);
     }
 }

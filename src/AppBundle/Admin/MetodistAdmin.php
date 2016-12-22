@@ -112,7 +112,9 @@ class MetodistAdmin extends AbstractAdmin
             ])
             ->add('dateOfBirth', null, [
                 'label'=>'Дата рождения',
-                'format' => 'd M Y'
+                'pattern' => 'dd MMM yy',
+                'row_align' => 'center',
+                'header_style' => 'width: 9%; text-align: center',
             ])
             ->add('comment', null, [
                 'label'=>'Примечание'
