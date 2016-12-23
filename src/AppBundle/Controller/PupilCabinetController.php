@@ -144,7 +144,7 @@ class PupilCabinetController extends FOSRestController
      *     },
      *     {
      *         "name"="status",
-     *         "dataType"="boolean",
+     *         "dataType"="array",
      *         "requirement"="\d+",
      *         "description"="array with message status: 1(read) or 0 (not read)"
      *     }
@@ -182,13 +182,13 @@ class PupilCabinetController extends FOSRestController
      *  requirements={
      *     {
      *         "name"="id",
-     *         "dataType"="integer",
+     *         "dataType"="array",
      *         "requirement"="\d+",
      *         "description"="array with message id"
      *     },
      *     {
      *         "name"="status",
-     *         "dataType"="boolean",
+     *         "dataType"="array",
      *         "requirement"="\d+",
      *         "description"="array with message status: 1(read) or 0 (not read)"
      *     }
@@ -259,7 +259,7 @@ class PupilCabinetController extends FOSRestController
      *  requirements={
      *     {
      *         "name"="id",
-     *         "dataType"="integer",
+     *         "dataType"="array",
      *         "requirement"="\d+",
      *         "description"="array with message id"
      *     }
