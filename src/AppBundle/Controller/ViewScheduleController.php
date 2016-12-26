@@ -15,8 +15,9 @@ class ViewScheduleController extends CoreController
         $em = $this->getDoctrine()->getManager();
 
         $group = $em->getRepository('ApplicationSonataUserBundle:GroupIteen')->find($groupId);
-        $subjects  =$group->getSubjects();
+        $subjects  = $group->getSubjects();
         if ($subjects){
+            $html .= '<option value=""></option>';
             foreach($subjects as $sub){
                 $html .= '<option value="'.$sub->getId().'" >'.$sub->getName().'</option>';
             }
