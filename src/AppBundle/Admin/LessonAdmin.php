@@ -99,6 +99,9 @@ class LessonAdmin extends AbstractAdmin
     {
         $now = new \DateTime();
 
+        $currentUser = $this->getConfigurationPool()->getContainer()
+            ->get('security.token_storage')->getToken()->getUser();
+
         $currentSubjectId = $this->getSubject()->getTeacherSubject()->getSubject()->getId();
         $currentGroup = $this->getSubject()->getGroup();
         $repository=$this->getConfigurationPool()->getContainer()->get('Doctrine')
@@ -198,10 +201,19 @@ class LessonAdmin extends AbstractAdmin
             ;
             $formMapper
                 ->get($currentPupilGroupAssociation->getId())->get('pupil')->setData($currentPupilGroupAssociation->getPupil());
+
             $formMapper
                 ->get($currentPupilGroupAssociation->getId())->get('assessment')->setData($assessment);
+            if($currentUser->hasRole('ROLE_METODIST')) {
+                $formMapper
+                    ->get($currentPupilGroupAssociation->getId())->get('assessment')->setDisabled(true) ;
+            }
             $formMapper
                 ->get($currentPupilGroupAssociation->getId())->get('remark')->setData($remark);
+            if($currentUser->hasRole('ROLE_METODIST')) {
+                $formMapper
+                    ->get($currentPupilGroupAssociation->getId())->get('remark')->setDisabled(true) ;
+            }
         }
         $formMapper
             ->end();

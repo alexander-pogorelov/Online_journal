@@ -3,6 +3,19 @@ ajax_group:
     defaults: { _controller: AppBundle:ViewSchedule:ajaxGroups }
     options:
       expose: true
+
+app_teacher_cabinet:
+    path: /teacher/{id}/cabinet
+    defaults: {_controller: AppBundle:Index:teacher}
+    requirements:
+        id: '\d+'
+
+app_pupul_cabinet:
+    path: /pupil/{id}/cabinet
+    defaults: {_controller: AppBundle:Index:pupil}
+    requirements:
+        id: '\d+'
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
@@ -47,10 +60,8 @@ sonata_user_change_password:
     resource: "@SonataUserBundle/Resources/config/routing/sonata_change_password_1.xml"
     prefix: /profile
 
-sonata_user_admin_security:
-    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
-    prefix: /admin
-
 sonata_user_admin_resetting:
     resource: '@SonataUserBundle/Resources/config/routing/admin_resetting.xml'
     prefix: /admin/resetting
+
+
