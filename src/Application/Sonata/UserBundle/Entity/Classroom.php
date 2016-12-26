@@ -4,17 +4,21 @@ namespace Application\Sonata\UserBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  *@UniqueEntity(
  *     "number",
  *     message="Аудитория с таким номером уже существует."
  * )
+ * @ExclusionPolicy("all")
  */
 class Classroom
 {
     /**
      * @var integer
+     * @Expose()
      */
     private $number;
 

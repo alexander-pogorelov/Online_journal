@@ -1,0 +1,10 @@
+Sonata\UserBundle\Model\User:
+    exclusion_policy: ALL
+    group: user
+    properties:
+        firstname:
+            expose: true
+        lastname:
+            expose: true
+        dateOfBirth:
+            expose: true
