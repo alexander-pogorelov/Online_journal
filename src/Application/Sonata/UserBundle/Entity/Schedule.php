@@ -3,11 +3,32 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
 /**
  * Schedule
+ * @UniqueEntity(
+ *     fields={"weekday", "group", "teacher", "timeinterval", "classroom"},
+ *     errorPath="port",
+ *     message="Такой элемент уже существует в расписании!"
+ * )
+ * @UniqueEntity(
+ *     fields={"weekday", "group", "timeinterval"},
+ *     errorPath="group",
+ *     message="Группа в это время занята!"
+ * )
+ * @UniqueEntity(
+ *     fields={"weekday", "timeinterval", "classroom"},
+ *     errorPath="classroom",
+ *     message="Аудитория занята!"
+ * )
+ * @UniqueEntity(
+ *     fields={"weekday", "timeinterval", "teacher"},
+ *     errorPath="teacher",
+ *     message="Преподователь занят!"
+ * )
  * @ExclusionPolicy("all")
  */
 class Schedule
@@ -19,6 +40,8 @@ class Schedule
      * @Expose()
      */
     private $weekday;
+
+    private $titleweekday = '';
 
     /**
      * @var integer
@@ -86,9 +109,6 @@ class Schedule
      */
     public function getWeekday()
     {
-        if ($this->getId()){
-            return self::getWeekdays()[$this->weekday]['full'];
-        }
         return $this->weekday;
     }
 
@@ -234,6 +254,18 @@ class Schedule
     public function getClassroom()
     {
         return $this->classroom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitleWeekday()
+    {
+        if ($this->getId()){
+            return self::getWeekdays()[$this->weekday]['full'];
+        }
+
+        return '';
     }
 }
 
