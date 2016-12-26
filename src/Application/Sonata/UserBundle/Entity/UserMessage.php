@@ -8,15 +8,29 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
+/**
+ * @ExclusionPolicy("all")
+ */
 class UserMessage
 {
+    /**
+     * @Expose()
+     */
     protected $id;
 
     protected $user;
 
+    /**
+     * @Expose()
+     */
     protected $message;
 
+    /**
+     * @Expose()
+     */
     protected $status;
 
     public function __construct(User $user, Message $message)

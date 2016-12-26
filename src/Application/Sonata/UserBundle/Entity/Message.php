@@ -9,26 +9,48 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
-
+/**
+ * @ExclusionPolicy("all")
+ */
 class Message
 {
+    /**
+     * @Expose()
+     */
     protected $id;
 
+    /**
+     * @Expose()
+     */
     protected $topic;
 
+    /**
+     * @Expose()
+     */
     protected $message;
 
     protected $userMessage;
 
     protected $messageGroup;
 
+    /**
+     * @Expose()
+     */
     protected $sender;
 
     protected $groupIteen;
 
     protected $receiver;
+
+    /**
+     * @Expose()
+     */
+    protected $datetime;
 
 
     public static $messageGroupArray = [
@@ -81,6 +103,18 @@ class Message
     public function setReceiver($receiver)
     {
         $this->receiver = $receiver;
+
+        return $this;
+    }
+
+    public function getDatetime()
+    {
+        return $this->datetime;
+    }
+
+    public function setDatetime($datetime)
+    {
+        $this->datetime = $datetime;
 
         return $this;
     }
