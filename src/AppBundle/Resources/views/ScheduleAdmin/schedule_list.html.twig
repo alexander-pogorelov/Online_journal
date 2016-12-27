@@ -35,11 +35,11 @@
             <br /> <br />
 		</div>
     {# по преподователям #}
- 	<div id="tab1" style="background: white; display:block;">
+ 	<div id="tab1" style="background: white; display:block; overflow: auto;">
         <table rules=all border=4>
             <tbody>
             <tr>
-                <td  colspan=2 rowspan=2 width="130px" class="head_table" >Время занятий</td>
+                <td  colspan=2 rowspan=2 width="130" class="head_table" >Время занятий</td>
                 {% for teacher in teachers %}
                     <td  colspan=3 width=257 class="cell_table bottom_left"> Преподаватель: {{ teacher.getTeacher.getFullName }}</td>
                 {% endfor %}
@@ -56,7 +56,7 @@
                     {% if loop.first %}
                         <tr class="top_line">
                             <td  rowspan={{ loop.length }}>{{ weekday['short'] }}</td>
-                            <td class="head_table" width="80px">{{ timeinterval }}</td>
+                            <td class="head_table"><NOBR>{{ timeinterval }}</NOBR></td>
                             {% for teacher in teachers %}
                                 {% if scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id] is defined %}
                                     <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id].subject }}</td>
@@ -71,7 +71,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td class="head_table" width="80px">{{ timeinterval }}</td>
+                            <td class="head_table">{{ timeinterval }}</td>
                             {% for teacher in teachers %}
                                 {% if scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id] is defined %}
                                     <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][teacher.getTeacher.id].subject }}</td>
@@ -91,11 +91,11 @@
         </table>
     </div>
     {# по группам #}
-    <div id="tab2" style="background: white; display:none;">
+    <div id="tab2" style="background: white; display:none; overflow: auto;">
            <table rules=all border=4>
               <tbody>
               <tr>
-                  <td  colspan=2 rowspan=2 width="130px" class="head_table" >Время занятий</td>
+                  <td  colspan=2 rowspan=2 width="130" class="head_table" >Время занятий</td>
                   {% for group in groups %}
                       <td  colspan=3 width=257 class="cell_table bottom_left">Группа <b>№ {{ group.getGroup.groupName }}</b></td>
                   {% endfor %}
@@ -112,7 +112,7 @@
                         {% if loop.first %}
                             <tr class="top_line">
                                 <td  rowspan={{ loop.length }} height=75>{{ weekday['short'] }}</td>
-                                <td class="head_table" width="80px">{{ timeinterval }}</td>
+                                <td class="head_table"><NOBR>{{ timeinterval }}</NOBR></td>
                                 {% for group in groups %}
                                     {% if scheduleKeysArray[weekday['full']][timeinterval.id][group.group.groupName] is defined %}
                                         <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][group.group.groupName].subject }}</td>
@@ -127,7 +127,7 @@
                             </tr>
                         {% else %}
                             <tr>
-                                <td class="head_table" width="80px">{{ timeinterval }}</td>
+                                <td class="head_table">{{ timeinterval }}</td>
                                 {% for group in groups %}
                                     {% if scheduleKeysArray[weekday['full']][timeinterval.id][group.group.groupName] is defined %}
                                         <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][group.group.groupName].subject }}</td>
@@ -148,11 +148,11 @@
 
     </div>
     {# по аудиториям #}
-    <div id="tab3" style="background: white; display:none;">
+    <div id="tab3" style="background: white; display:none; overflow: auto;">
         <table rules=all border=4>
             <tbody>
             <tr>
-                <td  colspan=2 rowspan=2 width="130px" class="head_table" >Время занятий</td>
+                <td  colspan=2 rowspan=2 width="130" class="head_table" >Время занятий</td>
                 {% for classroom in classrooms %}
                     <td  colspan=3 width=257 class="cell_table bottom_left">Аудитория <b>№ {{ classroom.classroom.number }}</b></td>
                 {% endfor %}
@@ -169,7 +169,7 @@
                     {% if loop.first %}
                         <tr class="top_line">
                             <td  rowspan={{ loop.length }} height=75>{{ weekday['short'] }}</td>
-                            <td class="head_table" width="80px">{{ timeinterval }}</td>
+                            <td class="head_table"><NOBR>{{ timeinterval }}</NOBR></td>
                             {% for classroom in classrooms %}
                                 {% if scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName] is defined %}
                                     <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName].subject }}</td>
@@ -184,7 +184,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td class="head_table" width="80px">{{ timeinterval }}</td>
+                            <td class="head_table">{{ timeinterval }}</td>
                             {% for classroom in classrooms %}
                                 {% if scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName] is defined %}
                                     <td class="cell_table bottom_left">{{ scheduleKeysArray[weekday['full']][timeinterval.id][classroom.getClassroom.getName].subject }}</td>
