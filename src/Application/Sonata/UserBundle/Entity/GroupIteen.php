@@ -10,11 +10,22 @@ namespace Application\Sonata\UserBundle\Entity;
 
 
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
+/**
+ * @ExclusionPolicy("all")
+ */
 class GroupIteen
 {
+    /**
+     * @Expose()
+     */
     private $id;
 
+    /**
+     * @Expose()
+     */
     private $groupName;
 
     private $note;
