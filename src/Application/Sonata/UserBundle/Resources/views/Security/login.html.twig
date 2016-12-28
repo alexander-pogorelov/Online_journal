@@ -1,4 +1,5 @@
 {% extends 'ApplicationSonataUserBundle:Admin/Security:login.html.twig' %}
 
 {% block forgot_password %}
+    <a href="{{ path('sonata_user_admin_resetting_request') }}">Забыли пароль?</a>
 {% endblock %}

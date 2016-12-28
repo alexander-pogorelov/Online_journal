@@ -1,4 +1,13 @@
-{% extends base_template %}
+{% extends 'AppBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/forgotPass.css') }}" type="text/css" media="all"/>
+    <link rel="stylesheet" href="{{ asset('bundles/app/fonts/bebasNeue.otf') }}" type="application/x-font-opentype" media="all"/>
+    <link rel="stylesheet" href="{{ asset('bundles/app/images/authorization-bg.png') }}" type="image/png" media="all"/>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
 
 {% block sonata_nav %}
 {% endblock sonata_nav %}
@@ -12,39 +21,48 @@
 {% block body_attributes %}class="sonata-bc login-page"{% endblock %}
 
 {% block sonata_wrapper %}
-
-    <div class="login-box">
-        <div class="login-logo">
-            <a href="{{ path('sonata_admin_dashboard') }}">
-                {% if 'single_text' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
-                    <span>{{ admin_pool.title }}</span>
-                {% endif %}
-            </a>
-        </div>
-        <div class="login-box-body">
-            {% block sonata_user_reset_request_form %}
-                {% block sonata_user_reset_request_error %}
-                    {% if invalid_username is defined %}
-                        <div class="alert alert-danger">{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}</div>
-                    {% endif %}
-                {% endblock %}
-                <p class="login-box-msg">{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}</p>
-                <form action="{{ path('sonata_user_admin_resetting_send_email') }}" method="post" role="form">
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control" id="username"  name="username" required="required" placeholder="{{ 'resetting.request.username'|trans({}, 'FOSUserBundle')|replace({':': ''}) }}"/>
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}</button>
-                        </div>
-                    </div>
+    {% block header %}
+        <header id="header_1">
+            <img src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="iTeen Academy">
+            <p>Образовательный центр Парка высоких технологий</p>
+            <aside>
+                <p>г. Минск, ул. Скрыганова, 14</p>
+                <p>+375 29 368 66 83</p>
+            </aside>
+        </header>
+        <header id="header_2">
+            {% block header_title %}
+                <p>Востановление пароля</p>
+            {% endblock header_title %}
+        </header>
+    {% endblock header %}
+    {% block body %}
+        <article>
+            <h2></h2>
+            <p>Введите свой логин (e-mail) и на Вашу электронную почту придёт письмо со ссылкой для сброса пароля.</p>
+            <section class="logIn">
+                <section style="background-color: crimson; color: white">
+                    {% block sonata_user_reset_request_error_2 %}
+                        {% if invalid_username is defined %}
+                            {{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}
+                            <h3></h3>
+                        {% endif %}
+                    {% endblock sonata_user_reset_request_error_2 %}
+                </section>
+                <form id="fogotPass" action="{{ path('sonata_user_admin_resetting_send_email') }}" method="post">
+                    <label>
+                        <p>Электронная почта </p>
+                        <input type="email" placeholder="example@example.com" name="username" required="required">
+                    </label>
+                    <input value="Сбросить пароль" type="submit" id="submitButton">
                 </form>
-
-                <a href="{{ path('sonata_user_admin_security_login') }}">{{ 'title_user_authentication'|trans({}, 'SonataUserBundle') }}</a>
-            {% endblock %}
-        </div>
-    </div>
-
+                <a href="{{ path('fos_user_security_login') }}">{{ 'title_user_authentication'|trans({}, 'SonataUserBundle') }}</a>
+            </section>
+        </article>
+    {% endblock body %}
+    {% block footer %}
+        <footer>
+            <p>2016 Все права защищены</p>
+        </footer>
+    {% endblock footer %}
 {% endblock sonata_wrapper %}

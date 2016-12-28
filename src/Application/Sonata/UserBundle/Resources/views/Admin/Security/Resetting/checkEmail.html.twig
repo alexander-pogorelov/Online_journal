@@ -1,30 +1,17 @@
-{% extends base_template %}
+{% extends 'ApplicationSonataUserBundle:Admin/Security/Resetting:request.html.twig' %}
 
-{% block sonata_nav %}
-{% endblock sonata_nav %}
+{% block body %}
 
-{% block logo %}
-{% endblock logo %}
+    <article>
+        <h2></h2>
+        <section class="logIn">
+            <section>
+                {% block message %}
+                <p>{{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}</p>
+                {% endblock message %}
+            </section>
+            <a href="{{ path('fos_user_security_login') }}">{{ 'title_user_authentication'|trans({}, 'SonataUserBundle') }}</a>
+        </section>
+    </article>
 
-{% block sonata_left_side %}
-{% endblock sonata_left_side %}
-
-{% block body_attributes %}class="sonata-bc login-page"{% endblock %}
-
-{% block sonata_wrapper %}
-
-    <div class="login-box">
-        <div class="login-logo">
-            <a href="{{ path('sonata_admin_dashboard') }}">
-                {% if 'single_text' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
-                    <span>{{ admin_pool.title }}</span>
-                {% endif %}
-            </a>
-        </div>
-        <div class="login-box-body">
-            <p>{{ 'resetting.check_email'|trans({'%email%': email}, 'FOSUserBundle') }}</p>
-            <a href="{{ path('sonata_user_admin_security_login') }}">{{ 'title_user_authentication'|trans({}, 'SonataUserBundle') }}</a>
-        </div>
-    </div>
-
-{% endblock sonata_wrapper %}
+{% endblock body %}

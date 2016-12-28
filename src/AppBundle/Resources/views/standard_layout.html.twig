@@ -1,102 +1,77 @@
 {% extends 'SonataAdminBundle::standard_layout.html.twig' %}
 
 {% block javascripts %}
-	{{ parent() }}
-	<script src="{{ asset('bundles/app/js/main.js') }}"></script>
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/main.js') }}"></script>
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/app/css/admiNow.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/admiNow.css') }}" type="text/css" media="all"/>
 {% endblock %}
 
 {% block logo %}
     {% spaceless %}
-		<div id="u5" class="ax_image">
-			<a class="logo" href="{{ path('sonata_admin_dashboard') }}">
-				<img src="{{ asset('bundles/app/images/logo_title.png') }}" alt="{{ sonata_admin.adminPool.title }}">
-			</a>
-			
-			<div id="u29" class="ax_default heading_1">
-        		<div id="u30" class="text">
-					<p><span>Образовательный центр Парка высоких технологий</span></p>
-				</div>
-			</div>
-			<img id="u5_img" class="img" src="{{ asset('bundles/app/images/u23-3.png') }}" style="float: right;">
-		</div>
+        <div id="u5" class="ax_image">
+            <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
+                <img src="{{ asset('bundles/app/images/logo_title.png') }}" alt="{{ sonata_admin.adminPool.title }}">
+            </a>
+
+            <div id="u29" class="ax_default heading_1">
+                <div id="u30" class="text">
+                    <p><span>Образовательный центр Парка высоких технологий</span></p>
+                </div>
+            </div>
+            <img id="u5_img" class="img" src="{{ asset('bundles/app/images/u23-3.png') }}" style="float: right;">
+        </div>
     {% endspaceless %}
 {% endblock %}
 
 {% block sonata_breadcrumb %}
-	<div style="position: absolute; line-height: 50px; width: 100%; text-align: center;">
-	{% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
-		<span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">АДМИНИСТРАТОР</span>
-	{% endif %}
+    <div style="position: absolute; line-height: 50px; width: 100%; text-align: center;">
+        {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+            <span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">АДМИНИСТРАТОР</span>
+        {% endif %}
 
-	{% if app.security.token and is_granted('ROLE_TEACHER') %}
-		<span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">ПРЕПОДАВАТЕЛЬ</span>
-	{% endif %}
+        {% if app.security.token and is_granted('ROLE_TEACHER') %}
+            <span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">ПРЕПОДАВАТЕЛЬ</span>
+        {% endif %}
 
-	{% if app.security.token and is_granted('ROLE_METODIST') %}
-			<span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">МЕТОДИСТ</span>
-	{% endif %}
-	</div>
+        {% if app.security.token and is_granted('ROLE_METODIST') %}
+            <span style="font-family: &quot;Bebas Neue Bold&quot;,&quot;Bebas Neue&quot;; font-weight: 700; font-style: normal; color: rgb(255, 255, 255); font-size: 24px;">МЕТОДИСТ</span>
+        {% endif %}
+    </div>
 {% endblock sonata_breadcrumb %}
 				
 {% block side_bar_after_nav %}
-<!-- YOUR CUSTOM MENU -->
+    <!-- YOUR CUSTOM MENU -->
 {% endblock %}
 
-{% block sonata_top_nav_menu_user_block %}
-    <li class="dropdown user-menu">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <i class="fa fa-user fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-user">
-
-            {% block user_block %}
-                {% if app.user %}
-                    {% set _bg_class          = "bg-light-blue" %}
-                    {% set _logout_uri        = url('fos_user_security_logout') %}
-                    {% set _logout_text       = 'user_block_logout'|trans({}, 'SonataUserBundle') %}
-                    {% set _profile_uri       = sonata_user.userAdmin.isGranted('EDIT', app.user) ? sonata_user.userAdmin.generateUrl('edit', {id: sonata_user.userAdmin.id(app.user)}) : sonata_user.userAdmin.generateUrl('show', {id: sonata_user.userAdmin.id(app.user)}) %}
-                    {% set _profile_text      = 'user_block_profile'|trans({}, 'SonataUserBundle') %}
-                    {% set _user_image        = asset(sonata_user.defaultAvatar) %}
-                    {# Customize this with your profile picture implementation, see below for example #}
-                    {#{% set _user_image  = app.user.profilePicture|default(asset(sonata_user.defaultAvatar)) %}#}
-
-                    {% if is_granted('ROLE_PREVIOUS_ADMIN') and sonata_user.impersonating %}
-                        {% set _bg_class    = "bg-light-green" %}
-                        {% set _logout_uri  = url(sonata_user.impersonating.route, sonata_user.impersonating.parameters| merge({'_switch_user': '_exit'})) %}
-                        {% set _logout_text = 'switch_user_exit'|trans({}, 'SonataUserBundle') %}
-                    {% endif %}
-
-                    <li class="user-header {{ _bg_class }}">
-                        {% if _user_image %}
-                            <img src="{{ _user_image }}" class="img-circle" alt="Avatar"/>
-                        {% endif %}
-                        <p>{{ app.user }}</p>
+{% block sonata_top_nav_menu %}
+    {# добавляем доступ к блоку навигации и для методиста #}
+    {% if app.user and (is_granted('ROLE_SONATA_ADMIN') or is_granted('ROLE_METODIST')) %}
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                {% block sonata_top_nav_menu_add_block %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </a>
+                        {# заменяем на свой блок #}
+                        {% include 'AppBundle:Core:add_block.html.twig' %}
                     </li>
-
-                    {#
-                        Uncomment to add some information
-                            <li class="user-body">
-
-                            </li>
-                    #}
-
-                    <li class="user-footer">
-                        <div class="pull-left">
-                            <a href="{{ _profile_uri }}" class="btn btn-default btn-flat"><i
-                                        class="fa fa-user"></i> {{ _profile_text }}</a>
-                        </div>
-
-                        <div class="pull-right">
-                            <a href="{{ _logout_uri }}" class="btn btn-default btn-flat"><i
-                                        class="fa fa-sign-out fa-fw"></i> {{ _logout_text }}</a>
-                        </div>
+                {% endblock %}
+                {% block sonata_top_nav_menu_user_block %}
+                    <li class="dropdown user-menu">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            {# заменяем на свой блок #}
+                            {% include 'AppBundle:Core:user_block.html.twig' %}
+                        </ul>
                     </li>
-                {% endif %}
-            {% endblock %}
-        </ul>
-    </li>
+                {% endblock %}
+            </ul>
+        </div>
+    {% endif %}
 {% endblock %}
