@@ -100,6 +100,34 @@ class PupilCabinetController extends FOSRestController
 
         return $this->handleView($view);
     }
+    
+    /**
+     * @return array
+     * @View(serializerGroups={"schedules"})
+     */
+    public function postSchedulesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $teachers = $em->getRepository('ApplicationSonataUserBundle:Schedule')->getDistinctTeachers();
+        $groups = $em->getRepository('ApplicationSonataUserBundle:Schedule')->getDistinctGroups();
+        $classrooms = $em->getRepository('ApplicationSonataUserBundle:Schedule')->getDistinctClassrooms();
+        $timeIntervals = $em->getRepository('ApplicationSonataUserBundle:TimeInterval')->findAll();
+        $schedule = $em->getRepository('ApplicationSonataUserBundle:Schedule')->scheduleKeysArray();
+        $schedules = ['teachers'=>$teachers,
+                'groups'=>  $groups,
+                'classrooms'=>  $classrooms,
+                'timeIntervals'=>  $timeIntervals,
+                'schedules'=>  $schedule
+                ];
+        if (!$schedules) {
+            throw new NotFoundHttpException('Schedule not found');
+        }
+
+        $view = $this->view($schedules, 201);
+
+        return $this->handleView($view);
+    }
 
     /**
      * @param $id
