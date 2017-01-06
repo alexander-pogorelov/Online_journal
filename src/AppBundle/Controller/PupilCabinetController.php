@@ -29,7 +29,7 @@ class PupilCabinetController extends FOSRestController
      *  output="Application\Sonata\UserBundle\Entity\User"
      * )
      */
-    public function getUsersAction()
+    public function getUsersAction(Request $request)
     {
         $users = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:User')->findAll();
 
