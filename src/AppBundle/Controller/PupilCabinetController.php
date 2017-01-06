@@ -29,7 +29,7 @@ class PupilCabinetController extends FOSRestController
      *  output="Application\Sonata\UserBundle\Entity\User"
      * )
      */
-    public function getUsersAction()
+    public function getUsersAction(Request $request)
     {
         $users = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:User')->findAll();
 
@@ -152,7 +152,75 @@ class PupilCabinetController extends FOSRestController
             ->getRepository('ApplicationSonataUserBundle:UserMessage')
             ->findBy(['user' => $id]);
 
+        if (!$message) {
+            throw new NotFoundHttpException('No message found');
+        }
+
         $view = $this->view($message, 200);
+
+        return $this->handleView($view);
+    }
+
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @View(serializerGroups={"lesson"})
+     * @ApiDoc(
+     *  description="Get lesson",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="group id"
+     *     }
+     *  },
+     *  output="Application\Sonata\UserBundle\Entity\Lesson"
+     * )
+     */
+    public function getLessonAction($id)
+    {
+        $lesson = $this->getDoctrine()
+            ->getRepository('ApplicationSonataUserBundle:Lesson')
+            ->findBy(['group' => $id]);
+
+        if (!$lesson) {
+            throw new NotFoundHttpException('No lesson found');
+        }
+
+        $view = $this->view($lesson, 200);
+
+        return $this->handleView($view);
+    }
+
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @View(serializerGroups={"journal"})
+     * @ApiDoc(
+     *  description="Get journal",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="group id"
+     *     }
+     *  },
+     *  output="Application\Sonata\UserBundle\Entity\Journal"
+     * )
+     */
+    public function getJournalAction($id)
+    {
+        $pupilGroup = $this->getDoctrine()
+            ->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation')
+            ->findBy(['pupil' => $id]);
+
+        $journal = $this->getDoctrine()
+            ->getRepository('ApplicationSonataUserBundle:Journal')
+            ->findBy(['pupilGroup' => $pupilGroup]);
+
+        $view = $this->view($journal, 200);
 
         return $this->handleView($view);
     }

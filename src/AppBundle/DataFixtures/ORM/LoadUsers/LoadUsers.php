@@ -28,8 +28,6 @@ class LoadUsers implements FixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        // TODO: Implement load() method.
-
         $user3 = new UserMetodist();
         $user3->setFirstname('Иван');
         $user3->setLastname('Иванов');

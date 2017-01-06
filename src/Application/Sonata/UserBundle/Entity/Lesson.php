@@ -8,19 +8,39 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
+/**
+ * @ExclusionPolicy("all")
+ */
 class Lesson
 {
+    /**
+     * @Expose()
+     */
     private $id;
 
+    /**
+     * @Expose()
+     */
     private $topic; // тема урока
 
+    /**
+     * @Expose()
+     */
     private $homework; // домашнее задание
 
     private $teacherSubject;
 
+    /**
+     * @Expose()
+     */
     private $group;
 
+    /**
+     * @Expose()
+     */
     private $date;
 
     public static function getAssessmentList() {
