@@ -67,6 +67,4 @@ DirectoryIndex app.php
     </IfModule>
 </IfModule>
 
-<Directory>
-    Header set Access-Control-Allow-Origin "*"
-</Directory>
+Header set Access-Control-Allow-Origin "*"
