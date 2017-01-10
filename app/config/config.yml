@@ -126,7 +126,7 @@ sonata_user:
             user:
                 class: AppBundle\Admin\UserAdmin
                 #Sonata\UserBundle\Admin\Entity\UserAdmin
-                controller:     SonataAdminBundle:CRUD
+                controller:     AppBundle:UserAdmin
                 translation:    SonataUserBundle
 sonata_block:
     default_contexts: [cms]

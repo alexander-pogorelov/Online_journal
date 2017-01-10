@@ -27,6 +27,14 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         $user = $token->getUser();
+
+        $url = $this->getUrl($user);
+
+        return new RedirectResponse($url);
+    }
+
+    public function getUrl($user) {
+
         $userId = $user->getId();
 
         if($user->hasRole('ROLE_SUPER_ADMIN') || $user->hasRole('ROLE_METODIST')){
@@ -57,6 +65,6 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface
             ]);
         }
 
-        return new RedirectResponse($url);
+        return $url;
     }
 }

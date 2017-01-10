@@ -21,6 +21,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\CoreBundle\Validator\ErrorElement;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 
 class TeacherAdmin extends AbstractAdmin
@@ -217,7 +219,10 @@ class TeacherAdmin extends AbstractAdmin
                     'multiple' => true,
                     'by_reference' => false,
                     'label'=>'Предмет',
-                    'class' => 'Application\Sonata\UserBundle\Entity\Subject'
+                    'class' => 'Application\Sonata\UserBundle\Entity\Subject',
+                    'constraints' => [
+                        new Assert\Callback([$this, 'validateSubject'])
+                    ]
                 ])
                 ->add('workDays', 'text', [
                     'label'=>'Дни работы',
@@ -264,5 +269,14 @@ class TeacherAdmin extends AbstractAdmin
                 }
             ))
         ;
+    }
+
+    public function validateSubject($subjectsCollection, ExecutionContextInterface $context) {
+
+        if(!count($subjectsCollection)){
+            $errorMessage = 'Заполните поле';
+            $context->buildViolation($errorMessage)
+                ->addViolation();
+        }
     }
 }
