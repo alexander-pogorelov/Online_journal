@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Электронный дневник</title>
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/diary.css') }}">
+    <script src="{{ asset('bundles/app/js/jquery-3.0.0.min.js') }}"></script>
+    <script>
+        // Передаем в JS ID Ученика
+        var pupilId = "{{ id }}";
+    </script>
+</head>
+<body>
+<header id="header_1">
+    <img src="{{ asset('bundles/app/images/logo.png') }}" alt="iTeen Academy">
+    <p>Образовательный центр Парка высоких технологий</p>
+    <aside>
+        <p>г. Минск, ул. Скрыганова, 14</p>
+        <p>+375 29 368 66 83</p>
+    </aside>
+</header>
+<header id="header_2">
+    <p>Электронный дневник</p>
+    <div class="child">
+        <span class="child_name" id ="pupil_name"></span>
+        <span class="more_children"></span>
+        <span class="settings">
+            <table>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+            </table>
+        </span>
+        <div class="hidden_settings">
+            <a href="#">Настройки</a></li>
+            <a href="{{ path('fos_user_security_logout') }}">Выйти</a></li>
+
+        </div>
+    </div>
+</header>
+<article>
+    <div class="partitions">
+        <div class="partition partition_selected"><p>Сообщения</p></div>
+        <div class="partition"><p>Дневник</p></div>
+        <div class="partition"><p>Расписание</p></div>
+        <div class="partition"><p>Успеваемость</p></div>
+    </div>
+    <div class="under_partition"></div>
+
+    <div class="partition_content">
+        <!--начало notice-->
+        <div class="notice ttt">
+            <div class="oppotunities">
+                <div class="oppotunity" id="check_all">
+                    <input type="checkbox" id="opp_check">
+                    <label for="opp_check"></label>
+                    <span id="arrow_up"></span>
+                </div>
+                <div class="check_settings">
+                    <p class="check_all">Все</p>
+                    <p class="check_no_one">Ни одного</p>
+                    <p class="check_read">Прочитанные</p>
+                    <p class="check_no_read">Непрочитанные</p>
+                </div>
+                <div class="oppotunity" id="delete">
+                    <p>Удалить</p>
+                </div>
+                <div class="oppotunity" id="more">
+                    <p>Ещё</p>
+                    <span id="arrow_up"></span>
+                </div>
+                <div class="mark_as">
+                    <p class="mark_as_read">Отметить как прочитанное</p>
+                    <p class="mark_as_no_read">Отметить как непрочитанное</p>
+                </div>
+            </div>
+            <div class="messages">
+                <!--<div class="message">
+                    <input type="checkbox">
+                    <p class="message_sender">
+                        Игорь Шевченко
+                    </p>
+                    <p class="message_name">
+                        Перенос занятия.
+                    </p>
+                    <p class="message_content">
+                        Добрый день, уважаемые слушатели Добрый день, уважаемые слушатели Добрый день, уважаемые слушатели Добрый день, уважаемые слушатели Добрый день, уважаемые слушатели
+                    </p>
+                    <p class="message_date">
+                        12:30
+                    </p>
+                </div>-->
+            </div>
+
+        </div>
+        <!--конец notice________________________________________________________-->
+
+        <!--начало diary-->
+        <div class="diary ttt">
+            <div class="score_header">
+                <!--<div class="lesson_name">
+                    <p>Арт студия</p>
+                </div>-->
+            </div>
+            <div class="diary_body">
+                <div class="score">
+                    <table class="diary_main_table">
+                        <tr>
+                            <td rowspan="2" class="bbold">Дата</td>
+                            <td rowspan="3" class="td_with_table">
+                                <table class="table_with_raitings">
+                                    <tr>
+                                        <!--<td colspan="4"></td>
+                                        <td colspan="4"></td>-->
+                                    </tr>
+                                    <tr>
+                                        <!-- <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>-->
+                                    </tr>
+                                    <!--<tr>
+                                      <td></td>
+                                       <td></td>
+                                       <td></td>
+                                       <td></td>
+                                       <td></td>
+                                       <td></td>
+                                       <td></td>
+                                       <td></td>
+                                   </tr>-->
+                                </table>
+                            </td>
+                            <td rowspan="2" class="bbold">Средний балл</td>
+                            <td rowspan="2" class="bbold">Количество пропусков</td>
+                        </tr>
+                        <tr>
+                        </tr>
+                        <tr>
+                            <td>Оценка</td>
+                            <td class="average_score"></td>
+                            <td class="absents"></td>
+                        </tr>
+                    </table>
+                    <table class="home_work">
+                        <tr>
+                            <td>Дата</td>
+                            <td>Тема занятия</td>
+                            <td>Домашнее задание</td>
+                        </tr>
+                        <!--<tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>-->
+                    </table>
+                    <div style='height: 1px'></div>
+                </div>
+            </div>
+        </div><!---->
+        <!--конец diary__________________________________________________________-->
+
+        <!--начало timetable-->
+        <div class="timetable ttt">
+            <table class="week_timetable">
+                <tr>
+                    <th>День недели</th>
+                    <th>Предмет</th>
+                    <th>Аудитория</th>
+                    <th>Начало</th>
+                    <th>Окончание</th>
+                    <th>Преподаватель</th>
+                </tr>
+                <!--<tr>
+                    <td>Вторник</td>
+                    <td>APT</td>
+                    <td>803</td>
+                    <td>15:00</td>
+                    <td>16:20</td>
+                    <td>Безрукова Т.И.</td>
+                </tr>
+                <tr>
+                    <td>Четверг</td>
+                    <td>PS</td>
+                    <td>806</td>
+                    <td>15:00</td>
+                    <td>16:20</td>
+                    <td>Колокольцев А.М.</td>
+                </tr>-->
+            </table>
+        </div>
+        <!--конец timetable________________________________________________________-->
+
+        <!--начало progress-->
+        <div class="progress ttt">
+            <table class="progress_table">
+                <tr>
+                    <td>Период обучения</td>
+                    <td colspan="2">2 семестр (Январь-Май 2017)</td>
+
+                </tr>
+                <tr>
+                    <td>Предмет</td>
+                    <td>Арт Студия</td>
+                    <td>Арт Студия</td>
+                </tr>
+                <tr>
+                    <td>Средний балл</td>
+                    <td>8</td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td>Общий средний балл</td>
+                    <td colspan="2">7,8</td>
+                </tr>
+                <tr>
+                    <td>Рейтинг в группе</td>
+                    <td colspan="2">4 из 15</td>
+                </tr>
+                <tr>
+                    <td>Количество пропусков</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>Общее количество пропусков</td>
+                    <td colspan="2">2</td>
+                </tr>
+            </table>
+        </div>
+        <!--конец progress________________________________________________________-->
+    </div>
+
+</article>
+<footer>
+    <p>2016 Все права защищены</p>
+</footer>
+
+<script src="{{ asset('bundles/app/js/zaplatka.js') }}"></script>
+<script src="{{ asset('bundles/app/js/diary.js') }}"></script>
+
+</body>
+</html>
