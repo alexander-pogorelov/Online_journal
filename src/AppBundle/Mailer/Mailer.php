@@ -17,6 +17,7 @@ class Mailer extends FOSMailer
     public function sendResettingEmailMessage(UserInterface $user)
     {
         $template = $this->parameters['resetting.template'];
+        // заменяем на нужный маршрут
         $url = $this->router->generate('sonata_user_admin_resetting_reset', array('token' => $user->getConfirmationToken()), true);
         $rendered = $this->templating->render($template, array(
             'user' => $user,

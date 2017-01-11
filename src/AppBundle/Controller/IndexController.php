@@ -59,8 +59,12 @@ class IndexController extends Controller
             ));
         }
 
-        return new Response(
-            '<html><body>Кабинет ученика с id: '.$id.'.<p>'.$pupil->__toString().'</p></body></html>'
+//        return new Response(
+//            '<html><body>Кабинет ученика с id: '.$id.'.<p>'.$pupil->__toString().'</p></body></html>'
+//        );
+        return $this->render('AppBundle:PupilCabinet:pupil_cabinet.html.twig', [
+                'id' => $id,
+            ]
         );
     }
 

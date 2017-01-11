@@ -88,6 +88,7 @@ class AdminResettingController extends Controller
         }
 
         $this->container->get('session')->set(static::SESSION_EMAIL, $this->getObfuscatedEmail($user));
+        // заменяем на свой Mailer-сервис
         $this->container->get('app.mailer.default')->sendResettingEmailMessage($user);
         $user->setPasswordRequestedAt(new \DateTime());
         $this->container->get('fos_user.user_manager')->updateUser($user);
