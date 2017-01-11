@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DefaultController extends Controller
 {
@@ -13,9 +14,13 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ));
+        $currentUser = $this->getUser();
+        if (!$currentUser) {
+            return new RedirectResponse($this->generateUrl('fos_user_security_login'));
+        } else {
+            $url = $this->container->get('app_success_handler')->getUrl($currentUser);
+            $this->addFlash('sonata_flash_error', 'Вы уже вошли.');
+            return new RedirectResponse($url);
+        }
     }
 }

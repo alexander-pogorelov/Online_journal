@@ -29,7 +29,7 @@
                                 <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                     {{ pupilsObject.__toString|e }}
                                 </td>
-                                <td>{{ pupilsObject.dateOfBirth|date("d/M/Y") }}</td>
+                                <td>{{ pupilsObject.dateOfBirth|format_date('dd MMM yy') }}</td>
                                 <td>{{ pupilsObject.phone|e }}</td>
                                 <td>{{ pupilsObject.ParentsString|e }}</td>
                                 <td>{{ pupilsObject.parentsPhones|e }}</td>
