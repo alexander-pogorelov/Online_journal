@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\PupilGroupAssociation;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\View;
@@ -105,7 +106,7 @@ class PupilCabinetController extends FOSRestController
      * @return array
      * @View(serializerGroups={"schedules"})
      */
-    public function postSchedulesAction()
+    public function getSchedulesAction()
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -433,9 +434,140 @@ class PupilCabinetController extends FOSRestController
         return $this->handleView($view);
     }
 
+
+    /**
+     * @param $id
+     * @return Response
+     *
+     * @ApiDoc(
+     *  description="Get Group's list",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="pupil id"
+     *     }
+     *  },
+     *     output="Application\Sonata\UserBundle\Entity\Groupiteen"
+     * )
+     */
+    public function getGroupsAction($id) {
+
+        $this->checkUser($id);
+
+        $pga = $this->getDoctrine()
+            ->getRepository('ApplicationSonataUserBundle:PupilGroupAssociation')
+            ->findBy([
+                'pupil' => $id
+            ]);
+
+        if ($pga === []) {
+            throw new NotFoundHttpException('Groups not found');
+        }
+
+        $groups = array_map(function ($pga) {
+            return $pga->getGroup();
+        }, $pga);
+
+        $view = $this->view($groups, 200);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     * @ApiDoc(
+     *  description="Get Subject's list",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="group id"
+     *     }
+     *  },
+     *     output="Application\Sonata\UserBundle\Entity\Subject"
+     * )
+     *
+     */
+    public function getSubjectsAction($id) {
+
+        $group = $this->getDoctrine()
+            ->getRepository('ApplicationSonataUserBundle:GroupIteen')
+            ->find($id);
+
+        if (!$group) {
+            throw new NotFoundHttpException('Group not found');
+        }
+
+        $subjects = $group->getSubjects();
+
+        if (count($subjects) == 0) {
+            throw new NotFoundHttpException('Group has not subjects');
+        }
+
+        $view = $this->view($subjects->toArray(), 200);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     *
+     * @ApiDoc(
+     *  description="Get related pupil ID array",
+     *  requirements={
+     *     {
+     *         "name"="id",
+     *         "dataType"="integer",
+     *         "requirement"="\d+",
+     *         "description"="pupil id"
+     *     }
+     *  }
+     * )
+     */
+    public function getRelationAction($id) {
+
+        $user = $this->checkUser($id);
+        $relatedPupils = [];
+        $parents = $user->getParents()->toArray();
+
+        foreach ($parents as $parent) {
+            // ищем ID учеников по родителю
+            $childIdArray = $this->getDoctrine()
+                ->getRepository('ApplicationSonataUserBundle:UserPupil')
+                ->findAllIdByParent($parent->getId());
+            // находим новые ID учеников
+            $newPupilId = array_diff($childIdArray, $relatedPupils);
+            // добавляем новые ID учеников
+            $relatedPupils = array_merge($relatedPupils, $newPupilId);
+        }
+        // удаляем ID запрашиваемого ученика из итогового массива
+        $key = array_search($id, $relatedPupils, true);
+        unset($relatedPupils[$key]);
+
+        $view = $this->view($relatedPupils, 200);
+        return $this->handleView($view);
+
+    }
+
     private function processForm(Request $request, FormInterface $form)
     {
         $data = json_decode($request->getContent(), true);
         $form->submit($data);
+    }
+
+    private function checkUser($id) {
+
+        $user = $this->getDoctrine()
+            ->getRepository('ApplicationSonataUserBundle:User')
+            ->find($id);
+
+        if (!$user instanceof User) {
+            throw new NotFoundHttpException('User not found');
+        }
+
+        return $user;
     }
 }

@@ -52,6 +52,7 @@ class Schedule
      * @var \Application\Sonata\UserBundle\Entity\GroupIteen
      *
      * @Assert\NotBlank(message="Заполните поле")
+     * @Expose()
      */
     private $group;
 

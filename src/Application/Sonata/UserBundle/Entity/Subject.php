@@ -18,6 +18,9 @@ use JMS\Serializer\Annotation\Expose;
  */
 class Subject
 {
+    /**
+     * @Expose()
+     */
     protected $id;
 
     /**
