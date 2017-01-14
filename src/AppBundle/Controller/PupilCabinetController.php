@@ -530,7 +530,7 @@ class PupilCabinetController extends FOSRestController
     public function getRelationAction($id) {
 
         $user = $this->checkUser($id);
-        $relatedPupils = [];
+        $relatedPupils = [$id];
         $parents = $user->getParents()->toArray();
 
         foreach ($parents as $parent) {
@@ -544,12 +544,15 @@ class PupilCabinetController extends FOSRestController
             $relatedPupils = array_merge($relatedPupils, $newPupilId);
         }
         // удаляем ID запрашиваемого ученика из итогового массива
-        $key = array_search($id, $relatedPupils, true);
-        unset($relatedPupils[$key]);
+        unset($relatedPupils[0]);
+        // пересобираем массив
+        $resultArray = [];
+        foreach ($relatedPupils as $relatedPupil) {
+            $resultArray[] = $relatedPupil;
+        }
 
-        $view = $this->view($relatedPupils, 200);
+        $view = $this->view($resultArray, 200);
         return $this->handleView($view);
-
     }
 
     private function processForm(Request $request, FormInterface $form)
