@@ -31,6 +31,9 @@ class Lesson
      */
     private $homework; // домашнее задание
 
+    /**
+     * @Expose()
+     */
     private $teacherSubject;
 
     /**
