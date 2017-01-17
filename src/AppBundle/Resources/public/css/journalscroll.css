@@ -1,10 +1,9 @@
 #journal_overflow {
     overflow-x: auto;
     float: left;
-    width: 99%;
+    width: 100%;
 }
 #lesson_overflow {
     overflow-y: auto;
     height: 160px;
-    /*float: left;*/
 }
