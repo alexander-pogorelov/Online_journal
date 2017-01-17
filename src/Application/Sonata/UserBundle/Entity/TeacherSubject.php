@@ -20,6 +20,9 @@ class TeacherSubject
 
     private $teacher;
 
+    /**
+     * @Expose()
+     */
     private $subject;
 
     public function __construct(UserTeacher $teacher, Subject $subject)
