@@ -1,0 +1,21 @@
+{% extends 'ApplicationSonataUserBundle:Admin/Security/Resetting:reset.html.twig' %}
+
+{% block sonata_head_title %}
+    Ошибка {{ status_code }}
+{% endblock %}
+
+{% block header_title %}
+    <p>Страница не найдена!</p>
+{% endblock header_title %}
+
+{% block body %}
+    <article>
+        <h2></h2>
+        <p>Запрашиваемая Вами страница не найдена.</p>
+        <section class="logIn">
+            <a href="{{ path('fos_user_security_login') }}">{{ 'title_user_authentication'|trans({}, 'SonataUserBundle') }}</a>
+        </section>
+    </article>
+
+
+{% endblock %}
