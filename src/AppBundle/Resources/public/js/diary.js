@@ -9,6 +9,9 @@ var uriFirstPart = URI.substring(1, (URI.indexOf("/", 2)));
 if (uriFirstPart == "app_dev.php" || uriFirstPart == "app.php") {
     URL = URL + uriFirstPart + "/";
     var URI = URI.replace("/"+uriFirstPart+"/", "");
+} else {
+    // Удаляем "/" сначала строки с URI
+    URI = URI.substring(1);
 }
 
 // разбиваем URI на массив по символу "/"
