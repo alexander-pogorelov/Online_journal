@@ -1,12 +1,26 @@
 // Получаем полный URL, включая php-файл экшена (если он есть)
-var newURL = window.location.protocol + "//" + window.location.host + "/";
-var uri = window.location.pathname;
-var uriFirstPart = uri.substring(1, (uri.indexOf("/", 2)));
-if (uriFirstPart.indexOf(".php") > 0) {
-    newURL = newURL + uriFirstPart + "/";
+var URL = window.location.protocol + "//" + window.location.host + "/";
+var URI = window.location.pathname;
+
+// Получаем первую часть URI
+var uriFirstPart = URI.substring(1, (URI.indexOf("/", 2)));
+
+// Модифицируем URL и URI, если используются экшены входа Symfony
+if (uriFirstPart == "app_dev.php" || uriFirstPart == "app.php") {
+    URL = URL + uriFirstPart + "/";
+    var URI = URI.replace("/"+uriFirstPart+"/", "");
 }
+
+// разбиваем URI на массив по символу "/"
+var uriArray = URI.split('/');
+if (uriArray[0] === "pupil" && uriArray[2] === "cabinet") {
+    // получаем ID ученика
+    var id = uriArray[1];
+}
+
 // Получаем полный URL для запроса через REST API
-var pupilObjectRestApiUrl = newURL + "api/users/" + pupilId + ".json";
+var pupilObjectRestApiUrl = URL + "api/users/" + id + ".json";
+
 // Осуществляем AJAX-запрос
 $.ajax({
     type: "GET",
