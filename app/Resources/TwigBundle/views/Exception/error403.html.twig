@@ -5,15 +5,15 @@
 {% endblock %}
 
 {% block header_title %}
-    <p>Страница не найдена!</p>
+    <p>Доступ запрещен!</p>
 {% endblock header_title %}
 
 {% block body %}
     <article>
         <h2></h2>
-        <p>Запрашиваемая Вами страница не найдена.</p>
+        <p>У Вас нет прав на просмотр запрашиваемой страницы.</p>
         <section class="logIn">
-                <a href="{{ path('homepage') }}">Главная страница</a>
+            <a href="{{ path('homepage') }}">Главная страница</a>
         </section>
     </article>
 {% endblock %}
